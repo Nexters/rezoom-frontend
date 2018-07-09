@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Nanum Square';
+  background: #e1e5e9;
+}
+
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+}
