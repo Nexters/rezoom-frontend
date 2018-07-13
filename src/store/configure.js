@@ -5,50 +5,42 @@ import reducers from './reducers';
 
 const isDev = process.env.NODE_ENV === 'development' || true;
 
-const devtools = isDev && window.devToolsExtension
-  ? window.devToolsExtension
-  : () => fn => fn;
+const devtools =
+  isDev && window.devToolsExtension ? window.devToolsExtension : () => fn => fn;
 
-const configureStore = (initialState) => {
-
+const configureStore = (initialState, services = {}) => {
   const sagaMiddleware = createsagaMiddleware({
-    onError : (err) => {
+    onError: err => {
       setImmediate(() => {
         console.log(err);
-      })
-    }
+      });
+    },
   });
 
   const enhancers = [
     applyMiddleware(sagaMiddleware),
     devtools({
       actionsBlacklist: ['trade/UPDATE_TICKER'],
-      maxAge: 1000
-    })
+      maxAge: 1000,
+    }),
   ];
 
   const store = createStore(reducers, initialState, compose(...enhancers));
 
   let sagaTask = sagaMiddleware.run(sagas);
 
-  if(module.hot) {
-    module
-      .hot
-      .accept('./reducers', () => {
-        const nextReducer = require('./reducers').default;
-        store.replaceReducer(nextReducer);
+  if (module.hot) {
+    module.hot.accept('./reducers', () => {
+      const nextReducer = require('./reducers').default;
+      store.replaceReducer(nextReducer);
+    });
+    module.hot.accept('./sagas', () => {
+      const nextSagas = require('./sagas').default;
+      sagaTask.cancel();
+      sagaTask.done.then(() => {
+        sagaTask = sagaMiddleware.run(nextSagas, services);
       });
-    module
-      .hot
-      .accept('./sagas', () => {
-        const nextSagas = require('./sagas').default;
-        sagaTask.cancel();
-        sagaTask
-          .done
-          .then(() => {
-              sagaTask = sagaMiddleware.run(nextSagas);
-          })
-      });
+    });
   }
   store.close = () => store.dispatch(END);
 

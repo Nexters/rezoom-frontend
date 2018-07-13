@@ -1,19 +1,21 @@
-import React from 'react';
-import App from './components/App';
-import { BrowserRouter, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-// import ReactGA from 'react-ga';
+// import React from 'react';
+// import PropTypes from 'prop-types';
+// import App from './components/App';
+// import { BrowserRouter, Route } from 'react-router-dom';
+// import { Provider } from 'react-redux';
 
-// ReactGA.initialize('UA-110163170-1');
+// const Root = ({ store }) => {
+//   return (
+//     <Provider store={store}>
+//       <BrowserRouter>
+//         <Route path="/" component={App} />
+//       </BrowserRouter>
+//     </Provider>
+//   );
+// };
 
-const Root = ({store}) => {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Route path="/" component={App}/>
-      </BrowserRouter>
-    </Provider>
-  );
-}
+// Root.propTypes = {
+//   store: PropTypes.object,
+// };
 
-export default Root;
+// export default Root;

@@ -1,3 +1,6 @@
 import configureStore from './configure';
+import Api from '../service';
 
-export default configureStore();
+const initialState = window.__INITIAL_STATE__;
+
+export default configureStore(initialState, { api: Api });

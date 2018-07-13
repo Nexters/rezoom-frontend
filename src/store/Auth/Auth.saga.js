@@ -1,8 +1,10 @@
-import { call, put, fork, take } from 'redux-saga/effects';
+import { call, fork, take } from 'redux-saga/effects';
 import { LOGIN } from './Auth.store';
 
-export function * login(api, payload) {
+export function* login(api, payload) {
   try {
+    const test = yield call(api.Resume.postResume, payload);
+    console.log(test);
     // const result = yield call(api.login, payload);
     // if (result.isLoginSuccess) {
     //   const user = JSON.parse(atob(result.token.split('.')[1]));
@@ -17,14 +19,13 @@ export function * login(api, payload) {
   }
 }
 
-export function * watchLoginRequest(api) {
+export function* watchLoginRequest(api) {
   while (true) {
-    const {payload} = yield take(LOGIN);
+    const { payload } = yield take(LOGIN);
     yield call(login, api, payload);
   }
 }
 
-export default function * () {
+export default function*() {
   yield fork(watchLoginRequest);
 }
-

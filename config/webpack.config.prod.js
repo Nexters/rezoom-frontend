@@ -78,7 +78,7 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/253
     modules: ['node_modules', paths.appNodeModules].concat(
       // It is guaranteed to exist because we tweak it in `env.js`
-      process.env.NODE_PATH.split(path.delimiter).filter(Boolean)
+      process.env.NODE_PATH.split(path.delimiter).filter(Boolean),
     ),
     // These are the reasonable defaults supported by the Node ecosystem.
     // We also include JSX as a common component filename extension to support
@@ -88,7 +88,6 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -118,7 +117,6 @@ module.exports = {
           {
             options: {
               formatter: eslintFormatter,
-
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -143,7 +141,7 @@ module.exports = {
           /\.gif$/,
           /\.jpe?g$/,
           /\.png$/,
-          /\.scss$/
+          /\.scss$/,
         ],
         loader: require.resolve('file-loader'),
         options: {
@@ -219,8 +217,8 @@ module.exports = {
                 },
               ],
             },
-            extractTextPluginOptions
-          )
+            extractTextPluginOptions,
+          ),
         ),
         // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
       },
@@ -238,7 +236,7 @@ module.exports = {
                     minimize: true,
                     sourceMap: true,
                     modules: true,
-                    localIdentName: '[name]__[local]__[hash:base64:5]'
+                    localIdentName: '[name]__[local]__[hash:base64:5]',
                   },
                 },
                 {
@@ -264,13 +262,13 @@ module.exports = {
                 {
                   loader: require.resolve('sass-loader'),
                   options: {
-                    includePaths: [paths.globalStyles]
-                  }
-                }
+                    includePaths: [paths.globalStyles],
+                  },
+                },
               ],
             },
-            extractTextPluginOptions
-          )
+            extractTextPluginOptions,
+          ),
         ),
         // Note: this won't work without `new ExtractTextPlugin()` in `plugins`.
       },

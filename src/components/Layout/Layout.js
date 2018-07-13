@@ -1,39 +1,23 @@
 import React, { Component } from 'react';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import Header from '../Shared/Header';
+import { LayoutContainer } from '../../containers/LayoutContainer';
+import MyPage from '../MyPage/MyPage';
 
 class Layout extends Component {
   render() {
     return (
-      <div className="main">
-        <header>
-          <ul style={{display: 'flex', flexDirection: 'row'}}>
-            <li style={{width: 100}}><Link className="" to="login">로그인</Link></li>
-            <li style={{width: 100}}><Link className="" to="jaso/new">자소서작성</Link></li>
-            <li style={{width: 100}}><Link className="" to="jaso/modify">자소서수정</Link></li>
-            <li style={{width: 100}}><Link className="" to="jaso/1/detail">자소서상세</Link></li>
-            <li style={{width: 100}}><Link className="" to="mypage/user">내정보</Link></li>
-            <li style={{width: 100}}><Link className="" to="search">검색</Link></li>
-          </ul>
-        </header>
+      <LayoutContainer>
+        <Header />
 
-        {this.switchContents()}
-
-        <h1>main</h1>
-      </div>
+        <Route path="/jaso/new" component={() => <h1>new!</h1>} />
+        <Route path="/jaso/modify" component={() => <h1>modify</h1>} />
+        <Route path="/jaso/:id?/detail" component={() => <h1>detail</h1>} />
+        <Route path="/mypage/:type?" component={MyPage} />
+        <Route path="/search" component={() => <h1>검색</h1>} />
+      </LayoutContainer>
     );
   }
-
-  switchContents() {
-    return (
-      <Switch>
-        <Route path="/jaso/:type?" component={() => (<h1>자소서 - type : 작성, 수정, 상세</h1>)}/>
-        <Route path="/mypage/:type?" component={() => (<h1>마이페이지</h1>)}/>
-        <Route path="/search" component={() => (<h1>검색</h1>)}/>
-      </Switch>
-    )
-  }
 }
-
-
 
 export default Layout;

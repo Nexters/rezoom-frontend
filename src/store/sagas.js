@@ -1,9 +1,9 @@
-import { all, fork } from 'redux-saga/effects'
+import { all, fork } from 'redux-saga/effects';
 
-const req = require.context('.', true, /\.\/.+\/\w+\.+saga\.js$/)
+const req = require.context('.', true, /\.\/.+\/\w+\.+saga\.js$/);
 
-const sagas = req.keys().map(key => req(key).default)
+const sagas = req.keys().map(key => req(key).default);
 
-export default function* (services = {}) {
-  yield all(sagas.map(saga => fork(saga, services)))
+export default function*(services = {}) {
+  yield all(sagas.map(saga => fork(saga, services)));
 }
