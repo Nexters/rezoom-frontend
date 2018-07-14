@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
-import { updateResumeList } from '../../store/Resume/Resume.store';
+import {
+  updateResumeList,
+  testFetchData,
+} from '../../store/Resume/Resume.store';
 
 @connect(
   state => ({
@@ -9,6 +12,7 @@ import { updateResumeList } from '../../store/Resume/Resume.store';
   }),
   {
     updateResumeList,
+    testFetchData,
   },
 )
 class MyPage extends Component {
@@ -24,6 +28,12 @@ class MyPage extends Component {
   //   console.log(prevState);
   //   console.log(snapshot);
   // }
+
+  _testFetchDataCall(e) {
+    e.stopPropagation();
+
+    this.props.testFetchData();
+  }
 
   _onClickButtonTest(e) {
     console.log('resume 추가');
@@ -56,6 +66,7 @@ class MyPage extends Component {
         </ul>
 
         <button onClick={e => this._onClickButtonTest(e)}>레쥬메 추가</button>
+        <button onClick={e => this._testFetchDataCall(e)}>테스트</button>
       </div>
     );
   }
@@ -64,6 +75,7 @@ class MyPage extends Component {
 MyPage.propTypes = {
   resumes: PropTypes.Array,
   updateResumeList: PropTypes.func,
+  testFetchData: PropTypes.func,
 };
 
 export default MyPage;
