@@ -1,9 +1,10 @@
 import { call, fork, take } from 'redux-saga/effects';
 import { TEST_FETCH } from './Resume.store';
+import Resume from '../../service/Resume';
 
 function* fetchTest(api) {
   try {
-    const { data } = yield call(api.Resume.fetchTest);
+    const { data } = yield call(Resume.getTest, '');
 
     console.log(data);
   } catch (error) {
@@ -13,7 +14,7 @@ function* fetchTest(api) {
 
 export function* watchFetchTest(api) {
   while (true) {
-    const { payload } = yield take(TEST_FETCH);
+    yield take(TEST_FETCH);
     yield call(fetchTest, api);
   }
 }
