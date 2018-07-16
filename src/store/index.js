@@ -1,6 +1,11 @@
 import configureStore from './configure';
 import Api from '../service';
+import sagas from './sagas';
 
 const initialState = window.__INITIAL_STATE__;
 
-export default configureStore(initialState, { api: Api });
+const store = configureStore(initialState, { api: Api });
+
+store.runSaga(sagas, { api: Api });
+
+export default store;

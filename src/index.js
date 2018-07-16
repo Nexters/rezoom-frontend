@@ -8,12 +8,12 @@ import Root from './components/Root';
 import './styles/main.scss';
 import store from './store';
 
-window.axios = axios;
+// window.axios = axios;
 
-if (process.env.NODE_ENV === 'production') {
-  axios.defaults.withCredentials = true;
-  axios.defaults.baseURL = 'https://localhost.com';
-}
+// if (process.env.NODE_ENV === 'production') {
+//   axios.defaults.withCredentials = true;
+//   axios.defaults.baseURL = 'https://localhost.com';
+// }
 
 const render = Component =>
   ReactDOM.render(

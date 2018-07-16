@@ -2,7 +2,12 @@ import { call, fork, take } from 'redux-saga/effects';
 import { TEST_FETCH } from './Resume.store';
 import Resume from '../../service/Resume';
 
-function* fetchTest(api) {
+const api = Resume;
+
+console.log('resume saga - ', api);
+
+function* fetchTest() {
+  console.log();
   try {
     const { data } = yield call(Resume.getTest, '');
 

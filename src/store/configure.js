@@ -42,6 +42,7 @@ const configureStore = (initialState, services = {}) => {
       });
     });
   }
+  store.runSaga = sagaMiddleware.run;
   store.close = () => store.dispatch(END);
 
   return store;
