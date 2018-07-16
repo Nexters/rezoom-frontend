@@ -3,7 +3,7 @@
 import Resume from './Resume';
 
 const Api = {
-  Resume: new Resume(),
+  Resume: Resume,
 };
 
 export default Api;
