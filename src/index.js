@@ -25,6 +25,15 @@ const render = Component =>
 
 render(Root);
 
+const rootEl = document.getElementById('root');
+
+rootEl.style.position = 'absolute';
+rootEl.style.top = 0;
+rootEl.style.bottom = 0;
+rootEl.style.left = 0;
+rootEl.style.right = 0;
+rootEl.style.overflow = 'hidden';
+
 if (module.hot) {
   module.hot.accept('./Root', () => render(Root));
 }

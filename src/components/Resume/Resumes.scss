@@ -1,0 +1,54 @@
+.resumes {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .resumes__menu {
+    flex: 0;
+    height: 100%;
+    width: 200px;
+    min-width: 200px;
+    border: 1px solid red;
+    padding: 16px;
+  }
+
+  .resumes__contents {
+    flex: 1;
+    height: 100%;
+    border: 1px solid blue;
+    padding: 16px;
+
+    .resumes__contents--search {
+      margin-bottom: 24px;
+      input {
+        width: 100%;
+      }
+    }
+
+    .resumes__contents--header {
+      display: flex;
+      justify-content: space-between;
+      height: 32px;
+      margin-bottom: 16px;
+
+      .title {
+        font-size: 14px;
+      }
+      .action {
+        display: flex;
+        p {
+          font-size: 10px;
+          &:first-child {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+
+    .resumes__contents--list {
+      > div {
+        margin-bottom: 8px;
+      }
+    }
+  }
+}

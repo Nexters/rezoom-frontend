@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import Header from '../Shared/Header';
-import { LayoutContainer } from '../../containers/LayoutContainer';
 import MyPage from '../MyPage/MyPage';
 import withAuthGuard from '../../hocs/withAuthGuard';
+import { Resumes } from '../Resume/Resumes';
+import scss from './Layout.scss';
 
 @connect(
   state => ({
@@ -18,13 +19,15 @@ class Layout extends Component {
   render() {
     const { isLogin } = this.props;
     return (
-      <LayoutContainer>
+      <div className={scss['rezoom-container']}>
         <Header />
 
-        <Route path="/resume" component={() => <h1>new!</h1>} />
-        <Route path="/files" component={() => <h1>파일</h1>} />
-        <Route path="/mypage/:type?" component={MyPage} />
-      </LayoutContainer>
+        <div className={scss['rezoom-contents']}>
+          <Route path="/resume" component={Resumes} />
+          <Route path="/files" component={() => <h1>파일</h1>} />
+          <Route path="/mypage/:type?" component={MyPage} />
+        </div>
+      </div>
     );
   }
 }

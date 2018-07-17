@@ -42,7 +42,7 @@ class Login extends Component {
     const { classes, isLogin } = this.props;
 
     return isLogin ? (
-      <Redirect push to="/" />
+      <Redirect push to="/resume" />
     ) : (
       <div className={scss.login}>
         <Card className={classes.card}>
