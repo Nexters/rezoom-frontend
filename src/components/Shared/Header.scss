@@ -1,0 +1,21 @@
+.header {
+  display: flex;
+  flex-direction: row;
+
+  .header__logo {
+    flex: 0;
+    display: flex;
+    height: 40px;
+    width: 100px;
+    background-color: red;
+    margin: 8px;
+  }
+
+  .header__menu {
+    flex: 1;
+  }
+
+  .header__info {
+    flex: 0;
+  }
+}

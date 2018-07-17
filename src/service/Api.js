@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+// import './intercept';
 
-export default class FetchApi {
+export default class Api {
   static baseUrl = 'http://localhost:3001';
 
   static config(headers, anyParam) {
@@ -13,6 +14,7 @@ export default class FetchApi {
 
   static headers(headerParams) {
     return {
+      'Access-Control-Allow-Origin': '*',
       'content-type': 'application/json',
       ...headerParams,
     };

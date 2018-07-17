@@ -5,12 +5,18 @@ body {
   background: #e1e5e9;
 }
 
-
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
 a {
   text-decoration: inherit;
   color: inherit;
+}
+
+ol,
+ul {
+  list-style: none;
 }

@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import { logout } from '../../store/Auth/Auth.store';
+import scss from './Header.scss';
 
 const styles = {
   root: {
@@ -31,50 +32,30 @@ class Header extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <header className={classes.root}>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            <Typography variant="title" color="inherit">
-              Photos
-            </Typography>
+      <AppBar className={scss.header} position="static" color="default">
+        <Toolbar>
+          <div className={scss['header__logo']}>Logo</div>
+          <div className={scss['header__menu']}>
+            <ul style={{ display: 'flex', flexDirection: 'row' }}>
+              <li style={{ width: 100 }}>
+                <Link className="" to="/resume">
+                  자소서 리스트
+                </Link>
+              </li>
+              <li style={{ width: 100 }}>
+                <Link className="" to="/files">
+                  증빙자료 관리
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className={scss['header__info']}>
             <Button onClick={e => this._onClickLogout(e)} color="inherit">
               로그아웃
             </Button>
-          </Toolbar>
-          <ul style={{ display: 'flex', flexDirection: 'row' }}>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/login">
-                로그인
-              </Link>
-            </li>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/jaso/new">
-                자소서작성
-              </Link>
-            </li>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/jaso/modify">
-                자소서수정
-              </Link>
-            </li>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/jaso/1/detail">
-                자소서상세
-              </Link>
-            </li>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/mypage/user">
-                내정보
-              </Link>
-            </li>
-            <li style={{ width: 100 }}>
-              <Link className="" to="/search">
-                검색
-              </Link>
-            </li>
-          </ul>
-        </AppBar>
-      </header>
+          </div>
+        </Toolbar>
+      </AppBar>
     );
   }
 }

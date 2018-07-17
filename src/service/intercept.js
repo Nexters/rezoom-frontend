@@ -20,7 +20,7 @@ axios.interceptors.request.use(
     config.headers['Cache-Control'] =
       'no-cache,no-store,must-revalidate,max-age=-1,private';
     this.loading = true;
-    return;
+    return config;
   },
   error => {
     console.log('request failed!');

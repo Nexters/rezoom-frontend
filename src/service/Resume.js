@@ -1,5 +1,5 @@
 import axios from 'axios';
-import FetchApi from '.';
+import Api from './Api';
 
 export default class Resume {
   static postResume(data, config) {
@@ -10,7 +10,7 @@ export default class Resume {
   }
 
   static getTest() {
-    return FetchApi.get(
+    return Api.get(
       'https://api.themoviedb.org/3/search/movie?query=%QUERY&api_key=cfe422613b250f702980a3bbf9e90716',
     );
   }

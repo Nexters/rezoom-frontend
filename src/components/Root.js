@@ -13,9 +13,9 @@ const Root = ({ store }) => {
         <Switch>
           <Route exact path="/" component={Layout} />
           <Route exact path="/login" component={Login} />
-          <Route path="/search" component={Layout} />
-          <Route path="/jaso/:type?" component={Layout} />
-          <Route path="/mypage/:type?" component={Layout} />
+          <Route path="/resume/:id?" component={Layout} />
+          <Route path="/files" component={Layout} />
+          <Route path="/info" component={Layout} />
           <Route component={PageNotFound} />
         </Switch>
       </BrowserRouter>

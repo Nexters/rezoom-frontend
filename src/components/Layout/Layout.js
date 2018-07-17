@@ -21,11 +21,9 @@ class Layout extends Component {
       <LayoutContainer>
         <Header />
 
-        <Route path="/jaso/new" component={() => <h1>new!</h1>} />
-        <Route path="/jaso/modify" component={() => <h1>modify</h1>} />
-        <Route path="/jaso/:id?/detail" component={() => <h1>detail</h1>} />
+        <Route path="/resume" component={() => <h1>new!</h1>} />
+        <Route path="/files" component={() => <h1>파일</h1>} />
         <Route path="/mypage/:type?" component={MyPage} />
-        <Route path="/search" component={() => <h1>검색</h1>} />
       </LayoutContainer>
     );
   }

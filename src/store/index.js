@@ -1,5 +1,5 @@
 import configureStore from './configure';
-import Api from '../service';
+import Api from '../service/Api';
 import sagas from './sagas';
 
 const initialState = window.__INITIAL_STATE__;
