@@ -1,6 +1,7 @@
 // import { createAction, handleActions } from 'redux-actions';
 
 export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
 
 const initialState = {
   isLogin: false,
@@ -11,7 +12,12 @@ export default function reducer(state = initialState, action = {}) {
     case LOGIN:
       return {
         ...state,
-        isLogin: !this.state.isLogin,
+        isLogin: !state.isLogin,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        isLogin: false,
       };
     default:
       return state;
@@ -20,4 +26,8 @@ export default function reducer(state = initialState, action = {}) {
 
 export const login = () => ({
   type: LOGIN,
+});
+
+export const logout = () => ({
+  type: LOGOUT,
 });

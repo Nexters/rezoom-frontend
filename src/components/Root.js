@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import Layout from './Layout/Layout';
 import Login from './Login/Login';
-// import PageNotFound from './Shared/Error/PageNotFound';
+import PageNotFound from './Shared/Error/PageNotFound';
 
 const Root = ({ store }) => {
   return (
@@ -13,9 +13,10 @@ const Root = ({ store }) => {
         <Switch>
           <Route exact path="/" component={Layout} />
           <Route exact path="/login" component={Login} />
+          <Route path="/search" component={Layout} />
           <Route path="/jaso/:type?" component={Layout} />
           <Route path="/mypage/:type?" component={Layout} />
-          <Route path="/search" component={Layout} />
+          <Route component={PageNotFound} />
         </Switch>
       </BrowserRouter>
     </Provider>

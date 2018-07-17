@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
+import connect from 'redux-connect-decorator';
 import Header from '../Shared/Header';
 import { LayoutContainer } from '../../containers/LayoutContainer';
 import MyPage from '../MyPage/MyPage';
+import withAuthGuard from '../../hocs/withAuthGuard';
 
+@connect(
+  state => ({
+    isLogin: state.auth.isLogin,
+  }),
+  {},
+)
+@withAuthGuard()
 class Layout extends Component {
   render() {
+    const { isLogin } = this.props;
     return (
       <LayoutContainer>
         <Header />
@@ -19,5 +30,9 @@ class Layout extends Component {
     );
   }
 }
+
+Layout.propTypes = {
+  isLogin: PropTypes.bool,
+};
 
 export default Layout;
