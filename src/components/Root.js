@@ -11,6 +11,7 @@ const Root = ({ store }) => {
     <Provider store={store}>
       <BrowserRouter>
         <Switch>
+          <Route exact path="/" component={Layout} />
           <Route exact path="/login" component={Login} />
           <Route path="/resume/:id?" component={Layout} />
           <Route path="/files" component={Layout} />

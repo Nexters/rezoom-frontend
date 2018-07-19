@@ -35,7 +35,7 @@ rootEl.style.right = 0;
 rootEl.style.overflow = 'hidden';
 
 if (module.hot) {
-  module.hot.accept('./Root', () => render(Root));
+  module.hot.accept('./components/Root', () => render(Root));
 }
 
 registerServiceWorker();
