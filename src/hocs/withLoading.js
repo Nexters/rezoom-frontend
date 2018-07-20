@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { CircularProgress } from '@material-ui/core';
 
-const withLoading = () => WrappedComponent => {
-  return class Loading extends Component {
-    static propTypes = {};
-    constructor(props) {
-      super(props);
-    }
-
-    render() {
-      return <WrappedComponent {...this.props} />;
-    }
-  };
+const loadingInjector = fetchingPropKey => ComposedComponent => {
+  function WrapperComponent(props) {
+    // console.log(props);
+    return props[fetchingPropKey] ? (
+      <div style={{ display: 'block', textAlign: 'center' }}>
+        <CircularProgress />
+      </div>
+    ) : (
+      <ComposedComponent {...props} />
+    );
+  }
+  return WrapperComponent;
 };
 
-export default withLoading;
+export default loadingInjector;

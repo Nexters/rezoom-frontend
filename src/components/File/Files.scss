@@ -1,0 +1,21 @@
+.files {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .files__contens {
+    flex: 1;
+    height: 100%;
+    border: 1px solid blue;
+    padding: 16px;
+
+    .files__contents--row {
+      display: flex;
+      justify-content: column;
+
+      .files__contents--title {
+        margin-bottom: 24px;
+      }
+    }
+  }
+}

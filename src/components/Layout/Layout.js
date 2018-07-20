@@ -7,6 +7,7 @@ import MyPage from '../MyPage/MyPage';
 import withAuthGuard from '../../hocs/withAuthGuard';
 import { Resumes } from '../Resume/Resumes';
 import scss from './Layout.scss';
+import { Files } from '../File/Files';
 
 @connect(
   state => ({
@@ -24,7 +25,7 @@ class Layout extends Component {
 
         <div className={scss['rezoom-contents']}>
           <Route path="/resume" component={Resumes} />
-          <Route path="/files" component={() => <h1>파일</h1>} />
+          <Route path="/files" component={Files} />
           <Route path="/mypage/:type?" component={MyPage} />
         </div>
       </div>

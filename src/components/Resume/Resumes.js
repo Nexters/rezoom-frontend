@@ -8,7 +8,10 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
+import loadingInjector from '../../hocs/withLoading';
+import { Sidebar } from '../Shared/Sidebar/Sidebar';
 
+@loadingInjector(true)
 export class Resumes extends Component {
   constructor(props) {
     super(props);
@@ -49,14 +52,14 @@ export class Resumes extends Component {
 
     return (
       <div className={scss.resumes}>
-        <div className={scss['resumes__menu']}>
-          <Button color="primary">+ 자소서 작성</Button>
-          <ul>
-            <li>합격한 자소서</li>
-            <li>불합격한 자소서</li>
-            <li>회사별 자소서</li>
-          </ul>
-        </div>
+        <Sidebar
+          btnTitle={'자소서 작성'}
+          list={[
+            { id: 0, name: '합격한 자소서', children: [] },
+            { id: 1, name: '불합격한 자소서', children: [] },
+            { id: 2, name: '회사별 자소서', children: [] },
+          ]}
+        />
         <div className={scss['resumes__contents']}>
           <div className={scss['resumes__contents--search']}>
             <Input type="text" placeholder="자소서 보기" />
