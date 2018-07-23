@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Sidebar } from '../Shared/Sidebar/Sidebar';
 import scss from './Files.scss';
+import { Card, CardContent } from '@material-ui/core';
 
 export class Files extends Component {
   render() {
@@ -23,10 +24,18 @@ export class Files extends Component {
           ]}
         />
         <div className={scss['files__contents']}>
-          <div className={scss['files__contents--row']}>
+          {/*
             <div className={scss['files__contents--title']}>
-              <p>최근 열어본 리스트</p>
+              <div className={scss['title']}>
+                <p>합격한 자소서</p>
+              </div>
+              <div className={scss['action']}>
+                <p>카드형식</p>
+                <p>리스트형식</p>
+              </div>
             </div>
+          */}
+          <div className={scss['files__contents--row']}>
             <div className={scss['files__contents--header']}>
               <div className={scss['title']}>
                 <p>합격한 자소서</p>
@@ -36,8 +45,27 @@ export class Files extends Component {
                 <p>리스트형식</p>
               </div>
             </div>
+            <div className={scss['files__contents--list']}>
+              <Card key={1} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+              <Card key={2} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+              <Card key={3} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+              <Card key={4} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+              <Card key={5} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+              <Card key={6} className={scss['files__contents--item']}>
+                <CardContent />
+              </Card>
+            </div>
           </div>
-          <div className={scss['files__contents--list']} />
         </div>
       </div>
     );

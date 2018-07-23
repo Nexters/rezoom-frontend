@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import scss from './Resumes.scss';
 import {
@@ -76,14 +77,16 @@ export class Resumes extends Component {
           <div className={scss['resumes__contents--list']}>
             {resumeList.map(item => {
               return (
-                <Card key={item.id}>
-                  <CardContent>
-                    <Typography variant="headline" component="h2">
-                      {item.title}
-                    </Typography>
-                    <Typography component="p">{item.content}</Typography>
-                  </CardContent>
-                </Card>
+                <Link key={item.id} className="" to={`/resume/${item.id}`}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="headline" component="h2">
+                        {item.title}
+                      </Typography>
+                      <Typography component="p">{item.content}</Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
               );
             })}
           </div>

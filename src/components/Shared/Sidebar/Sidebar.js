@@ -15,7 +15,7 @@ export class Sidebar extends Component {
         <Button color="primary">{btnTitle}</Button>
         <ul>
           {list.map(item => {
-            console.log(item);
+            // console.log(item);
             return (
               <li
                 key={item.id}
@@ -23,11 +23,11 @@ export class Sidebar extends Component {
               >
                 {item.name}
                 {item.children.length > 0 ? (
-                  <div>
+                  <ul>
                     {item.children.map(node => {
                       return <li key={node.id}>{node.name}</li>;
                     })}
-                  </div>
+                  </ul>
                 ) : null}
               </li>
             );

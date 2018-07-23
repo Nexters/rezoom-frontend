@@ -8,6 +8,7 @@ import withAuthGuard from '../../hocs/withAuthGuard';
 import { Resumes } from '../Resume/Resumes';
 import scss from './Layout.scss';
 import { Files } from '../File/Files';
+import { ResumeDetail } from '../Resume/Detail/ResumeDetail';
 
 @connect(
   state => ({
@@ -24,7 +25,8 @@ class Layout extends Component {
         <Header />
 
         <div className={scss['rezoom-contents']}>
-          <Route path="/resume" component={Resumes} />
+          <Route exact path="/resume" component={Resumes} />
+          <Route path="/resume/:id?" component={ResumeDetail} />
           <Route path="/files" component={Files} />
           <Route path="/mypage/:type?" component={MyPage} />
         </div>

@@ -37,8 +37,10 @@
     }
 
     .resumes__contents--list {
-      > div {
-        margin-bottom: 8px;
+      > a {
+        > div {
+          margin-bottom: 8px;
+        }
       }
     }
   }
