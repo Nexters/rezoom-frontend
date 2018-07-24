@@ -1,27 +1,39 @@
 import React, { Component } from 'react';
+import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import { Sidebar } from '../Shared/Sidebar/Sidebar';
 import scss from './Files.scss';
 import { Card, CardContent } from '@material-ui/core';
-
+import { changeActiveMenu } from '../../store/Sidebar/Sidebar.store';
+@connect(
+  state => ({
+    sidebarMenus: state.sidebar.menu.files,
+  }),
+  {
+    changeActiveMenu,
+  },
+)
 export class Files extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+
+    this.onClickMenu = this.onClickMenu.bind(this);
+  }
+
+  onClickMenu(selectedId) {
+    this.props.changeActiveMenu(selectedId, 'FILES');
+  }
+
   render() {
+    const { sidebarMenus } = this.props;
     return (
       <div className={scss.files}>
         <Sidebar
           btnTitle={'자료 올리기'}
-          list={[
-            {
-              id: 0,
-              name: '증명서 전체보기',
-              children: [
-                { id: 0, name: '인적사항 증빙서' },
-                { id: 1, name: '어학 증빙서' },
-                { id: 2, name: '자격증 증빙서' },
-                { id: 3, name: '수상 증빙서' },
-              ],
-            },
-          ]}
+          list={sidebarMenus}
+          onClickChildren={this.onClickMenu}
         />
         <div className={scss['files__contents']}>
           {/*
@@ -72,6 +84,9 @@ export class Files extends Component {
   }
 }
 
-Files.propTypes = {};
+Files.propTypes = {
+  sidebarMenus: PropTypes.array,
+  changeActiveMenu: PropTypes.func,
+};
 
 export default Files;

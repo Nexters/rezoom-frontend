@@ -5,4 +5,16 @@
   min-width: 200px;
   border: 1px solid red;
   padding: 16px;
+
+  .sidebar__active {
+    color: chartreuse;
+    font-weight: bold;
+  }
+
+  .sidebar__children {
+    color: #777777;
+  }
+  .sidebar__children--active {
+    color: salmon;
+  }
 }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import connect from 'redux-connect-decorator';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import scss from './Resumes.scss';
@@ -11,55 +12,40 @@ import {
 } from '@material-ui/core';
 import loadingInjector from '../../hocs/withLoading';
 import { Sidebar } from '../Shared/Sidebar/Sidebar';
+import { changeActiveMenu } from '../../store/Sidebar/Sidebar.store';
 
+@connect(
+  state => ({
+    sidebarMenus: state.sidebar.menu.resume,
+    resumeList: state.resume.resumes,
+  }),
+  {
+    changeActiveMenu,
+  },
+)
 @loadingInjector(true)
 export class Resumes extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      resumeList: [
-        {
-          id: 1,
-          title: '나의 첫번째 자소서',
-          content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-        },
-        {
-          id: 2,
-          title: '나의 두번째 자소서',
-          content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-        },
-        {
-          id: 3,
-          title: '나의 세번째 자소서',
-          content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-        },
-        {
-          id: 4,
-          title: '나의 네번째 자소서',
-          content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-        },
-        {
-          id: 5,
-          title: '나의 다섯번째 자소서',
-          content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-        },
-      ],
-    };
+    this.state = {};
+
+    this.onClickMenu = this.onClickMenu.bind(this);
+  }
+
+  onClickMenu(selectedId) {
+    this.props.changeActiveMenu(selectedId, 'RESUME');
   }
 
   render() {
-    const { resumeList } = this.state;
+    const { sidebarMenus, resumeList } = this.props;
 
     return (
       <div className={scss.resumes}>
         <Sidebar
           btnTitle={'자소서 작성'}
-          list={[
-            { id: 0, name: '합격한 자소서', children: [] },
-            { id: 1, name: '불합격한 자소서', children: [] },
-            { id: 2, name: '회사별 자소서', children: [] },
-          ]}
+          list={sidebarMenus}
+          onClick={this.onClickMenu}
         />
         <div className={scss['resumes__contents']}>
           <div className={scss['resumes__contents--search']}>
@@ -96,6 +82,10 @@ export class Resumes extends Component {
   }
 }
 
-Resumes.propTypes = {};
+Resumes.propTypes = {
+  sidebarMenus: PropTypes.array,
+  changeActiveMenu: PropTypes.func,
+  resumeList: PropTypes.array,
+};
 
 export default Resumes;

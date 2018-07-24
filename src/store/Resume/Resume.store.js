@@ -3,8 +3,31 @@ export const TEST_FETCH = 'TEST_FETCH';
 
 const initialState = {
   resumes: [
-    { id: 0, name: '테스트1', contents: 'hahahah hohoho' },
-    { id: 1, name: '테스트2', contents: 'heheheh hihihi' },
+    {
+      id: 1,
+      title: '나의 첫번째 자소서',
+      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
+    },
+    {
+      id: 2,
+      title: '나의 두번째 자소서',
+      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
+    },
+    {
+      id: 3,
+      title: '나의 세번째 자소서',
+      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
+    },
+    {
+      id: 4,
+      title: '나의 네번째 자소서',
+      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
+    },
+    {
+      id: 5,
+      title: '나의 다섯번째 자소서',
+      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
+    },
   ],
   test: '',
 };

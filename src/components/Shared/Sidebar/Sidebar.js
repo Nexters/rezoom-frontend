@@ -8,6 +8,16 @@ export class Sidebar extends Component {
     super(props);
   }
 
+  onClickMenu(e, selectedId) {
+    e.stopPropagation();
+    this.props.onClick(selectedId);
+  }
+
+  onClickChildrenMenu(e, selectedChildrenId) {
+    e.stopPropagation();
+    this.props.onClickChildren(selectedChildrenId);
+  }
+
   render() {
     const { btnTitle, list } = this.props;
     return (
@@ -19,13 +29,26 @@ export class Sidebar extends Component {
             return (
               <li
                 key={item.id}
-                className={item.id === true ? 'sidebar__active' : ''}
+                className={item.active ? scss['sidebar__active'] : ''}
+                onClick={e => this.onClickMenu(e, item.id)}
               >
                 {item.name}
                 {item.children.length > 0 ? (
                   <ul>
                     {item.children.map(node => {
-                      return <li key={node.id}>{node.name}</li>;
+                      return (
+                        <li
+                          key={node.id}
+                          className={
+                            node.active
+                              ? scss['sidebar__children--active']
+                              : scss['sidebar__children']
+                          }
+                          onClick={e => this.onClickChildrenMenu(e, node.id)}
+                        >
+                          {node.name}
+                        </li>
+                      );
                     })}
                   </ul>
                 ) : null}
@@ -41,6 +64,8 @@ export class Sidebar extends Component {
 Sidebar.propTypes = {
   btnTitle: PropTypes.string.isRequired,
   list: PropTypes.array.isRequired,
+  onClick: PropTypes.func,
+  onClickChildren: PropTypes.func,
 };
 
 export default Sidebar;
