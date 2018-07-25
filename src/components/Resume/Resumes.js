@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'autobind-decorator';
 import connect from 'redux-connect-decorator';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -13,6 +14,7 @@ import {
 import loadingInjector from '../../hocs/withLoading';
 import { Sidebar } from '../Shared/Sidebar/Sidebar';
 import { changeActiveMenu } from '../../store/Sidebar/Sidebar.store';
+import { Create } from './Create/Create';
 
 @connect(
   state => ({
@@ -28,24 +30,39 @@ export class Resumes extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      dialogOpen: false,
+    };
 
-    this.onClickMenu = this.onClickMenu.bind(this);
+    // this.onClickMenu = this.onClickMenu.bind(this);
   }
 
+  @autobind
   onClickMenu(selectedId) {
     this.props.changeActiveMenu(selectedId, 'RESUME');
   }
 
+  @autobind
+  onClickButton() {
+    this.setState({ dialogOpen: true });
+  }
+
+  @autobind
+  onCloseDialog() {
+    this.setState({ dialogOpen: false });
+  }
+
   render() {
     const { sidebarMenus, resumeList } = this.props;
+    const { dialogOpen } = this.state;
 
     return (
       <div className={scss.resumes}>
         <Sidebar
           btnTitle={'자소서 작성'}
           list={sidebarMenus}
-          onClick={this.onClickMenu}
+          onClickMenu={this.onClickMenu}
+          onClickButton={this.onClickButton}
         />
         <div className={scss['resumes__contents']}>
           <div className={scss['resumes__contents--search']}>
@@ -77,6 +94,7 @@ export class Resumes extends Component {
             })}
           </div>
         </div>
+        <Create dialogOpen={dialogOpen} onDialogClose={this.onCloseDialog} />
       </div>
     );
   }

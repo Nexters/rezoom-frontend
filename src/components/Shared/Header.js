@@ -34,7 +34,9 @@ class Header extends Component {
     return (
       <AppBar className={scss.header} position="static" color="default">
         <Toolbar>
-          <div className={scss['header__logo']}>Logo</div>
+          <div className={scss['header__logo']}>
+            <Link to="/resume">Logo</Link>
+          </div>
           <div className={scss['header__menu']}>
             <ul style={{ display: 'flex', flexDirection: 'row' }}>
               <li style={{ width: 100 }}>

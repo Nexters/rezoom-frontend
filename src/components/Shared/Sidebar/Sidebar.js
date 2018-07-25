@@ -10,7 +10,7 @@ export class Sidebar extends Component {
 
   onClickMenu(e, selectedId) {
     e.stopPropagation();
-    this.props.onClick(selectedId);
+    this.props.onClickMenu(selectedId);
   }
 
   onClickChildrenMenu(e, selectedChildrenId) {
@@ -22,7 +22,9 @@ export class Sidebar extends Component {
     const { btnTitle, list } = this.props;
     return (
       <div className={scss['sidebar']}>
-        <Button color="primary">{btnTitle}</Button>
+        <Button color="primary" onClick={this.props.onClickButton}>
+          {btnTitle}
+        </Button>
         <ul>
           {list.map(item => {
             // console.log(item);
@@ -64,8 +66,9 @@ export class Sidebar extends Component {
 Sidebar.propTypes = {
   btnTitle: PropTypes.string.isRequired,
   list: PropTypes.array.isRequired,
-  onClick: PropTypes.func,
+  onClickMenu: PropTypes.func,
   onClickChildren: PropTypes.func,
+  onClickButton: PropTypes.func,
 };
 
 export default Sidebar;

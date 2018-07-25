@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { isEmpty } from 'lodash';
-// import './intercept';
 
 export default class Api {
   static baseUrl = 'http://localhost:3001';
@@ -39,13 +38,27 @@ export default class Api {
 
   static async post(url, data, token) {
     const config = this.setConfig(token);
-    const apiPost = await axios.post(`${this.baseUrl}/${url}`, data, config);
+    const apiPost = await axios
+      .post(`${this.baseUrl}/${url}`, data, config)
+      .then(res);
     return apiPost;
   }
 
   static async get(url) {
     const config = this.setConfig('');
-    const apiGet = await axios.get(`${url}`, config);
+    const apiGet = await axios.get(`${url}`, config).then(res);
     return apiGet;
+  }
+
+  static async put(url, data) {
+    const config = this.setConfig('');
+    const apiPut = await axios.put(`${url}`, data, config).then(res);
+    return apiPut;
+  }
+
+  static async del(url) {
+    const config = this.setConfig('');
+    const apiDel = await axios.delete(`${url}`, config).then(res);
+    return apiDel;
   }
 }

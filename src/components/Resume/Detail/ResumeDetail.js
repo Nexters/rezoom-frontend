@@ -22,7 +22,7 @@ export class ResumeDetail extends Component {
         <div className={scss['detail__sidebar']}>
           <div className={scss['detail__sidebar--header']}>
             <p>문항</p>
-            <Button variant="outlined" color="danger">
+            <Button variant="outlined" color="primary">
               삭제
             </Button>
           </div>
@@ -40,7 +40,7 @@ export class ResumeDetail extends Component {
               );
             })}
           </ul>
-          <Button variant="outlined" color="info">
+          <Button variant="outlined" color="primary">
             + 문항추가
           </Button>
         </div>
@@ -57,7 +57,7 @@ export class ResumeDetail extends Component {
             <p>
               LG 마케팅영업부 [SNS/온라인컨텐츠] <small>[신입]</small>
             </p>
-            <Button variant="contained" color="warning">
+            <Button variant="contained" color="primary">
               합격
             </Button>
           </div>
@@ -68,7 +68,7 @@ export class ResumeDetail extends Component {
             <Chip label="#LG" />
             <Chip label="#열정" />
             <Chip label="#가고싶은회사" />
-            <Button variant="contained" color="warning">
+            <Button variant="contained" color="primary">
               # 해시태그 추가
             </Button>
           </div>
@@ -86,7 +86,7 @@ export class ResumeDetail extends Component {
               <p>답변</p>
               <div className={scss['answer__header--action']}>
                 <p>800 / 1000자</p>
-                <Button variant="contained" color="warning">
+                <Button variant="contained" color="primary">
                   설정
                 </Button>
               </div>
