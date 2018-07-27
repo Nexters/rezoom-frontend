@@ -1,5 +1,5 @@
 export const UPDATE_RESUME_LIST = 'UPDATE_RESUME_LIST';
-export const TEST_FETCH = 'TEST_FETCH';
+export const CREATE_NEW_RESUME = 'CREATE_NEW_RESUME';
 
 const initialState = {
   resumes: [
@@ -52,6 +52,9 @@ export const updateResumeList = resume => ({
   },
 });
 
-export const testFetchData = () => ({
-  type: TEST_FETCH,
+export const createNewResume = data => ({
+  type: CREATE_NEW_RESUME,
+  payload: {
+    data,
+  },
 });

@@ -33,8 +33,6 @@ export class Resumes extends Component {
     this.state = {
       dialogOpen: false,
     };
-
-    // this.onClickMenu = this.onClickMenu.bind(this);
   }
 
   @autobind

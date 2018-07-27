@@ -6,8 +6,8 @@ export const Resume = {
   update: (url, param) => Api.delete(url, param),
 };
 
-// let api;
+const api = {};
 
-// api.getResume = Resume.findAll(url);
+api.getResume = url => Resume.findAll(url);
 
-// export default api;
+export default api;

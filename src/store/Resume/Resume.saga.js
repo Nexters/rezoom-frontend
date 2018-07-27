@@ -1,29 +1,21 @@
 import { call, fork, take } from 'redux-saga/effects';
-import { TEST_FETCH } from './Resume.store';
-import Resume from '../../service/Resume';
+import { CREATE_NEW_RESUME, TEST_FETCH } from './Resume.store';
 
-const api = Resume;
-
-console.log('resume saga - ', api);
-
-function* fetchTest() {
-  console.log();
+function* postCreateNewResume(api, data) {
   try {
-    const { data } = yield call(Resume.getTest, '');
-
-    console.log(data);
+    console.log('postCreateNewResume data = ', data);
   } catch (error) {
     console.log(error);
   }
 }
 
-export function* watchFetchTest(api) {
+export function* watchCreateNewResume(api) {
   while (true) {
-    yield take(TEST_FETCH);
-    yield call(fetchTest, api);
+    const { payload } = yield take(CREATE_NEW_RESUME);
+    yield call(postCreateNewResume, api, payload['data']);
   }
 }
 
-export default function*() {
-  yield fork(watchFetchTest);
+export default function*({ api }) {
+  yield fork(watchCreateNewResume, api);
 }

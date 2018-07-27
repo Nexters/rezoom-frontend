@@ -40,25 +40,35 @@ export default class Api {
     const config = this.setConfig(token);
     const apiPost = await axios
       .post(`${this.baseUrl}/${url}`, data, config)
-      .then(res);
+      .then(res)
+      .catch(e => console.log(e));
     return apiPost;
   }
 
   static async get(url) {
     const config = this.setConfig('');
-    const apiGet = await axios.get(`${url}`, config).then(res);
+    const apiGet = await axios
+      .get(`${url}`, config)
+      .then(res)
+      .catch(e => console.log(e));
     return apiGet;
   }
 
   static async put(url, data) {
     const config = this.setConfig('');
-    const apiPut = await axios.put(`${url}`, data, config).then(res);
+    const apiPut = await axios
+      .put(`${url}`, data, config)
+      .then(res)
+      .catch(e => console.log(e));
     return apiPut;
   }
 
   static async del(url) {
     const config = this.setConfig('');
-    const apiDel = await axios.delete(`${url}`, config).then(res);
+    const apiDel = await axios
+      .delete(`${url}`, config)
+      .then(res)
+      .catch(e => console.log(e));
     return apiDel;
   }
 }

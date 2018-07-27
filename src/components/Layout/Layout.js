@@ -5,10 +5,9 @@ import connect from 'redux-connect-decorator';
 import Header from '../Shared/Header';
 import MyPage from '../MyPage/MyPage';
 import withAuthGuard from '../../hocs/withAuthGuard';
-import { Resumes } from '../Resume/Resumes';
 import scss from './Layout.scss';
 import { Files } from '../File/Files';
-import { ResumeDetail } from '../Resume/Detail/ResumeDetail';
+import { ResumeDetail, Resumes } from '../Resume';
 
 @connect(
   state => ({
