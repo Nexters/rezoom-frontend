@@ -1,4 +1,3 @@
-// https://github.com/diegohaz/arc/wiki/Reducers
 import camelCase from 'lodash/camelCase';
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';

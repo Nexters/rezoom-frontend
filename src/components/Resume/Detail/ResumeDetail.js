@@ -1,22 +1,53 @@
 import React, { Component } from 'react';
+import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import scss from './ResumeDetail.scss';
-import { Button, Chip } from '@material-ui/core';
+import { Button } from '@material-ui/core';
+import autobind from 'autobind-decorator';
+import { ResumeDetailForm } from './ResumeDetailForm';
 
+@connect(
+  state => ({
+    createCache: state.resume.createResumeCache,
+  }),
+  {},
+)
 export class ResumeDetail extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       list: [1, 2, 3],
+      selectedQuestion: 1,
     };
+  }
+
+  @autobind
+  onClickQuestion(id) {
+    console.log('onClickQuestion ! ', id);
+    this.setState({
+      selectedQuestion: id,
+    });
   }
 
   render() {
     console.log(this.props);
-    const { list } = this.state;
-    const { match } = this.props;
+    const { list, selectedQuestion } = this.state;
+    const { match, createCache } = this.props;
 
+    let resumeData, resumeTitle;
+
+    if (match['params']['mode'] === 'detail') {
+      resumeData = null;
+      resumeTitle = '아직없음';
+    } else if (match['params']['mode'] === 'create') {
+      resumeData = createCache.info;
+      resumeTitle = `${resumeData['companyName']} ${
+        resumeData['department']
+      } [??]`;
+    }
+
+    // console.log(resumeData);
     return (
       <div className={scss.detail}>
         <div className={scss['detail__sidebar']}>
@@ -33,7 +64,7 @@ export class ResumeDetail extends Component {
                 <li
                   key={item}
                   // className={item.active ? scss['sidebar__active'] : ''}
-                  // onClick={e => this.onClickMenu(e, item.id)}
+                  onClick={e => this.onClickQuestion(e, item.id)}
                 >
                   {item}
                 </li>
@@ -44,7 +75,10 @@ export class ResumeDetail extends Component {
             + 문항추가
           </Button>
         </div>
+
         <div className={scss['detail__contents']}>
+          <p>Detail = {match['params'].id}</p>
+
           <div className={scss['detail__contents--mode']}>
             <Button variant="contained" color="primary">
               수정
@@ -53,47 +87,27 @@ export class ResumeDetail extends Component {
               삭제
             </Button>
           </div>
-          <div className={scss['detail__contents--title']}>
-            <p>
-              LG 마케팅영업부 [SNS/온라인컨텐츠] <small>[신입]</small>
-            </p>
-            <Button variant="contained" color="primary">
-              합격
-            </Button>
-          </div>
-          <div className={scss['detail__contents--subtitle']}>
-            <p>2018년 상반기</p>
-          </div>
-          <div className={scss['detail__contents--hashtag']}>
-            <Chip label="#LG" />
-            <Chip label="#열정" />
-            <Chip label="#가고싶은회사" />
-            <Button variant="contained" color="primary">
-              # 해시태그 추가
-            </Button>
-          </div>
-          <div className={scss['detail__contents--question']}>
-            <p className={scss['question__title']}>질문</p>
-            <p>
-              본인의 열정에 대하여 <br /> Guide - 본인이 지원한 직무와 관련된
-              지식, 경험,역량및 관심사항 등 자신을 어필할 수 있는 내용을
-              구체적으로기술해주시기 바랍니다. (핵심위주로 근거에 기반하여
-              간략하게 기술부탁드립니다.)
-            </p>
-          </div>
-          <div className={scss['detail__contents--answer']}>
-            <div className={scss['answer__header']}>
-              <p>답변</p>
-              <div className={scss['answer__header--action']}>
-                <p>800 / 1000자</p>
-                <Button variant="contained" color="primary">
-                  설정
-                </Button>
-              </div>
+          <div className={scss['detail__contents--header']}>
+            <div className={scss['detail__contents--title']}>
+              <p>
+                {resumeTitle}
+                <small>[{resumeData ? resumeData['q1'] : ''}]</small>
+              </p>
+              <Button variant="contained" color="primary">
+                {resumeData ? resumeData['q3'] : ''}
+              </Button>
             </div>
-            <textarea className={scss['answer__contents']} />
+            <div className={scss['detail__contents--subtitle']}>
+              <p>
+                {resumeData ? resumeData['year'] : ''}년{' '}
+                {resumeData ? resumeData['sub'] : ''}
+              </p>
+            </div>
           </div>
-          <p>Detail = {match['params'].id}</p>
+          <ResumeDetailForm
+            selectedQuestion={selectedQuestion}
+            mode={match['params']['mode']}
+          />
         </div>
       </div>
     );
@@ -102,6 +116,7 @@ export class ResumeDetail extends Component {
 
 ResumeDetail.propTypes = {
   match: PropTypes.object,
+  createCache: PropTypes.any,
 };
 
 export default ResumeDetail;

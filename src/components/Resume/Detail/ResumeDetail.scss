@@ -25,55 +25,17 @@
       margin-bottom: 8px;
     }
 
-    .detail__contents--title {
-      display: flex;
-      justify-content: space-between;
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .detail__contents--subtitle {
-      width: 100%;
-      margin-bottom: 16px;
-    }
-
-    .detail__contents--hashtag {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin-bottom: 24px;
-    }
-
-    .detail__contents--question {
-      width: 100%;
-      height: 150px;
-      padding: 16px;
-      margin-bottom: 8px;
-      background-color: teal;
-
-      .quiestion__title {
-        font-weight: bold;
-      }
-    }
-
-    .detail__contents--answer {
-      display: flex;
-      flex-direction: column;
-      border: 1px solid darkorchid;
-
-      .answer__header {
-        flex: 0;
+    .detail__contents--header {
+      .detail__contents--title {
         display: flex;
         justify-content: space-between;
-        height: 40px;
-
-        .answer__header--action {
-          display: flex;
-          width: 200px;
-        }
+        width: 100%;
+        margin-bottom: 16px;
       }
 
-      .answer__contents {
+      .detail__contents--subtitle {
+        width: 100%;
+        margin-bottom: 16px;
       }
     }
   }

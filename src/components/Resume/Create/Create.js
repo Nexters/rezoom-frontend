@@ -14,6 +14,7 @@ import { createNewResume } from '../../../store/Resume/Resume.store';
 import autobind from 'autobind-decorator';
 import { withStyles, CircularProgress } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
+import { resumeCreateFormData } from '../../../utils/Constans';
 
 const styles = theme => ({
   wrapper: {
@@ -64,23 +65,15 @@ export class Create extends Component {
   constructor(props) {
     super(props);
 
+    const { year, sub, department, q1, q2, q3 } = resumeCreateFormData;
+
     this.state = {
-      year: [
-        { key: '2010', value: 2010 },
-        { key: '2011', value: 2011 },
-        { key: '2012', value: 2012 },
-        { key: '2013', value: 2013 },
-        { key: '2014', value: 2014 },
-        { key: '2015', value: 2015 },
-        { key: '2016', value: 2016 },
-        { key: '2017', value: 2017 },
-        { key: '2018', value: 2018 },
-      ],
-      sub: [{ key: '상반기', value: 1 }, { key: '하반기', value: 2 }],
-      department: [{ key: '영업', value: 1 }, { key: '회계', value: 2 }],
-      q1: [{ key: '신입', value: 1 }, { key: '경력', value: 2 }],
-      q2: [{ key: '제출', value: 1 }, { key: '미제출', value: 2 }],
-      q3: [{ key: '합격', value: 1 }, { key: '불합격', value: 2 }],
+      year,
+      sub,
+      department,
+      q1,
+      q2,
+      q3,
       loading: false,
     };
   }

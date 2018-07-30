@@ -3,7 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer as HotContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import ConnectedRouter from 'react-router-redux';
 import axios from 'axios';
 import registerServiceWorker from './registerServiceWorker';
 import Root from './components/Root';
