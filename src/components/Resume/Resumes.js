@@ -78,7 +78,11 @@ export class Resumes extends Component {
           <div className={scss['resumes__contents--list']}>
             {resumeList.map(item => {
               return (
-                <Link key={item.id} className="" to={`/resume/${item.id}`}>
+                <Link
+                  key={item.id}
+                  className=""
+                  to={`/resume/detaile/${item.id}`}
+                >
                   <Card>
                     <CardContent>
                       <Typography variant="headline" component="h2">

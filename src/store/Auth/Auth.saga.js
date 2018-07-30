@@ -36,7 +36,7 @@ export function* login() {
   }
 }
 
-export function* watchLoginRequest(api) {
+export function* watchLoginRequest() {
   while (true) {
     const { payload } = yield take(LOGIN);
     yield call(login);

@@ -40,6 +40,14 @@ const styles = theme => ({
 @reduxForm({
   form: 'newResume',
   enableReinitialize: true,
+  initialValues: {
+    year: 2018,
+    sub: 1,
+    department: 1,
+    q1: 1,
+    q2: 1,
+    q3: 1,
+  },
   onSubmit: (values, dispatch) => {
     dispatch(createNewResume(values));
   },
@@ -93,7 +101,7 @@ export class Create extends Component {
             });
             this.props.onDialogClose();
             this.props.submit();
-          }, 2000000000);
+          }, 1000);
         },
       );
     }

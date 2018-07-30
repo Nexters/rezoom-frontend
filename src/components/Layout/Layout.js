@@ -25,7 +25,7 @@ class Layout extends Component {
 
         <div className={scss['rezoom-contents']}>
           <Route exact path="/resume" component={Resumes} />
-          <Route path="/resume/:id?" component={ResumeDetail} />
+          <Route path="/resume/:mode?/:id(.*)?" component={ResumeDetail} />
           <Route path="/files" component={Files} />
           <Route path="/mypage/:type?" component={MyPage} />
         </div>
