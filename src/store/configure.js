@@ -1,14 +1,16 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import createsagaMiddleware, { END } from 'redux-saga';
+// import { routerMiddleware } from 'connected-react-router';
 import sagas from './sagas';
 import reducers from './reducers';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 
 const isDev = process.env.NODE_ENV === 'development' || true;
 
 const devtools =
   isDev && window.devToolsExtension ? window.devToolsExtension : () => fn => fn;
 
-const configureStore = (initialState, services = {}) => {
+const configureStore = (initialState, services = {}, history) => {
   const sagaMiddleware = createsagaMiddleware({
     onError: err => {
       setImmediate(() => {
@@ -19,13 +21,18 @@ const configureStore = (initialState, services = {}) => {
 
   const enhancers = [
     applyMiddleware(sagaMiddleware),
+    applyMiddleware(routerMiddleware(history)),
     devtools({
       actionsBlacklist: ['trade/UPDATE_TICKER'],
       maxAge: 1000,
     }),
   ];
 
-  const store = createStore(reducers, initialState, compose(...enhancers));
+  const store = createStore(
+    connectRouter(history)(reducers),
+    initialState,
+    compose(...enhancers),
+  );
 
   let sagaTask = sagaMiddleware.run(sagas);
 

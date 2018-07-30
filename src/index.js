@@ -1,22 +1,20 @@
 import 'babel-polyfill';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { AppContainer as HotContainer } from 'react-hot-loader';
+import { Provider } from 'react-redux';
+import ConnectedRouter from 'react-router-redux';
 import axios from 'axios';
 import registerServiceWorker from './registerServiceWorker';
 import Root from './components/Root';
 import './styles/main.scss';
-import store from './store';
+import stores from './store';
 
-const render = Component =>
-  ReactDOM.render(
-    <HotContainer>
-      <Component store={store} />
-    </HotContainer>,
-    document.getElementById('root'),
-  );
-
-render(Root);
+const renderRoot = () => (
+  <HotContainer>
+    <Root store={stores.store} history={stores.history} />
+  </HotContainer>
+);
 
 const rootEl = document.getElementById('root');
 
@@ -27,8 +25,13 @@ rootEl.style.left = 0;
 rootEl.style.right = 0;
 rootEl.style.overflow = 'hidden';
 
+render(renderRoot(), rootEl);
+
 if (module.hot) {
-  module.hot.accept('./components/Root', () => render(Root));
+  module.hot.accept('./components/Root', () => {
+    require('./components/Root');
+    render(renderRoot(), rootEl);
+  });
 }
 
 registerServiceWorker();

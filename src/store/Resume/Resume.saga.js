@@ -1,12 +1,11 @@
-import { call, fork, take } from 'redux-saga/effects';
+import { push } from 'connected-react-router';
+import { call, fork, take, put } from 'redux-saga/effects';
 import { CREATE_NEW_RESUME, TEST_FETCH } from './Resume.store';
-import { browserHistory } from 'react-router';
 
 function* postCreateNewResume(data) {
   try {
     console.log('postCreateNewResume data = ', data);
-    console.log(browserHistory);
-    // yield call(browserHistory.push, '/resume/create');
+    yield put(push('/resume/create'));
   } catch (error) {
     console.log(error);
   }

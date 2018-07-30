@@ -2,10 +2,9 @@
 import camelCase from 'lodash/camelCase';
 import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
-// import { routerReducer as router } from 'react-router-redux'
+
 const reducers = {
   form: formReducer,
-  // router
 };
 
 const req = require.context('.', true, /\.\/.+\/\w+\.+store\.js$/);
