@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,10 +12,18 @@ import scss from './Header.scss';
 
 const styles = {
   root: {
+    maxWidth: 200,
+    width: 200,
     flexGrow: 1,
+  },
+  flex: {
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
   },
 };
 @withStyles(styles)
+@withRouter
 @connect(
   state => ({}),
   {
@@ -30,15 +38,28 @@ class Header extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, match } = this.props;
+    let backButton = false;
+
+    console.log('header match = ', match);
+
+    if (match['params']['mode'] === 'detail') {
+      backButton = true;
+    }
+
     return (
-      <AppBar className={scss.header} position="static" color="default">
-        <Toolbar>
+      <AppBar
+        className={(scss.header, classes.root)}
+        position="static"
+        color="default"
+      >
+        <Toolbar className={classes.flex}>
           <div className={scss['header__logo']}>
+            {backButton ? <Link to="/resume">{'[< ]'}</Link> : null}
             <Link to="/resume">Logo</Link>
           </div>
           <div className={scss['header__menu']}>
-            <ul style={{ display: 'flex', flexDirection: 'row' }}>
+            <ul>
               <li style={{ width: 100 }}>
                 <Link className="" to="/resume">
                   자소서 리스트
@@ -66,6 +87,7 @@ Header.propTypes = {
   classes: PropTypes.object,
   login: PropTypes.func,
   logout: PropTypes.func,
+  match: PropTypes.object,
 };
 
 export default Header;

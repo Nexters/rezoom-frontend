@@ -3,7 +3,7 @@ import PropsTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import { Chip, Button } from '@material-ui/core';
 import scss from './ResumeDetailForm.scss';
-import { TextArea } from '../../Forms/TextArea';
+import { TextArea } from '../../Forms';
 
 @reduxForm({
   form: 'resumeDetail',
@@ -14,6 +14,12 @@ export class ResumeDetailForm extends Component {
   }
 
   render() {
+    /* 
+      TODO: 
+
+       1. 사용자가 문항을 변경하면 redux-from의 Value selector를 사용하여 resume store의 createResumeCache['detail'] 데이터에 저장 
+       2. component가 mount되면 문항 순번과 createResumeCache['detail'] 의 순번이 같은 걸 resumeDetail form 에 바인딩 해준다.
+    */
     return (
       <form>
         <div className={scss['detail__contents--hashtag']}>
