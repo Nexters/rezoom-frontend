@@ -1,4 +1,11 @@
-export const Resume = {
+import Api from './Api';
+
+// 로그인 관련
+const Auth = {
+  login: (url, param) => Api.post(url, param),
+};
+
+const Resume = {
   findAll: url => Api.get(url),
   findOne: url => Api.get(url),
   delete: url => Api.delete(url),
@@ -8,6 +15,7 @@ export const Resume = {
 
 const api = {};
 
+api.login = (url, param) => Auth.login(url, param);
 api.getResume = url => Resume.findAll(url);
 
 export default api;
