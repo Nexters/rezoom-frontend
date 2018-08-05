@@ -8,7 +8,6 @@ import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import loadingInjector from '../../hocs/withLoading';
 import { Sidebar } from '../Shared/Sidebar/Sidebar';
 import { changeActiveMenu } from '../../store/Sidebar/Sidebar.store';
-import { Create } from './Create/Create';
 import { SearchForm } from './Search/SearchForm';
 import { List } from './List/List';
 import { Search } from './Search/Search';
@@ -16,7 +15,6 @@ import { Search } from './Search/Search';
 @connect(
   state => ({
     sidebarMenus: state.sidebar.menu.resume,
-    resumeList: state.resume.resumes,
   }),
   {
     changeActiveMenu,
@@ -26,10 +24,6 @@ import { Search } from './Search/Search';
 export class Resumes extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      dialogOpen: false,
-    };
   }
 
   @autobind
@@ -37,19 +31,8 @@ export class Resumes extends Component {
     this.props.changeActiveMenu(selectedId, 'RESUME');
   }
 
-  @autobind
-  onClickButton() {
-    this.setState({ dialogOpen: true });
-  }
-
-  @autobind
-  onCloseDialog() {
-    this.setState({ dialogOpen: false });
-  }
-
   render() {
     const { sidebarMenus, match } = this.props;
-    const { dialogOpen } = this.state;
 
     let renderMatchedComponent;
 
@@ -61,14 +44,14 @@ export class Resumes extends Component {
 
     return (
       <div className={scss.resumes}>
-        {
+        {/* 
           <Sidebar
             btnTitle={'자소서 작성'}
             list={sidebarMenus}
             onClickMenu={this.onClickMenu}
             onClickButton={this.onClickButton}
           />
-        }
+         */}
         <div className={scss['resumes__contents']}>
           <SearchForm />
           <div className={scss['resumes__contents--header']}>
@@ -82,7 +65,6 @@ export class Resumes extends Component {
           </div>
           {renderMatchedComponent}
         </div>
-        <Create dialogOpen={dialogOpen} onDialogClose={this.onCloseDialog} />
       </div>
     );
   }

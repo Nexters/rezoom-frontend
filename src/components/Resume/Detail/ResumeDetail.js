@@ -15,26 +15,12 @@ import { ResumeDetailForm } from './ResumeDetailForm';
 export class ResumeDetail extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      list: [1, 2, 3],
-      selectedQuestion: 1,
-    };
-  }
-
-  @autobind
-  onClickQuestion(id) {
-    console.log('onClickQuestion ! ', id);
-    this.setState({
-      selectedQuestion: id,
-    });
   }
 
   render() {
-    console.log(this.props);
-    const { list, selectedQuestion } = this.state;
+    // console.log(this.props);
     const { match, createCache } = this.props;
-
+    const selectedQuestion = createCache['selectedQuestion'];
     let resumeData, resumeTitle;
 
     if (match['params']['mode'] === 'detail') {
@@ -50,42 +36,16 @@ export class ResumeDetail extends Component {
     // console.log(resumeData);
     return (
       <div className={scss.detail}>
-        <div className={scss['detail__sidebar']}>
-          <div className={scss['detail__sidebar--header']}>
-            <p>문항</p>
-            <Button variant="outlined" color="primary">
-              삭제
-            </Button>
-          </div>
-          <ul>
-            {list.map(item => {
-              // console.log(item);
-              return (
-                <li
-                  key={item}
-                  // className={item.active ? scss['sidebar__active'] : ''}
-                  onClick={e => this.onClickQuestion(e, item.id)}
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-          <Button variant="outlined" color="primary">
-            + 문항추가
-          </Button>
-        </div>
-
         <div className={scss['detail__contents']}>
           <p>Detail = {match['params'].id}</p>
 
           <div className={scss['detail__contents--mode']}>
-            <Button variant="contained" color="primary">
+            {/* <Button variant="contained" color="primary">
               수정
             </Button>
             <Button variant="contained" color="primary">
               삭제
-            </Button>
+            </Button> */}
           </div>
           <div className={scss['detail__contents--header']}>
             <div className={scss['detail__contents--title']}>

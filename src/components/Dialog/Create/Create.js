@@ -92,8 +92,8 @@ export class Create extends Component {
               loading: false,
               success: true,
             });
-            this.props.onDialogClose();
             this.props.submit();
+            this.props.onDialogClose();
           }, 1000);
         },
       );

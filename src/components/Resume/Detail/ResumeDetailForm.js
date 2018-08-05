@@ -1,16 +1,42 @@
 import React, { Component } from 'react';
-import PropsTypes from 'prop-types';
-import { Field, reduxForm } from 'redux-form';
+import connect from 'redux-connect-decorator';
+import PropTypes from 'prop-types';
+import { Field, reduxForm, getFormValues } from 'redux-form';
 import { Chip, Button } from '@material-ui/core';
 import scss from './ResumeDetailForm.scss';
 import { TextArea } from '../../Forms';
+import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 
 @reduxForm({
   form: 'resumeDetail',
 })
+@connect(
+  state => ({
+    formValues: getFormValues('resumeDetail')(state),
+  }),
+  {
+    updateResumeDetailCache,
+  },
+)
 export class ResumeDetailForm extends Component {
   constructor(props) {
     super(props);
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.selectedQuestion !== nextProps.selectedQuestion) {
+      const { selectedQuestion, formValues } = this.props;
+      console.log('formValues = ', formValues);
+
+      this.props.updateResumeDetailCache({
+        id: selectedQuestion,
+        data: formValues,
+      });
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   render() {
@@ -64,5 +90,8 @@ export class ResumeDetailForm extends Component {
 }
 
 ResumeDetailForm.propTypes = {
-  selectedQuestion: PropsTypes.number.isRequired,
+  selectedQuestion: PropTypes.number.isRequired,
+  formValues: PropTypes.object,
+  updateResumeDetailCache: PropTypes.func,
+  submit: PropTypes.func,
 };

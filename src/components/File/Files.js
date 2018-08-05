@@ -30,11 +30,11 @@ export class Files extends Component {
     const { sidebarMenus } = this.props;
     return (
       <div className={scss.files}>
-        <Sidebar
+        {/* <Sidebar
           btnTitle={'자료 올리기'}
           list={sidebarMenus}
           onClickChildren={this.onClickMenu}
-        />
+        /> */}
         <div className={scss['files__contents']}>
           {/*
             <div className={scss['files__contents--title']}>

@@ -4,6 +4,8 @@ import { FilterUtils } from '../../utils/FilterUtils';
 export const UPDATE_RESUME_LIST = 'UPDATE_RESUME_LIST';
 export const REQUEST_CREATE_NEW_RESUME = 'REQUEST_CREATE_NEW_RESUME';
 export const RESPONSE_CREATE_NEW_RESUME = 'RESPONSE_CREATE_NEW_RESUME';
+export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
+export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
 
 const initialState = {
   resumes: [
@@ -35,7 +37,9 @@ const initialState = {
   ],
   createResumeCache: {
     info: {},
-    detail: [{}],
+    detail: [],
+    selectedQuestion: 1,
+    prevQuestionId: 1,
   },
   test: '',
 };
@@ -75,6 +79,48 @@ export default function reducer(state = initialState, action = {}) {
           info: infoData,
         },
       };
+    case UPDATE_RESUME_DETAIL_CACHE:
+      console.log('UPDATE_RESUME_DETAIL_CACHE = ', action.payload.data);
+      const idx = state.createResumeCache.selectedQuestion;
+      const prevIdx = state.createResumeCache.prevQuestionId;
+      let detail = Object.assign([], state.createResumeCache.detail);
+
+      if (detail.length === 0 && prevIdx === 1) {
+        detail.push(action.payload.data);
+      } else {
+        // TODO: detail에서 loop돌리면서 id가 있으면 update없으면 push
+        const findItem = {};
+        detail.forEach((item, itemIdx) => {
+          if (item.id === idx) {
+            findItem.item = item;
+            findItem.itemIdx = itemIdx;
+          }
+        });
+        if (findItem.item) {
+          detail[findItem.itemIdx] = action.payload.data;
+        } else {
+          detail.push(action.payload.data);
+        }
+      }
+
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          detail: detail,
+        },
+      };
+    case SELECT_QUESTION_ID:
+      const prevQuestionId = state.createResumeCache.selectedQuestion;
+
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          selectedQuestion: action.payload.id,
+          prevQuestionId: prevQuestionId,
+        },
+      };
     default:
       return state;
   }
@@ -98,5 +144,19 @@ export const responseCreateNewResume = data => ({
   type: RESPONSE_CREATE_NEW_RESUME,
   payload: {
     data,
+  },
+});
+
+export const updateResumeDetailCache = data => ({
+  type: UPDATE_RESUME_DETAIL_CACHE,
+  payload: {
+    data,
+  },
+});
+
+export const selectedQuestion = id => ({
+  type: SELECT_QUESTION_ID,
+  payload: {
+    id,
   },
 });
