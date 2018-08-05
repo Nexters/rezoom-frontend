@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { isEmpty } from 'lodash';
+import { environment } from '../environment/Environment';
 
 export default class Api {
-  static baseUrl = 'http://localhost:3001';
+  static baseUrl = environment.API_SERVER;
 
   static config(headers, anyParam) {
     return {
@@ -40,7 +41,7 @@ export default class Api {
     const config = this.setConfig(token);
     const apiPost = await axios
       .post(`${this.baseUrl}/${url}`, data, config)
-      .then(res)
+      .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiPost;
   }
@@ -49,7 +50,7 @@ export default class Api {
     const config = this.setConfig('');
     const apiGet = await axios
       .get(`${url}`, config)
-      .then(res)
+      .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiGet;
   }
@@ -58,7 +59,7 @@ export default class Api {
     const config = this.setConfig('');
     const apiPut = await axios
       .put(`${url}`, data, config)
-      .then(res)
+      .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiPut;
   }
@@ -67,7 +68,7 @@ export default class Api {
     const config = this.setConfig('');
     const apiDel = await axios
       .delete(`${url}`, config)
-      .then(res)
+      .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiDel;
   }

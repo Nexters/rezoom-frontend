@@ -1,9 +1,15 @@
 import { call, fork, take } from 'redux-saga/effects';
 import { LOGIN } from './Auth.store';
-import Api from '../../service/Api';
+import api from '../../service';
 
 export function* login() {
   try {
+    const result = yield call(api.login, 'login', {
+      username: 'jaeeonjin',
+      password: 'test',
+    });
+
+    console.log('login result = ', result);
     // const test = yield call(api, payload);
     // const result = yield call(api.login, payload);
     // if (result.isLoginSuccess) {
