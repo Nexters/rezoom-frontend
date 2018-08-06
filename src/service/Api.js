@@ -28,7 +28,7 @@ export default class Api {
         {},
         this.config(
           this.headers({
-            Authorization: `JWT ${token}`,
+            Authorization: `${token}`,
           }),
         ),
       );
@@ -37,20 +37,38 @@ export default class Api {
     return config;
   }
 
-  static async post(url, data, token) {
-    const config = this.setConfig(token);
+  static async post(url, data) {
+    // const config = this.setConfig(token);
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
     const apiPost = await axios
       .post(`${this.baseUrl}/${url}`, data, config)
-      .then(res => console.log(res))
+      .then(res => {
+        console.log(res);
+        // console.log(res.headers['Authorization']);
+        // console.log(res.headers.Authorization);
+        return res;
+      })
       .catch(e => console.log(e));
     return apiPost;
   }
 
-  static async get(url) {
-    const config = this.setConfig('');
+  static async get(url, token) {
+    const config = this.setConfig(token);
+    // const config = {
+    //   headers: {
+    //     // 'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    // };
     const apiGet = await axios
-      .get(`${url}`, config)
-      .then(res => console.log(res))
+      .get(`${this.baseUrl}/${url}`, config)
+      .then(res => {
+        console.log(res);
+        return res;
+      })
       .catch(e => console.log(e));
     return apiGet;
   }

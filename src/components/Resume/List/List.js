@@ -12,31 +12,43 @@ import scss from './List.scss';
   {},
 )
 export class List extends Component {
-  static proptypes = {
+  static propTypes = {
     resumeList: PropTypes.any,
   };
 
   render() {
-    const { props } = this;
+    const { resumeList } = this.props;
 
-    console.log(props.resumeList);
+    console.log(resumeList);
 
     return (
       <div className={scss['resumes__contents--list']}>
-        {props.resumeList.map(item => {
-          return (
-            <Link key={item.id} className="" to={`/resume/detail/${item.id}`}>
-              <Card>
-                <CardContent>
-                  <Typography variant="headline" component="h2">
-                    {item.title}
-                  </Typography>
-                  <Typography component="p">{item.content}</Typography>
-                </CardContent>
-              </Card>
-            </Link>
-          );
-        })}
+        {resumeList.length === 0 ? (
+          <div>
+            <h1>데이터 없음</h1>
+          </div>
+        ) : (
+          resumeList.map((item, idx) => {
+            return (
+              <Link
+                key={idx}
+                className=""
+                to={`/resume/detail/${item.resumeId}`}
+              >
+                <Card>
+                  <CardContent>
+                    <Typography variant="headline" component="h2">
+                      {item.companyName}
+                    </Typography>
+                    <Typography component="p">
+                      {item.applicationType} - {item.createDate}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })
+        )}
       </div>
     );
   }

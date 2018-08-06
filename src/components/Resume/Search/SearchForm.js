@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import { Input, Button } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
@@ -7,7 +8,14 @@ import autobind from 'autobind-decorator';
 import { TextInput, SelectForm } from '../../Forms';
 import { resumeCreateFormData } from '../../../utils/Constans';
 import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
+import { getResumeList } from '../../../store/Resume/Resume.store';
 
+@connect(
+  state => ({}),
+  {
+    getResumeList,
+  },
+)
 @withRouter
 @reduxForm({
   form: 'searchForm',
@@ -41,7 +49,8 @@ export class SearchForm extends Component {
   onClickSearch() {
     console.log('onClick search = ', this.props);
     const { props } = this;
-    props.history.push('/resume/search');
+    this.props.getResumeList();
+    // props.history.push('/resume/search');
   }
 
   render() {
@@ -76,8 +85,9 @@ export class SearchForm extends Component {
   }
 }
 
-SearchForm.proptypes = {
+SearchForm.propTypes = {
   history: PropTypes.router,
+  getResumeList: PropTypes.func,
 };
 
 export default SearchForm;

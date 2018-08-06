@@ -6,35 +6,10 @@ export const REQUEST_CREATE_NEW_RESUME = 'REQUEST_CREATE_NEW_RESUME';
 export const RESPONSE_CREATE_NEW_RESUME = 'RESPONSE_CREATE_NEW_RESUME';
 export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
 export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
+export const GET_RESUME_LIST = 'GET_RESUME_LIST';
 
 const initialState = {
-  resumes: [
-    {
-      id: 1,
-      title: '나의 첫번째 자소서',
-      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-    },
-    {
-      id: 2,
-      title: '나의 두번째 자소서',
-      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-    },
-    {
-      id: 3,
-      title: '나의 세번째 자소서',
-      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-    },
-    {
-      id: 4,
-      title: '나의 네번째 자소서',
-      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-    },
-    {
-      id: 5,
-      title: '나의 다섯번째 자소서',
-      content: '다람쥐 헛 챗바퀴에 ~~~~~~~',
-    },
-  ],
+  resumes: [],
   createResumeCache: {
     info: {},
     detail: [],
@@ -50,7 +25,7 @@ export default function reducer(state = initialState, action = {}) {
       console.log(action.payload.resume);
       return {
         ...state,
-        resumes: [...state.resumes, ...[action.payload.resume]],
+        resumes: [...state.resumes, ...action.payload.resume],
       };
     case RESPONSE_CREATE_NEW_RESUME:
       // console.log(action.payload.data);
@@ -125,6 +100,10 @@ export default function reducer(state = initialState, action = {}) {
       return state;
   }
 }
+
+export const getResumeList = () => ({
+  type: GET_RESUME_LIST,
+});
 
 export const updateResumeList = resume => ({
   type: UPDATE_RESUME_LIST,

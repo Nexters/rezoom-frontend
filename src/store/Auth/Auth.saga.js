@@ -1,17 +1,44 @@
-import { call, fork, take } from 'redux-saga/effects';
-import { LOGIN } from './Auth.store';
+import { call, fork, take, put } from 'redux-saga/effects';
+import axios from 'axios';
+import { LOGIN, setJWT } from './Auth.store';
 import api from '../../service';
 
 export function* login() {
   try {
-    const result = yield call(api.login, 'login', {
+    // axios({
+    //   method: 'GET',
+    //   url: 'http://52.79.237.31:8080/resumes',
+    //   headers: {
+    //     'Content-Type': 'application/x-www-form-urlencoded',
+    //   },
+    // }).then(data => {
+    //   console.log(data);
+    // });
+    // ----------------------------------------------------
+    // const result = yield call(api.getResume);
+    // console.log('login result = ', result);
+    // ----------------------------------------------------
+    const params = {
       username: 'jaeeonjin',
       password: 'test',
-    });
+    };
+    // axios
+    //   .post('http://52.79.237.31:8080/login', params)
+    //   .then(data => {
+    //     console.log(data);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+    // ----------------------------------------------------
+    // const result = yield call(api.login, 'login', {
+    //   username: 'jaeeonjin',
+    //   password: 'test',
+    // });
+    const result = yield call(api.login, params);
+    console.log(result);
 
-    console.log('login result = ', result);
-    // const test = yield call(api, payload);
-    // const result = yield call(api.login, payload);
+    yield put(setJWT(result.data));
     // if (result.isLoginSuccess) {
     //   const user = JSON.parse(atob(result.token.split('.')[1]));
     //   result.email = payload.email;
