@@ -10,8 +10,10 @@ import {
 import scss from './DetailMenu.scss';
 
 @connect(
-  state => ({}),
-  { selectedQuestion, getQuestions },
+  state => ({
+    orginQuestions: state.resume.questions,
+  }),
+  { selectedQuestion, getQuestions, createQuestion },
 )
 export class DetailMenu extends Component {
   constructor(props) {
@@ -25,9 +27,10 @@ export class DetailMenu extends Component {
   }
 
   componentDidMount() {
-    const { resumeId, mode, getQuestions } = this.props;
+    const { resumeId, mode, getQuestions, createQuestion } = this.props;
 
     if (mode === 'create') {
+      createQuestion();
     } else if (mode === 'detail') {
       getQuestions(resumeId);
     }

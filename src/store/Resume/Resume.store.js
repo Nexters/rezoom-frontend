@@ -36,19 +36,7 @@ const initialState = {
       username: 'string',
     },
   ],
-  questions: [
-    {
-      content: '',
-      hashTags: [
-        {
-          hashtagId: 'string',
-          hashtagKeyword: 'string',
-        },
-      ],
-      questionId: 1,
-      title: '',
-    },
-  ],
+  questions: [],
   createResumeCache: {
     info: {},
     detail: [],
@@ -64,7 +52,7 @@ export default function reducer(state = initialState, action = {}) {
       console.log(action.payload.resume);
       return {
         ...state,
-        resumes: [...state.resumes, ...action.payload.resume],
+        resumes: action.payload.resume,
       };
     case UPDATE_QUESTION_LIST:
       return {
