@@ -14,28 +14,7 @@ export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
 
 const initialState = {
-  resumes: [
-    {
-      applicationType: 'string',
-      applicationYear: 2018,
-      companyName: 'ssd',
-      finishFlag: 0,
-      halfType: 'string',
-      passFlag: 0,
-      resumeId: 1,
-      username: 'string',
-    },
-    {
-      applicationType: 'string',
-      applicationYear: 2018,
-      companyName: 'stqqring',
-      finishFlag: 0,
-      halfType: 'string',
-      passFlag: 0,
-      resumeId: 2,
-      username: 'string',
-    },
-  ],
+  resumes: [],
   questions: [],
   createResumeCache: {
     info: {},
@@ -49,7 +28,6 @@ const initialState = {
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case UPDATE_RESUME_LIST:
-      console.log(action.payload.resume);
       return {
         ...state,
         resumes: action.payload.resume,
@@ -219,10 +197,10 @@ export const getQuestions = resumeId => ({
   },
 });
 
-export const updateQuestionList = resume => ({
+export const updateQuestionList = questions => ({
   type: UPDATE_QUESTION_LIST,
   payload: {
-    resume,
+    questions,
   },
 });
 

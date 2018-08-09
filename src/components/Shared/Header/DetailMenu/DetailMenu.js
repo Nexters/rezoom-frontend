@@ -6,12 +6,14 @@ import autobind from 'autobind-decorator';
 import {
   selectedQuestion,
   getQuestions,
+  createQuestion,
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
 
 @connect(
   state => ({
-    orginQuestions: state.resume.questions,
+    originQuestions: state.resume.questions,
+    createCacheQuestions: state.resume.createResumeCache.detail,
   }),
   { selectedQuestion, getQuestions, createQuestion },
 )
@@ -20,7 +22,7 @@ export class DetailMenu extends Component {
     super(props);
 
     this.state = {
-      list: [1, 2, 3],
+      list: [],
       selectedQuestion: 1,
     };
     console.log('디테일 메뉴');
@@ -36,15 +38,42 @@ export class DetailMenu extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { mode, originQuestions, createCacheQuestions } = this.props;
+
+    if (mode === 'create') {
+      console.log(
+        'createCacheQuestions.length = ',
+        createCacheQuestions.length,
+      );
+      console.log(
+        'nextProps.createCacheQuestions.length = ',
+        nextProps.createCacheQuestions.length,
+      );
+    } else if (mode === 'detail') {
+      console.log('originQuestions = ', originQuestions);
+      console.log('nextProps.originQuestions = ', nextProps.originQuestions);
+      if (originQuestions.length !== nextProps.originQuestions) {
+        let list = [];
+        nextProps.originQuestions.forEach(item => {
+          list.push({ questionsId: item.questionsId });
+        });
+        this.setState({
+          list: list,
+        });
+      }
+    }
+  }
+
   @autobind
-  onClickQuestion(e, id) {
+  onClickQuestion(e, id, questionId) {
     e.stopPropagation();
     const { selectedQuestion } = this.props;
     // console.log('onClickQuestion ! ', id);
     this.setState({
       selectedQuestion: id,
     });
-    selectedQuestion(id);
+    selectedQuestion(questionId);
   }
 
   @autobind
@@ -70,16 +99,17 @@ export class DetailMenu extends Component {
           </Button>
         </div>
         <ul>
-          {list.map(item => {
+          {list.map((item, idx) => {
+            const index = idx + 1;
             // console.log(item);
             return (
               <li
-                key={item}
-                style={{ color: selectedQuestion === item ? 'red' : 'black' }}
+                key={idx}
+                style={{ color: selectedQuestion === index ? 'red' : 'black' }}
                 // className={item.active ? scss['sidebar__active'] : ''}
-                onClick={e => this.onClickQuestion(e, item)}
+                onClick={e => this.onClickQuestion(e, index, item.questionsId)}
               >
-                {item}
+                {index}
               </li>
             );
           })}
@@ -102,6 +132,8 @@ DetailMenu.propTypes = {
   mode: PropTypes.string,
   getQuestions: PropTypes.func,
   createQuestion: PropTypes.func,
+  originQuestions: PropTypes.array,
+  createCacheQuestions: PropTypes.array,
 };
 
 export default DetailMenu;

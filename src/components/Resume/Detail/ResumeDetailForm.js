@@ -13,6 +13,8 @@ import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 @connect(
   state => ({
     formValues: getFormValues('resumeDetail')(state),
+    questionId: state.resume.createResumeCache.selectedQuestion,
+    questions: state.resume.questions,
   }),
   {
     updateResumeDetailCache,
@@ -100,6 +102,5 @@ ResumeDetailForm.propTypes = {
   formValues: PropTypes.object,
   updateResumeDetailCache: PropTypes.func,
   submit: PropTypes.func,
-  resumeId: PropTypes.number,
   mode: PropTypes.string,
 };

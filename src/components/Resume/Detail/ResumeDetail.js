@@ -69,7 +69,6 @@ export class ResumeDetail extends Component {
           </div>
           <ResumeDetailForm
             selectedQuestion={selectedQuestion}
-            resumeId={resumeId}
             mode={match['params']['mode']}
           />
         </div>
