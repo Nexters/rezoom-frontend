@@ -82,7 +82,7 @@ export default class Api {
   static async put(url, data) {
     const config = this.setConfig('');
     const apiPut = await axios
-      .put(`${url}`, data, config)
+      .put(`${this.baseUrl}/${url}`, data, config)
       .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiPut;
@@ -91,7 +91,7 @@ export default class Api {
   static async del(url) {
     const config = this.setConfig('');
     const apiDel = await axios
-      .delete(`${url}`, config)
+      .delete(`${this.baseUrl}/${url}`, config)
       .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiDel;

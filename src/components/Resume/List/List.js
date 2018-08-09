@@ -4,6 +4,7 @@ import connect from 'redux-connect-decorator';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import scss from './List.scss';
+import autobind from 'autobind-decorator';
 
 @connect(
   state => ({
@@ -18,8 +19,7 @@ export class List extends Component {
 
   render() {
     const { resumeList } = this.props;
-
-    console.log(resumeList);
+    // console.log(resumeList);
 
     return (
       <div className={scss['resumes__contents--list']}>
