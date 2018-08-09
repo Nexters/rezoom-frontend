@@ -11,7 +11,6 @@ import {
   questionSearchOption,
 } from '../../../utils/Constans';
 import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
-import { getResumeList } from '../../../store/Resume/Resume.store';
 
 @reduxForm({
   form: 'searchForm',
@@ -27,9 +26,7 @@ import { getResumeList } from '../../../store/Resume/Resume.store';
 })
 @connect(
   state => ({}),
-  {
-    getResumeList,
-  },
+  {},
 )
 @withRouter
 export class SearchForm extends Component {

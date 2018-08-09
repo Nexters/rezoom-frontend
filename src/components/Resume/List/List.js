@@ -4,18 +4,26 @@ import connect from 'redux-connect-decorator';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import scss from './List.scss';
+import { getResumeList } from '../../../store/Resume/Resume.store';
 import autobind from 'autobind-decorator';
 
 @connect(
   state => ({
     resumeList: state.resume.resumes,
   }),
-  {},
+  {
+    getResumeList,
+  },
 )
 export class List extends Component {
   static propTypes = {
     resumeList: PropTypes.any,
+    getResumeList: PropTypes.func,
   };
+
+  componentDidMount() {
+    this.props.getResumeList();
+  }
 
   render() {
     const { resumeList } = this.props;
@@ -23,9 +31,10 @@ export class List extends Component {
 
     return (
       <div className={scss['resumes__contents--list']}>
+        {' '}
         {resumeList.length === 0 ? (
           <div>
-            <h1>데이터 없음</h1>
+            <h1> 데이터 없음 </h1>{' '}
           </div>
         ) : (
           resumeList.map((item, idx) => {
@@ -38,17 +47,19 @@ export class List extends Component {
                 <Card>
                   <CardContent>
                     <Typography variant="headline" component="h2">
-                      {item.companyName}
-                    </Typography>
+                      {' '}
+                      {item.companyName}{' '}
+                    </Typography>{' '}
                     <Typography component="p">
-                      {item.applicationType} - {item.createDate}
-                    </Typography>
-                  </CardContent>
-                </Card>
+                      {' '}
+                      {item.applicationType} - {item.createDate}{' '}
+                    </Typography>{' '}
+                  </CardContent>{' '}
+                </Card>{' '}
               </Link>
             );
           })
-        )}
+        )}{' '}
       </div>
     );
   }
