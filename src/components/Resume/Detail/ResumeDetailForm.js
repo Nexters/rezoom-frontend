@@ -21,6 +21,12 @@ import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 export class ResumeDetailForm extends Component {
   constructor(props) {
     super(props);
+    console.log('디테일 폼');
+  }
+
+  componentDidMount() {
+    const { mode } = this.props;
+    console.log('mount = ', mode);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -94,4 +100,6 @@ ResumeDetailForm.propTypes = {
   formValues: PropTypes.object,
   updateResumeDetailCache: PropTypes.func,
   submit: PropTypes.func,
+  resumeId: PropTypes.number,
+  mode: PropTypes.string,
 };

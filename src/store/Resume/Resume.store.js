@@ -1,22 +1,61 @@
 import { resumeCreateFormData } from '../../utils/Constans';
 import { FilterUtils } from '../../utils/FilterUtils';
 
+export const GET_RESUME_LIST = 'GET_RESUME_LIST';
 export const UPDATE_RESUME_LIST = 'UPDATE_RESUME_LIST';
 export const REQUEST_CREATE_NEW_RESUME = 'REQUEST_CREATE_NEW_RESUME';
 export const RESPONSE_CREATE_NEW_RESUME = 'RESPONSE_CREATE_NEW_RESUME';
 export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
+
+export const GET_QUESTION_LIST = 'GET_QUESTION_LIST';
+export const UPDATE_QUESTION_LIST = 'UPDATE_QUESTION_LIST';
 export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
-export const GET_RESUME_LIST = 'GET_RESUME_LIST';
+export const CREATE_QUESTION = 'CREATE_QUESTION';
+export const DELETE_QUESTION = 'DELETE_QUESTION';
 
 const initialState = {
-  resumes: [],
+  resumes: [
+    {
+      applicationType: 'string',
+      applicationYear: 2018,
+      companyName: 'ssd',
+      finishFlag: 0,
+      halfType: 'string',
+      passFlag: 0,
+      resumeId: 1,
+      username: 'string',
+    },
+    {
+      applicationType: 'string',
+      applicationYear: 2018,
+      companyName: 'stqqring',
+      finishFlag: 0,
+      halfType: 'string',
+      passFlag: 0,
+      resumeId: 2,
+      username: 'string',
+    },
+  ],
+  questions: [
+    {
+      content: '',
+      hashTags: [
+        {
+          hashtagId: 'string',
+          hashtagKeyword: 'string',
+        },
+      ],
+      questionId: 1,
+      title: '',
+    },
+  ],
   createResumeCache: {
     info: {},
     detail: [],
     selectedQuestion: 1,
     prevQuestionId: 1,
   },
-  test: '',
+  selectedResumeId: 0,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -27,23 +66,50 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         resumes: action.payload.resume,
       };
+    case UPDATE_QUESTION_LIST:
+      return {
+        ...state,
+        questions: action.payload.questions,
+      };
     case RESPONSE_CREATE_NEW_RESUME:
       // console.log(action.payload.data);
-      const { year, sub, department, q1, q2, q3 } = resumeCreateFormData;
+      const {
+        applicationYear,
+        halfType,
+        jobType,
+        applicationType,
+        finishFlag,
+        passFlag,
+      } = resumeCreateFormData;
 
       let infoData = {};
 
       infoData.id = action.payload.data['id'];
       infoData.companyName = action.payload.data['companyName'];
-      infoData.year = FilterUtils.getItem(year, action.payload.data['year']);
-      infoData.sub = FilterUtils.getItem(sub, action.payload.data['sub']);
-      infoData.department = FilterUtils.getItem(
-        department,
-        action.payload.data['department'],
+      infoData.year = FilterUtils.getItem(
+        applicationYear,
+        action.payload.data['applicationYear'],
       );
-      infoData.q1 = FilterUtils.getItem(q1, action.payload.data['q1']);
-      infoData.q2 = FilterUtils.getItem(q2, action.payload.data['q2']);
-      infoData.q3 = FilterUtils.getItem(q3, action.payload.data['q3']);
+      infoData.sub = FilterUtils.getItem(
+        halfType,
+        action.payload.data['halfType'],
+      );
+      infoData.jobType = FilterUtils.getItem(
+        jobType,
+        action.payload.data['jobType'],
+      );
+      infoData.q1 = FilterUtils.getItem(
+        applicationType,
+        action.payload.data['applicationType'],
+      );
+      infoData.q2 = FilterUtils.getItem(
+        finishFlag,
+        action.payload.data['finishFlag'],
+      );
+      infoData.q3 = FilterUtils.getItem(
+        passFlag,
+        action.payload.data['passFlag'],
+      );
 
       // console.log(infoData);
 
@@ -96,11 +162,33 @@ export default function reducer(state = initialState, action = {}) {
           prevQuestionId: prevQuestionId,
         },
       };
+    case CREATE_QUESTION:
+      const newDetail = {
+        content: '',
+        hashTags: [],
+        questionId:
+          state.createResumeCache.detail.length === 0
+            ? 1
+            : state.createResumeCache.detail.length,
+        title: '',
+      };
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          detail: state.createResumeCache.detail.push(newDetail),
+          prevQuestionId: state.createResumeCache.selectedQuestion,
+          selectedQuestion: state.createResumeCache.detail.length,
+        },
+      };
     default:
       return state;
   }
 }
 
+/*
+ * Resume
+ */
 export const getResumeList = () => ({
   type: GET_RESUME_LIST,
 });
@@ -133,9 +221,34 @@ export const updateResumeDetailCache = data => ({
   },
 });
 
+/*
+ * Question
+ */
+export const getQuestions = resumeId => ({
+  type: GET_QUESTION_LIST,
+  payload: {
+    resumeId,
+  },
+});
+
+export const updateQuestionList = resume => ({
+  type: UPDATE_QUESTION_LIST,
+  payload: {
+    resume,
+  },
+});
+
 export const selectedQuestion = id => ({
   type: SELECT_QUESTION_ID,
   payload: {
     id,
   },
+});
+
+export const createQuestion = () => ({
+  type: CREATE_QUESTION,
+});
+
+export const deleteQuestion = () => ({
+  type: DELETE_QUESTION,
 });

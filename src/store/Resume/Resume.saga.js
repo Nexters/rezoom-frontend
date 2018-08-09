@@ -5,28 +5,27 @@ import {
   responseCreateNewResume,
   GET_RESUME_LIST,
   updateResumeList,
+  updateQuestionList,
+  GET_QUESTION_LIST,
 } from './Resume.store';
 import api from '../../service';
 import { getJwtToken } from '../Auth/Auth.store';
 
 function* postCreateNewResume(data) {
   try {
-    console.log('postCreateNewResume data = ', data);
+    const result = yield call(api.newResume, data);
+    console.log('success new resume = ', result);
 
-    // resumeId
-    data.id = 1;
-    // 성공 후
     yield put(responseCreateNewResume(data));
-    yield put(push(`/resume/create/${data.id}`));
+    yield put(push(`/resume/create/${result.data}`));
   } catch (error) {
     console.log(error);
   }
 }
 
-function* apiTest() {
+function* getResumeList() {
   try {
-    const token = yield select(getJwtToken);
-    const result = yield call(api.getResume, token);
+    const result = yield call(api.getResumes);
 
     if (result) {
       yield put(updateResumeList(result.data));
@@ -36,10 +35,30 @@ function* apiTest() {
   }
 }
 
-export function* watchApiTest() {
+function* getQuestionsList(payload) {
+  try {
+    const resumeId = payload.resumeId;
+    const result = yield call(api.getQuestions, resumeId);
+
+    if (result) {
+      yield put(updateQuestionList(result.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchResumeList() {
   while (true) {
     yield take(GET_RESUME_LIST);
-    yield call(apiTest);
+    yield call(getResumeList);
+  }
+}
+
+export function* watchQuestionList() {
+  while (true) {
+    const { payload } = yield take(GET_QUESTION_LIST);
+    yield call(getQuestionsList, payload);
   }
 }
 
@@ -52,5 +71,6 @@ export function* watchCreateNewResume() {
 
 export default function*() {
   yield fork(watchCreateNewResume);
-  yield fork(watchApiTest);
+  yield fork(watchResumeList);
+  yield fork(watchQuestionList);
 }

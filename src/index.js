@@ -3,15 +3,21 @@ import React from 'react';
 import { render } from 'react-dom';
 import { AppContainer as HotContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import axios from 'axios';
+import { createBrowserHistory } from 'history';
 import registerServiceWorker from './registerServiceWorker';
+import configureStore from './store/configure';
+import sagas from './store/sagas';
 import Root from './components/Root';
 import './styles/main.scss';
-import stores from './store';
+
+const initialState = window.__INITIAL_STATE__;
+const history = createBrowserHistory();
+
+const store = configureStore(initialState, history);
 
 const renderRoot = () => (
   <HotContainer>
-    <Root store={stores.store} history={stores.history} />
+    <Root store={store} history={history} />
   </HotContainer>
 );
 

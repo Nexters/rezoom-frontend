@@ -20,7 +20,7 @@ import { Search } from './Search/Search';
     changeActiveMenu,
   },
 )
-@loadingInjector(true)
+// @loadingInjector(true)
 export class Resumes extends Component {
   constructor(props) {
     super(props);

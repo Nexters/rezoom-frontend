@@ -8,6 +8,7 @@ import { ResumeDetailForm } from './ResumeDetailForm';
 
 @connect(
   state => ({
+    resumes: state.resume.resumes,
     createCache: state.resume.createResumeCache,
   }),
   {},
@@ -19,17 +20,19 @@ export class ResumeDetail extends Component {
 
   render() {
     // console.log(this.props);
-    const { match, createCache } = this.props;
+    const { match, createCache, resumes } = this.props;
     const selectedQuestion = createCache['selectedQuestion'];
+    const resumeId = Number(match['params'].id);
     let resumeData, resumeTitle;
 
-    if (match['params']['mode'] === 'detail') {
-      resumeData = null;
-      resumeTitle = '아직없음';
-    } else if (match['params']['mode'] === 'create') {
-      resumeData = createCache.info;
+    if (match['params']['mode']) {
+      if (match['params']['mode'] === 'detail') {
+        resumeData = resumes.filter(item => item.resumeId === resumeId)[0];
+      } else if (match['params']['mode'] === 'create') {
+        resumeData = createCache.info;
+      }
       resumeTitle = `${resumeData['companyName']} ${
-        resumeData['department']
+        resumeData['jobType']
       } [??]`;
     }
 
@@ -37,8 +40,6 @@ export class ResumeDetail extends Component {
     return (
       <div className={scss.detail}>
         <div className={scss['detail__contents']}>
-          <p>Detail = {match['params'].id}</p>
-
           <div className={scss['detail__contents--mode']}>
             {/* <Button variant="contained" color="primary">
               수정
@@ -51,21 +52,24 @@ export class ResumeDetail extends Component {
             <div className={scss['detail__contents--title']}>
               <p>
                 {resumeTitle}
-                <small>[{resumeData ? resumeData['q1'] : ''}]</small>
+                <small>
+                  [{resumeData ? resumeData['applicationType'] : ''}]
+                </small>
               </p>
               <Button variant="contained" color="primary">
-                {resumeData ? resumeData['q3'] : ''}
+                {resumeData ? resumeData['passFlag'] : ''}
               </Button>
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <p>
-                {resumeData ? resumeData['year'] : ''}년{' '}
-                {resumeData ? resumeData['sub'] : ''}
+                {resumeData ? resumeData['applicationYear'] : ''}년{' '}
+                {resumeData ? resumeData['halfType'] : ''}
               </p>
             </div>
           </div>
           <ResumeDetailForm
             selectedQuestion={selectedQuestion}
+            resumeId={resumeId}
             mode={match['params']['mode']}
           />
         </div>
@@ -76,6 +80,7 @@ export class ResumeDetail extends Component {
 
 ResumeDetail.propTypes = {
   match: PropTypes.object,
+  resumes: PropTypes.array,
   createCache: PropTypes.any,
 };
 

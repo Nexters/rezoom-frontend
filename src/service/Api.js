@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { isEmpty } from 'lodash';
 import { environment } from '../environment/Environment';
+import Cookies from 'js-cookie';
 
 export default class Api {
   static baseUrl = environment.API_SERVER;
@@ -20,8 +21,11 @@ export default class Api {
     };
   }
 
-  static setConfig(token) {
+  static setConfig() {
     let config = this.config();
+    const token = Cookies.get('jwt');
+
+    console.log(token);
 
     if (!isEmpty(token)) {
       config = Object.assign(
@@ -38,7 +42,17 @@ export default class Api {
   }
 
   static async post(url, data) {
-    // const config = this.setConfig(token);
+    const config = this.setConfig();
+    const apiPost = await axios
+      .post(`${this.baseUrl}/${url}`, data, config)
+      .then(res => {
+        return res;
+      })
+      .catch(e => console.log(e));
+    return apiPost;
+  }
+
+  static async postLogin(url, data) {
     const config = {
       headers: {
         'Content-Type': 'application/json',
@@ -47,22 +61,14 @@ export default class Api {
     const apiPost = await axios
       .post(`${this.baseUrl}/${url}`, data, config)
       .then(res => {
-        console.log(res);
-        // console.log(res.headers['Authorization']);
-        // console.log(res.headers.Authorization);
         return res;
       })
       .catch(e => console.log(e));
     return apiPost;
   }
 
-  static async get(url, token) {
-    const config = this.setConfig(token);
-    // const config = {
-    //   headers: {
-    //     // 'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    // };
+  static async get(url) {
+    const config = this.setConfig();
     const apiGet = await axios
       .get(`${this.baseUrl}/${url}`, config)
       .then(res => {
@@ -76,7 +82,7 @@ export default class Api {
   static async put(url, data) {
     const config = this.setConfig('');
     const apiPut = await axios
-      .put(`${url}`, data, config)
+      .put(`${this.baseUrl}/${url}`, data, config)
       .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiPut;
@@ -85,7 +91,7 @@ export default class Api {
   static async del(url) {
     const config = this.setConfig('');
     const apiDel = await axios
-      .delete(`${url}`, config)
+      .delete(`${this.baseUrl}/${url}`, config)
       .then(res => console.log(res))
       .catch(e => console.log(e));
     return apiDel;

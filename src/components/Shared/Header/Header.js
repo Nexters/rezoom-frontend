@@ -38,7 +38,6 @@ class Header extends Component {
   @autobind
   onClickLogout(e) {
     e.stopPropagation();
-    console.log('_onClickLogout!');
     this.props.logout();
   }
 
@@ -98,7 +97,7 @@ class Header extends Component {
           </div>
           {actionButton}
           {isDetail ? (
-            <DetailMenu />
+            <DetailMenu resumeId={match.params.id} mode={match.params.mode} />
           ) : (
             <div className={scss['header__menu']}>
               <NavLink className="" to="/resume">
