@@ -8,13 +8,10 @@ import autobind from 'autobind-decorator';
 import { TextInput, SelectForm } from '../../Forms';
 import { resumeCreateFormData } from '../../../utils/Constans';
 import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
-import { getResumeList } from '../../../store/Resume/Resume.store';
 
 @connect(
   state => ({}),
-  {
-    getResumeList,
-  },
+  {},
 )
 @withRouter
 @reduxForm({
@@ -49,8 +46,7 @@ export class SearchForm extends Component {
   onClickSearch() {
     console.log('onClick search = ', this.props);
     const { props } = this;
-    this.props.getResumeList();
-    // props.history.push('/resume/search');
+    props.history.push('/resume/search');
   }
 
   render() {
@@ -59,27 +55,27 @@ export class SearchForm extends Component {
     return (
       <form className={scss['resumes__contents--search']}>
         <div className={scss['detail']}>
-          <SelectForm name={'q3'} label={'합격 여부'} items={q3} />
-          <SelectForm name={'year'} label={'연도'} items={year} />
-          <SelectForm name={'sub'} label={'분기'} items={sub} />
-          <SelectForm name={'department'} label={'직무'} items={department} />
-          <SelectForm name={'q1'} label={'형태'} items={q1} />
-          <SelectForm name={'q2'} label={'제출 여부'} items={q2} />
-        </div>
+          <SelectForm name={'q3'} label={'합격 여부'} items={q3} />{' '}
+          <SelectForm name={'year'} label={'연도'} items={year} />{' '}
+          <SelectForm name={'sub'} label={'분기'} items={sub} />{' '}
+          <SelectForm name={'department'} label={'직무'} items={department} />{' '}
+          <SelectForm name={'q1'} label={'형태'} items={q1} />{' '}
+          <SelectForm name={'q2'} label={'제출 여부'} items={q2} />{' '}
+        </div>{' '}
         <div className={scss['search--input']}>
           <Input
             type="search"
             placeholder="검색어를 입력해 주세요."
             fullWidth={true}
-          />
+          />{' '}
           <Button
             variant="contained"
             color="primary"
             onClick={this.onClickSearch}
           >
-            검색
-          </Button>
-        </div>
+            검색{' '}
+          </Button>{' '}
+        </div>{' '}
       </form>
     );
   }
@@ -87,7 +83,6 @@ export class SearchForm extends Component {
 
 SearchForm.propTypes = {
   history: PropTypes.router,
-  getResumeList: PropTypes.func,
 };
 
 export default SearchForm;

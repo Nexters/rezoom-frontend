@@ -25,7 +25,7 @@ export default function reducer(state = initialState, action = {}) {
       console.log(action.payload.resume);
       return {
         ...state,
-        resumes: [...state.resumes, ...action.payload.resume],
+        resumes: action.payload.resume,
       };
     case RESPONSE_CREATE_NEW_RESUME:
       // console.log(action.payload.data);
