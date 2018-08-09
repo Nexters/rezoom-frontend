@@ -36,18 +36,18 @@ const styles = theme => ({
     marginLeft: -12,
   },
 });
-
 @withStyles(styles)
 @reduxForm({
   form: 'newResume',
   enableReinitialize: true,
   initialValues: {
-    year: 2018,
-    sub: 1,
-    department: 1,
-    q1: 1,
-    q2: 1,
-    q3: 1,
+    companyName: '',
+    applicationYear: 2018,
+    halfType: 1,
+    jobType: 1,
+    applicationType: 1,
+    finishFlag: 1,
+    passFlag: 1,
   },
   onSubmit: (values, dispatch) => {
     dispatch(createNewResume(values));
@@ -65,15 +65,22 @@ export class Create extends Component {
   constructor(props) {
     super(props);
 
-    const { year, sub, department, q1, q2, q3 } = resumeCreateFormData;
+    const {
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
+    } = resumeCreateFormData;
 
     this.state = {
-      year,
-      sub,
-      department,
-      q1,
-      q2,
-      q3,
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
       loading: false,
     };
   }
@@ -102,7 +109,15 @@ export class Create extends Component {
 
   render() {
     const { dialogOpen, handleSubmit, classes } = this.props;
-    const { year, sub, department, q1, q2, q3, loading } = this.state;
+    const {
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
+      loading,
+    } = this.state;
 
     return (
       <div>
@@ -114,26 +129,38 @@ export class Create extends Component {
                 <TextInput name={'companyName'} label={'회사명'} />
               </div>
               <div>
-                <SelectForm name={'year'} label={'연도'} items={year} />
-              </div>
-              <div>
-                <SelectForm name={'sub'} label={'분기'} items={sub} />
-              </div>
-              <div>
                 <SelectForm
-                  name={'department'}
-                  label={'직무'}
-                  items={department}
+                  name={'applicationYear'}
+                  label={'연도'}
+                  items={applicationYear}
                 />
               </div>
               <div>
-                <SelectForm name={'q1'} label={'형태'} items={q1} />
+                <SelectForm name={'halfType'} label={'분기'} items={halfType} />
               </div>
               <div>
-                <SelectForm name={'q2'} label={'제출 여부'} items={q2} />
+                <SelectForm name={'jobType'} label={'직무'} items={jobType} />
               </div>
               <div>
-                <SelectForm name={'q3'} label={'합격 여부'} items={q3} />
+                <SelectForm
+                  name={'applicationType'}
+                  label={'형태'}
+                  items={applicationType}
+                />
+              </div>
+              <div>
+                <SelectForm
+                  name={'finishFlag'}
+                  label={'제출 여부'}
+                  items={finishFlag}
+                />
+              </div>
+              <div>
+                <SelectForm
+                  name={'passFlag'}
+                  label={'합격 여부'}
+                  items={passFlag}
+                />
               </div>
             </form>
           </DialogContent>

@@ -11,13 +11,11 @@ import { getJwtToken } from '../Auth/Auth.store';
 
 function* postCreateNewResume(data) {
   try {
-    console.log('postCreateNewResume data = ', data);
+    const result = yield call(api.newResume, data);
+    console.log('success new resume = ', result);
 
-    // resumeId
-    data.id = 1;
-    // 성공 후
     yield put(responseCreateNewResume(data));
-    yield put(push(`/resume/create/${data.id}`));
+    yield put(push(`/resume/create/${result.data}`));
   } catch (error) {
     console.log(error);
   }

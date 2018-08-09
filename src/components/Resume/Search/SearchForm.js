@@ -6,10 +6,25 @@ import { withRouter } from 'react-router-dom';
 import scss from './Search.scss';
 import autobind from 'autobind-decorator';
 import { TextInput, SelectForm } from '../../Forms';
-import { resumeCreateFormData } from '../../../utils/Constans';
+import {
+  resumeCreateFormData,
+  questionSearchOption,
+} from '../../../utils/Constans';
 import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
 import { getResumeList } from '../../../store/Resume/Resume.store';
 
+@reduxForm({
+  form: 'searchForm',
+  enableReinitialize: true,
+  initialValues: {
+    applicationYear: 2018,
+    halfType: 1,
+    jobType: 1,
+    applicationType: 1,
+    finishFlag: 1,
+    passFlag: 1,
+  },
+})
 @connect(
   state => ({}),
   {
@@ -17,68 +32,89 @@ import { getResumeList } from '../../../store/Resume/Resume.store';
   },
 )
 @withRouter
-@reduxForm({
-  form: 'searchForm',
-  enableReinitialize: true,
-  initialValues: {
-    year: 2018,
-    sub: 1,
-    department: 1,
-    q1: 1,
-    q2: 1,
-    q3: 1,
-  },
-})
 export class SearchForm extends Component {
   constructor(props) {
     super(props);
 
-    const { year, sub, department, q1, q2, q3 } = resumeCreateFormData;
+    const {
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
+    } = resumeCreateFormData;
 
     this.state = {
-      year,
-      sub,
-      department,
-      q1,
-      q2,
-      q3,
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
+      questionSearchOption,
+      serarchMode: 'resume', // resume: 자소서리스트, question: 문항
     };
   }
 
   @autobind
   onClickSearch() {
-    console.log('onClick search = ', this.props);
-    const { props } = this;
-    this.props.getResumeList();
+    // const { getResumeList } = this.props;
+    // this.props.getResumeList();
     // props.history.push('/resume/search');
   }
 
   render() {
-    const { year, sub, department, q1, q2, q3 } = this.state;
+    const {
+      applicationYear,
+      halfType,
+      jobType,
+      applicationType,
+      finishFlag,
+      passFlag,
+      questionSearchOption,
+      serarchMode,
+    } = this.state;
 
     return (
       <form className={scss['resumes__contents--search']}>
-        <div className={scss['detail']}>
-          <SelectForm name={'q3'} label={'합격 여부'} items={q3} />
-          <SelectForm name={'year'} label={'연도'} items={year} />
-          <SelectForm name={'sub'} label={'분기'} items={sub} />
-          <SelectForm name={'department'} label={'직무'} items={department} />
-          <SelectForm name={'q1'} label={'형태'} items={q1} />
-          <SelectForm name={'q2'} label={'제출 여부'} items={q2} />
-        </div>
         <div className={scss['search--input']}>
-          <Input
-            type="search"
-            placeholder="검색어를 입력해 주세요."
-            fullWidth={true}
-          />
-          <Button
+          <div>자소서 리스트</div>
+          {serarchMode === 'question' ? (
+            <SelectForm
+              name={'questionSearchOption'}
+              label={'검색 방법'}
+              items={questionSearchOption}
+            />
+          ) : null}
+          <TextInput name={'companyName'} label={'검색하기'} />
+          {/* <Button
             variant="contained"
             color="primary"
             onClick={this.onClickSearch}
           >
             검색
-          </Button>
+          </Button> */}
+        </div>
+        <div className={scss['detail']}>
+          <SelectForm name={'passFlag'} label={'합격 여부'} items={passFlag} />
+          <SelectForm
+            name={'applicationYear'}
+            label={'연도'}
+            items={applicationYear}
+          />
+          <SelectForm name={'halfType'} label={'분기'} items={halfType} />
+          <SelectForm name={'jobType'} label={'직무'} items={jobType} />
+          <SelectForm
+            name={'applicationType'}
+            label={'채용 형태'}
+            items={applicationType}
+          />
+          <SelectForm
+            name={'finishFlag'}
+            label={'제출 여부'}
+            items={finishFlag}
+          />
         </div>
       </form>
     );
@@ -86,8 +122,8 @@ export class SearchForm extends Component {
 }
 
 SearchForm.propTypes = {
-  history: PropTypes.router,
-  getResumeList: PropTypes.func,
+  // history: PropTypes.router,
+  // getResumeList: PropTypes.func,
 };
 
 export default SearchForm;

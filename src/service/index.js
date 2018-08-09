@@ -2,20 +2,23 @@ import Api from './Api';
 
 // 로그인 관련
 const Auth = {
-  login: param => Api.post('login', param),
+  login: param => Api.postLogin('login', param),
 };
 
 const Resume = {
-  findAll: token => Api.get('resumes', token),
+  findAll: token => Api.get('resumes'),
   findOne: url => Api.get(url),
   delete: url => Api.delete(url),
-  insert: (url, param) => Api.post(url, param),
+  insert: param => Api.post('resumes', param),
   update: (url, param) => Api.delete(url, param),
 };
 
 const api = {};
 
 api.login = param => Auth.login(param);
-api.getResume = token => Resume.findAll(token);
+
+// resume api
+api.getResume = () => Resume.findAll();
+api.newResume = data => Resume.insert(data);
 
 export default api;

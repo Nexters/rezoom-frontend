@@ -29,21 +29,43 @@ export default function reducer(state = initialState, action = {}) {
       };
     case RESPONSE_CREATE_NEW_RESUME:
       // console.log(action.payload.data);
-      const { year, sub, department, q1, q2, q3 } = resumeCreateFormData;
+      const {
+        applicationYear,
+        halfType,
+        jobType,
+        applicationType,
+        finishFlag,
+        passFlag,
+      } = resumeCreateFormData;
 
       let infoData = {};
 
       infoData.id = action.payload.data['id'];
       infoData.companyName = action.payload.data['companyName'];
-      infoData.year = FilterUtils.getItem(year, action.payload.data['year']);
-      infoData.sub = FilterUtils.getItem(sub, action.payload.data['sub']);
-      infoData.department = FilterUtils.getItem(
-        department,
-        action.payload.data['department'],
+      infoData.year = FilterUtils.getItem(
+        applicationYear,
+        action.payload.data['applicationYear'],
       );
-      infoData.q1 = FilterUtils.getItem(q1, action.payload.data['q1']);
-      infoData.q2 = FilterUtils.getItem(q2, action.payload.data['q2']);
-      infoData.q3 = FilterUtils.getItem(q3, action.payload.data['q3']);
+      infoData.sub = FilterUtils.getItem(
+        halfType,
+        action.payload.data['halfType'],
+      );
+      infoData.jobType = FilterUtils.getItem(
+        jobType,
+        action.payload.data['jobType'],
+      );
+      infoData.q1 = FilterUtils.getItem(
+        applicationType,
+        action.payload.data['applicationType'],
+      );
+      infoData.q2 = FilterUtils.getItem(
+        finishFlag,
+        action.payload.data['finishFlag'],
+      );
+      infoData.q3 = FilterUtils.getItem(
+        passFlag,
+        action.payload.data['passFlag'],
+      );
 
       // console.log(infoData);
 

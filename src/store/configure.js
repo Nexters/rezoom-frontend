@@ -9,7 +9,7 @@ const isDev = process.env.NODE_ENV === 'development' || true;
 const devtools =
   isDev && window.devToolsExtension ? window.devToolsExtension : () => fn => fn;
 
-const configureStore = (initialState, services = {}, history) => {
+const configureStore = (initialState, history) => {
   const sagaMiddleware = createsagaMiddleware({
     onError: err => {
       setImmediate(() => {
@@ -44,7 +44,7 @@ const configureStore = (initialState, services = {}, history) => {
       const nextSagas = require('./sagas').default;
       sagaTask.cancel();
       sagaTask.done.then(() => {
-        sagaTask = sagaMiddleware.run(nextSagas, services);
+        sagaTask = sagaMiddleware.run(nextSagas);
       });
     });
   }

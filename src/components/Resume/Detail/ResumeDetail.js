@@ -29,7 +29,7 @@ export class ResumeDetail extends Component {
     } else if (match['params']['mode'] === 'create') {
       resumeData = createCache.info;
       resumeTitle = `${resumeData['companyName']} ${
-        resumeData['department']
+        resumeData['jobType']
       } [??]`;
     }
 
@@ -51,16 +51,18 @@ export class ResumeDetail extends Component {
             <div className={scss['detail__contents--title']}>
               <p>
                 {resumeTitle}
-                <small>[{resumeData ? resumeData['q1'] : ''}]</small>
+                <small>
+                  [{resumeData ? resumeData['applicationType'] : ''}]
+                </small>
               </p>
               <Button variant="contained" color="primary">
-                {resumeData ? resumeData['q3'] : ''}
+                {resumeData ? resumeData['passFlag'] : ''}
               </Button>
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <p>
-                {resumeData ? resumeData['year'] : ''}년{' '}
-                {resumeData ? resumeData['sub'] : ''}
+                {resumeData ? resumeData['applicationYear'] : ''}년{' '}
+                {resumeData ? resumeData['halfType'] : ''}
               </p>
             </div>
           </div>

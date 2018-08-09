@@ -1,70 +1,31 @@
 import { call, fork, take, put } from 'redux-saga/effects';
-import axios from 'axios';
-import { LOGIN, setJWT } from './Auth.store';
+import { LOGIN, loginSuccess, LOGOUT, logoutSuccess } from './Auth.store';
 import api from '../../service';
+import Cookies from 'js-cookie';
 
-export function* login() {
+export function* login(data) {
   try {
-    // axios({
-    //   method: 'GET',
-    //   url: 'http://52.79.237.31:8080/resumes',
-    //   headers: {
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //   },
-    // }).then(data => {
-    //   console.log(data);
-    // });
-    // ----------------------------------------------------
-    // const result = yield call(api.getResume);
-    // console.log('login result = ', result);
-    // ----------------------------------------------------
     const params = {
-      username: 'jaeeonjin',
-      password: 'test',
+      username: data.username,
+      password: data.password,
     };
-    // axios
-    //   .post('http://52.79.237.31:8080/login', params)
-    //   .then(data => {
-    //     console.log(data);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    // ----------------------------------------------------
-    // const result = yield call(api.login, 'login', {
-    //   username: 'jaeeonjin',
-    //   password: 'test',
-    // });
+
     const result = yield call(api.login, params);
     console.log(result);
 
-    yield put(setJWT(result.data));
-    // if (result.isLoginSuccess) {
-    //   const user = JSON.parse(atob(result.token.split('.')[1]));
-    //   result.email = payload.email;
-    //   yield put(loginSuccess(result, user.roles));
-    // }else {
-    //     yield put(loginFailure());
-    // }
-    /*
-     *
-     * TODO: 여기 로그인 API사용
-     * API 작성
-     *  1. /src/service/(API이름)
-     *  2. /src/service/Resume.js 참조
-     *  3. /src/store/Resume.saga.js -> Api호출 참조
-     * 
-     * 원래 사가로 api를 들고와야하는데 그 부분은 수정못함.. 
-     * 
-     * redux-saga
-     *  1. export default function* () 함수에서 yield fork로 init시에 이벤트를 감시하고있는다
-     *  2. watchLoginRequest() 의 while이 true로 무한 루프를 돌며 yield take(LOGIN) 감시
-     *  3. store의 action이 실행되면 yield take(LOGIN) 을 실행하고 yield call(login) 실행
-     *  4. 현재 login() 함수 실행
-     */
-    // Api.get('http://172.30.1.26:8080/login/github');
+    Cookies.set('jwt', result.data);
+
+    yield put(loginSuccess());
   } catch (e) {
-    // yield put(loginFailure());
+    throw e;
+  }
+}
+
+export function* logout() {
+  try {
+    Cookies.remove('jwt');
+    yield put(logoutSuccess());
+  } catch (e) {
     throw e;
   }
 }
@@ -72,10 +33,18 @@ export function* login() {
 export function* watchLoginRequest() {
   while (true) {
     const { payload } = yield take(LOGIN);
-    yield call(login);
+    yield call(login, payload.data);
+  }
+}
+
+export function* watchLogout() {
+  while (true) {
+    yield take(LOGOUT);
+    yield call(logout);
   }
 }
 
 export default function*() {
   yield fork(watchLoginRequest);
+  yield fork(watchLogout);
 }
