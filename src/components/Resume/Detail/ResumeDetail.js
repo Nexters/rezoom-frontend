@@ -21,7 +21,6 @@ export class ResumeDetail extends Component {
   render() {
     // console.log(this.props);
     const { match, createCache, resumes } = this.props;
-    const selectedQuestion = createCache['selectedQuestion'];
     const resumeId = Number(match['params'].id);
     let resumeData, resumeTitle;
 
@@ -67,10 +66,7 @@ export class ResumeDetail extends Component {
               </p>
             </div>
           </div>
-          <ResumeDetailForm
-            selectedQuestion={selectedQuestion}
-            mode={match['params']['mode']}
-          />
+          <ResumeDetailForm mode={match['params']['mode']} />
         </div>
       </div>
     );

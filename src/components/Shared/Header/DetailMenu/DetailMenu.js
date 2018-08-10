@@ -7,6 +7,7 @@ import {
   selectedQuestion,
   getQuestions,
   createQuestion,
+  clearQuestion,
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
 
@@ -15,7 +16,7 @@ import scss from './DetailMenu.scss';
     originQuestions: state.resume.questions,
     createCacheQuestions: state.resume.createResumeCache.detail,
   }),
-  { selectedQuestion, getQuestions, createQuestion },
+  { selectedQuestion, getQuestions, createQuestion, clearQuestion },
 )
 export class DetailMenu extends Component {
   constructor(props) {
@@ -23,9 +24,11 @@ export class DetailMenu extends Component {
 
     this.state = {
       list: [],
-      selectedQuestion: 1,
+      selectedQuestion: {
+        key: 1,
+        org: 1,
+      },
     };
-    console.log('디테일 메뉴');
   }
 
   componentDidMount() {
@@ -36,6 +39,11 @@ export class DetailMenu extends Component {
     } else if (mode === 'detail') {
       getQuestions(resumeId);
     }
+  }
+
+  componentWillUnmount() {
+    console.log('unmount detailMenu');
+    this.props.clearQuestion();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,14 +61,26 @@ export class DetailMenu extends Component {
     } else if (mode === 'detail') {
       console.log('originQuestions = ', originQuestions);
       console.log('nextProps.originQuestions = ', nextProps.originQuestions);
-      if (originQuestions.length !== nextProps.originQuestions) {
+      if (originQuestions.length !== nextProps.originQuestions.length) {
         let list = [];
         nextProps.originQuestions.forEach(item => {
-          list.push({ questionsId: item.questionsId });
+          list.push({ questionId: item.questionId });
         });
         this.setState({
           list: list,
         });
+      }
+      if (
+        nextProps.originQuestions[0].questionId !==
+        this.state.selectedQuestion.org
+      ) {
+        this.setState({
+          selectedQuestion: {
+            key: 1,
+            org: nextProps.originQuestions[0].questionId,
+          },
+        });
+        this.props.selectedQuestion(nextProps.originQuestions[0].questionId);
       }
     }
   }
@@ -71,7 +91,7 @@ export class DetailMenu extends Component {
     const { selectedQuestion } = this.props;
     // console.log('onClickQuestion ! ', id);
     this.setState({
-      selectedQuestion: id,
+      selectedQuestion: { key: id, org: questionId },
     });
     selectedQuestion(questionId);
   }
@@ -105,9 +125,11 @@ export class DetailMenu extends Component {
             return (
               <li
                 key={idx}
-                style={{ color: selectedQuestion === index ? 'red' : 'black' }}
+                style={{
+                  color: selectedQuestion.key === index ? 'red' : 'black',
+                }}
                 // className={item.active ? scss['sidebar__active'] : ''}
-                onClick={e => this.onClickQuestion(e, index, item.questionsId)}
+                onClick={e => this.onClickQuestion(e, index, item.questionId)}
               >
                 {index}
               </li>
@@ -128,12 +150,13 @@ export class DetailMenu extends Component {
 
 DetailMenu.propTypes = {
   selectedQuestion: PropTypes.func,
-  resumeId: PropTypes.number,
+  resumeId: PropTypes.string,
   mode: PropTypes.string,
   getQuestions: PropTypes.func,
   createQuestion: PropTypes.func,
   originQuestions: PropTypes.array,
   createCacheQuestions: PropTypes.array,
+  clearQuestion: PropTypes.func,
 };
 
 export default DetailMenu;

@@ -25,8 +25,6 @@ export default class Api {
     let config = this.config();
     const token = Cookies.get('jwt');
 
-    console.log(token);
-
     if (!isEmpty(token)) {
       config = Object.assign(
         {},
@@ -72,7 +70,6 @@ export default class Api {
     const apiGet = await axios
       .get(`${this.baseUrl}/${url}`, config)
       .then(res => {
-        console.log(res);
         return res;
       })
       .catch(e => console.log(e));
@@ -83,7 +80,9 @@ export default class Api {
     const config = this.setConfig('');
     const apiPut = await axios
       .put(`${this.baseUrl}/${url}`, data, config)
-      .then(res => console.log(res))
+      .then(res => {
+        return res;
+      })
       .catch(e => console.log(e));
     return apiPut;
   }
@@ -92,7 +91,9 @@ export default class Api {
     const config = this.setConfig('');
     const apiDel = await axios
       .delete(`${this.baseUrl}/${url}`, config)
-      .then(res => console.log(res))
+      .then(res => {
+        return res;
+      })
       .catch(e => console.log(e));
     return apiDel;
   }

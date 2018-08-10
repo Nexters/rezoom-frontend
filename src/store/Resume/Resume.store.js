@@ -12,17 +12,19 @@ export const UPDATE_QUESTION_LIST = 'UPDATE_QUESTION_LIST';
 export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
+export const CLEAR_QUESTION = 'CLEAR_QUESTION';
 
 const initialState = {
   resumes: [],
   questions: [],
+  selectedQuestion: 1,
   createResumeCache: {
     info: {},
     detail: [],
-    selectedQuestion: 1,
-    prevQuestionId: 1,
+    nextId: 1,
+    thisId: 1,
+    prevId: 1,
   },
-  selectedResumeId: 0,
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -38,7 +40,6 @@ export default function reducer(state = initialState, action = {}) {
         questions: action.payload.questions,
       };
     case RESPONSE_CREATE_NEW_RESUME:
-      // console.log(action.payload.data);
       const {
         applicationYear,
         halfType,
@@ -76,8 +77,6 @@ export default function reducer(state = initialState, action = {}) {
         passFlag,
         action.payload.data['passFlag'],
       );
-
-      // console.log(infoData);
 
       return {
         ...state,
@@ -118,15 +117,10 @@ export default function reducer(state = initialState, action = {}) {
         },
       };
     case SELECT_QUESTION_ID:
-      const prevQuestionId = state.createResumeCache.selectedQuestion;
-
+      console.log('SELECT_QUESTION_ID = ', action.payload.id);
       return {
         ...state,
-        createResumeCache: {
-          ...state.createResumeCache,
-          selectedQuestion: action.payload.id,
-          prevQuestionId: prevQuestionId,
-        },
+        selectedQuestion: action.payload.id,
       };
     case CREATE_QUESTION:
       const newDetail = {
@@ -146,6 +140,12 @@ export default function reducer(state = initialState, action = {}) {
           prevQuestionId: state.createResumeCache.selectedQuestion,
           selectedQuestion: state.createResumeCache.detail.length,
         },
+      };
+    case CLEAR_QUESTION:
+      return {
+        ...state,
+        questions: [],
+        selectedQuestion: 1,
       };
     default:
       return state;
@@ -217,4 +217,8 @@ export const createQuestion = () => ({
 
 export const deleteQuestion = () => ({
   type: DELETE_QUESTION,
+});
+
+export const clearQuestion = () => ({
+  type: CLEAR_QUESTION,
 });

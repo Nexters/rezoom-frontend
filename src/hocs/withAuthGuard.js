@@ -14,8 +14,8 @@ const withAuthGuard = isLogin => WrappedComponent => {
 
     render() {
       const validJwt = Cookies.get('jwt');
-      // console.log(validJwt);
-      // console.log(this.props.isLogin);
+      console.log('AuthGuard jwt =', validJwt);
+      console.log('AuthGuard isLogin = ', this.props.isLogin);
       return validJwt !== undefined ? (
         <WrappedComponent {...this.props} />
       ) : (
