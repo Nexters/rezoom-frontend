@@ -7,6 +7,7 @@ import scss from './ResumeDetailForm.scss';
 import { TextArea } from '../../Forms';
 import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
+import autobind from 'autobind-decorator';
 
 @reduxForm({
   form: 'resumeDetail',
@@ -16,7 +17,7 @@ import { HashTag } from '../../Forms/hashTag';
     formValues: getFormValues('resumeDetail')(state),
     originQuestionId: state.resume.selectedQuestion,
     originQuestions: state.resume.questions,
-    createCacheQuestions: state.resume.createResumeCache.detail,
+    createCacheQuestions: state.resume.createResumeCache,
   }),
   {
     updateResumeDetailCache,
@@ -33,55 +34,83 @@ export class ResumeDetailForm extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { mode, originQuestionId, originQuestions, change } = this.props;
+    const {
+      mode,
+      originQuestionId,
+      originQuestions,
+      createCacheQuestions,
+    } = this.props;
 
     if (mode === 'create') {
-      if (this.props.originQuestionId !== nextProps.originQuestionId) {
+      if (
+        createCacheQuestions.thisId !== nextProps.createCacheQuestions.thisId
+      ) {
         const { formValues } = this.props;
+        let value = {
+          content: '',
+          title: '',
+          hashTags: [],
+        };
+        if (formValues) {
+          value = formValues;
+        }
 
         this.props.updateResumeDetailCache({
-          id: questionId,
-          data: formValues,
+          id: nextProps.createCacheQuestions.thisId,
+          value: value,
         });
 
-        return true;
-      } else {
-        return false;
+        this.changeFormValues(
+          nextProps.createCacheQuestions.detail,
+          nextProps.createCacheQuestions.thisId,
+        );
       }
     } else if (mode === 'detail') {
       if (originQuestionId !== nextProps.originQuestionId) {
-        nextProps.originQuestions.forEach(item => {
-          if (item.questionId === nextProps.originQuestionId) {
-            change('content', item.content);
-            change('title', item.title);
-            if (item.hashTags.length > 0) {
-              const tags = item.hashTags.join();
-              change('hashTags', tags);
-              this.setState({
-                tags: item.hashTags,
-              });
-            } else {
-              change('hashTags', '');
-            }
-          }
-        });
+        this.changeFormValues(
+          nextProps.originQuestions,
+          nextProps.originQuestionId,
+        );
       }
     }
   }
 
+  changeFormValues(data, id) {
+    const { change } = this.props;
+    data.forEach(item => {
+      if (item.questionId === id) {
+        change('content', item.content);
+        change('title', item.title);
+        if (item.hashTags.length > 0) {
+          const tags = item.hashTags.join();
+          change('hashTags', tags);
+          this.setState({
+            tags: item.hashTags,
+          });
+        } else {
+          change('hashTags', '');
+        }
+      }
+    });
+  }
+
+  @autobind
+  onClickAddHashTag() {}
+
   render() {
     const { tags } = this.state;
     /* 
-      TODO: 
-
-       1. 사용자가 문항을 변경하면 redux-from의 Value selector를 사용하여 resume store의 createResumeCache['detail'] 데이터에 저장 
-       2. component가 mount되면 문항 순번과 createResumeCache['detail'] 의 순번이 같은 걸 resumeDetail form 에 바인딩 해준다.
+      TODO:  해시태그 추가 기능 만들기
     */
     return (
       <form>
         <div className={scss['detail__contents--hashtag']}>
           <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.onClickAddHashTag}
+          >
             # 해시태그 추가
           </Button>
         </div>
@@ -119,4 +148,5 @@ ResumeDetailForm.propTypes = {
   originQuestionId: PropTypes.number,
   originQuestions: PropTypes.array,
   change: PropTypes.func,
+  createCacheQuestions: PropTypes.func,
 };

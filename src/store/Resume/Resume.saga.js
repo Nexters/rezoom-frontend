@@ -13,11 +13,11 @@ import { getJwtToken } from '../Auth/Auth.store';
 
 function* postCreateNewResume(data) {
   try {
-    const result = yield call(api.newResume, data);
-    console.log('success new resume = ', result);
+    // const result = yield call(api.newResume, data);
+    // console.log('success new resume = ', result);
 
     yield put(responseCreateNewResume(data));
-    yield put(push(`/resume/create/${result.data}`));
+    yield put(push(`/resume/create/${1}`));
   } catch (error) {
     console.log(error);
   }

@@ -55,9 +55,9 @@ export class ResumeDetail extends Component {
                   [{resumeData ? resumeData['applicationType'] : ''}]
                 </small>
               </p>
-              <Button variant="contained" color="primary">
+              {/* <Button variant="contained" color="primary">
                 {resumeData ? resumeData['passFlag'] : ''}
-              </Button>
+              </Button> */}
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <p>
