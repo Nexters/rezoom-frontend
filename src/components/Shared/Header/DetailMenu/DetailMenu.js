@@ -10,6 +10,7 @@ import {
   clearQuestion,
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
+import { QuestionList } from './QuestionList/QuestionList';
 
 @connect(
   state => ({
@@ -59,8 +60,6 @@ export class DetailMenu extends Component {
         nextProps.createCacheQuestions.length,
       );
     } else if (mode === 'detail') {
-      console.log('originQuestions = ', originQuestions);
-      console.log('nextProps.originQuestions = ', nextProps.originQuestions);
       if (originQuestions.length !== nextProps.originQuestions.length) {
         let list = [];
         nextProps.originQuestions.forEach(item => {
@@ -86,10 +85,8 @@ export class DetailMenu extends Component {
   }
 
   @autobind
-  onClickQuestion(e, id, questionId) {
-    e.stopPropagation();
+  onClickQuestion(id, questionId) {
     const { selectedQuestion } = this.props;
-    // console.log('onClickQuestion ! ', id);
     this.setState({
       selectedQuestion: { key: id, org: questionId },
     });
@@ -106,43 +103,35 @@ export class DetailMenu extends Component {
 
   render() {
     const { list, selectedQuestion } = this.state;
+    const { mode } = this.props;
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
           <p>문항</p>
+          {mode === 'create' ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={this.onClickDeleteQuestion}
+            >
+              삭제
+            </Button>
+          ) : null}
+        </div>
+        <QuestionList
+          list={list}
+          selectedQuestion={selectedQuestion}
+          onClickQuestion={this.onClickQuestion}
+        />
+        {mode === 'create' ? (
           <Button
             variant="outlined"
             color="primary"
-            onClick={this.onClickDeleteQuestion}
+            onClick={this.onClickAddQuestion}
           >
-            삭제
+            + 문항추가
           </Button>
-        </div>
-        <ul>
-          {list.map((item, idx) => {
-            const index = idx + 1;
-            // console.log(item);
-            return (
-              <li
-                key={idx}
-                style={{
-                  color: selectedQuestion.key === index ? 'red' : 'black',
-                }}
-                // className={item.active ? scss['sidebar__active'] : ''}
-                onClick={e => this.onClickQuestion(e, index, item.questionId)}
-              >
-                {index}
-              </li>
-            );
-          })}
-        </ul>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={this.onClickAddQuestion}
-        >
-          + 문항추가
-        </Button>
+        ) : null}
       </div>
     );
   }
