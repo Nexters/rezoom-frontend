@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
-import { Input, Button } from '@material-ui/core';
+import { Input, Button, FormControl, InputLabel } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import scss from './Search.scss';
 import autobind from 'autobind-decorator';
@@ -11,6 +11,8 @@ import {
   questionSearchOption,
 } from '../../../utils/Constans';
 import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
+import { KeyboardArrowDown, SearchIcon } from '@material-ui/icons';
+import AppSearch from './AppSearch';
 
 @reduxForm({
   form: 'searchForm',
@@ -75,8 +77,11 @@ export class SearchForm extends Component {
 
     return (
       <form className={scss['resumes__contents--search']}>
-        <div className={scss['search--input']}>
-          <div>자소서 리스트</div>
+        <div className={scss['search__input']}>
+          <div className={scss['search__change']}>
+            <p>자소서 리스트</p>
+            <KeyboardArrowDown />
+          </div>
           {serarchMode === 'question' ? (
             <SelectForm
               name={'questionSearchOption'}
@@ -84,7 +89,9 @@ export class SearchForm extends Component {
               items={questionSearchOption}
             />
           ) : null}
-          <TextInput name={'companyName'} label={'검색하기'} />
+
+          <AppSearch />
+          {/* <TextInput name={'companyName'} label={'검색하기'} /> */}
           {/* <Button
             variant="contained"
             color="primary"

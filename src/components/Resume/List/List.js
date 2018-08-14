@@ -1,36 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import connect from 'redux-connect-decorator';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardContent, Typography } from '@material-ui/core';
 import scss from './List.scss';
-import { getResumeList } from '../../../store/Resume/Resume.store';
 import autobind from 'autobind-decorator';
+import Scrollbars from 'react-custom-scrollbars';
 
-@connect(
-  state => ({
-    resumeList: state.resume.resumes,
-  }),
-  {
-    getResumeList,
-  },
-)
 export class List extends Component {
   static propTypes = {
     resumeList: PropTypes.any,
-    getResumeList: PropTypes.func,
   };
-
-  componentDidMount() {
-    this.props.getResumeList();
-  }
 
   render() {
     const { resumeList } = this.props;
     // console.log(resumeList);
 
     return (
-      <div className={scss['resumes__contents--list']}>
+      <Scrollbars
+        autoHide
+        autoHideTimeout={100}
+        autoHideDuration={100}
+        autoHeightMin={'100%'}
+        autoHeightMax={'100%'}
+        thumbMinSize={30}
+        universal={true}
+        className={scss['resumes__contents--list']}
+        // style={{flex: 1, order : 2}}
+      >
         {resumeList.length === 0 ? (
           <div>
             <h1> 데이터 없음 </h1>
@@ -57,7 +53,7 @@ export class List extends Component {
             );
           })
         )}
-      </div>
+      </Scrollbars>
     );
   }
 }

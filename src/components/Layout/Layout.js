@@ -13,6 +13,7 @@ import autobind from 'autobind-decorator';
 import { Dialog } from '../Dialog/Dialog';
 import { SearchForm } from '../Resume/Search/SearchForm';
 import { Search } from '../Resume/Search/Search';
+import { LoaderContainer } from '../Shared';
 
 @connect(
   state => ({
@@ -28,6 +29,7 @@ export class Layout extends Component {
       <div className={scss['rezoom-container']}>
         <Header />
         <div className={scss['rezoom-contents']}>
+          <LoaderContainer />
           {match.params.mode === undefined ? <SearchForm /> : null}
           <Switch>
             <Route exact path="/resume" component={Resumes} />

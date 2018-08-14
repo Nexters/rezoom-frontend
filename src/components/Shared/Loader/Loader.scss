@@ -1,0 +1,9 @@
+.loader__container {
+  position: absolute;
+  height: 100%;
+  width: calc(100% - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffffc4;
+}

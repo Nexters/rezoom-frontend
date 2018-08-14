@@ -14,7 +14,16 @@
     }
   }
 
-  .search--input {
+  .search__input {
     display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 48px;
+    padding: 8px 24px;
+  }
+
+  .search__change {
+    display: flex;
+    align-items: center;
   }
 }

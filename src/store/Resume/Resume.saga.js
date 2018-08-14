@@ -10,6 +10,10 @@ import {
 } from './Resume.store';
 import api from '../../service';
 import { getJwtToken } from '../Auth/Auth.store';
+import {
+  activeLoadingContainer,
+  inactiveLoadingContainer,
+} from '../Loader/Loader.store';
 
 function* postCreateNewResume(data) {
   try {
@@ -25,11 +29,13 @@ function* postCreateNewResume(data) {
 
 function* getResumeList() {
   try {
+    yield put(activeLoadingContainer());
     const result = yield call(api.getResumes);
 
     if (result) {
       yield put(updateResumeList(result.data));
     }
+    yield put(inactiveLoadingContainer());
   } catch (error) {
     console.log(error);
   }

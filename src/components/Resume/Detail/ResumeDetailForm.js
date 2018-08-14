@@ -2,7 +2,18 @@ import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import { Field, reduxForm, getFormValues, change } from 'redux-form';
-import { Chip, Button } from '@material-ui/core';
+import {
+  Chip,
+  Button,
+  Popper,
+  Fade,
+  Paper,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@material-ui/core';
 import scss from './ResumeDetailForm.scss';
 import { TextArea } from '../../Forms';
 import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
@@ -30,6 +41,8 @@ export class ResumeDetailForm extends Component {
 
     this.state = {
       tags: [],
+      open: false,
+      anchorEl: null,
     };
   }
 
@@ -97,8 +110,18 @@ export class ResumeDetailForm extends Component {
   @autobind
   onClickAddHashTag() {}
 
+  @autobind
+  onClickContentSetting(e) {
+    const { currentTarget } = e;
+    this.setState(state => ({
+      anchorEl: currentTarget,
+      open: !state.open,
+    }));
+  }
+
   render() {
-    const { tags } = this.state;
+    const { formValues } = this.props;
+    const { tags, open, anchorEl } = this.state;
     /* 
       TODO:  해시태그 추가 기능 만들기
     */
@@ -122,10 +145,64 @@ export class ResumeDetailForm extends Component {
           <div className={scss['answer__header']}>
             <p>답변</p>
             <div className={scss['answer__header--action']}>
-              <p>800 / 1000자</p>
-              <Button variant="contained" color="primary">
+              <p>1 / 1000자</p>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={e => this.onClickContentSetting(e)}
+              >
                 설정
               </Button>
+              <Popper
+                open={open}
+                anchorEl={anchorEl}
+                placement={'left-end'}
+                transition
+              >
+                {({ TransitionProps }) => (
+                  <Fade {...TransitionProps} timeout={350}>
+                    <Paper style={{ display: 'flex', flexDirection: 'row' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <label>최대 글자 수</label>
+                        <input />
+                      </div>
+                      <div>
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">Gender</FormLabel>
+                          <RadioGroup
+                            aria-label="Gender"
+                            name="gender1"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          >
+                            <FormControlLabel
+                              value="female"
+                              control={<Radio />}
+                              label="Female"
+                            />
+                            <FormControlLabel
+                              value="male"
+                              control={<Radio />}
+                              label="Male"
+                            />
+                            <FormControlLabel
+                              value="other"
+                              control={<Radio />}
+                              label="Other"
+                            />
+                            <FormControlLabel
+                              value="disabled"
+                              disabled
+                              control={<Radio />}
+                              label="(Disabled option)"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </div>
+                    </Paper>
+                  </Fade>
+                )}
+              </Popper>
             </div>
           </div>
           <TextArea
