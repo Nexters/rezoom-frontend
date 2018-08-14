@@ -1,7 +1,9 @@
 .resumes__contents--list {
-  > a {
-    > div {
-      margin-bottom: 8px;
+  > div {
+    > a {
+      > div {
+        margin-bottom: 8px;
+      }
     }
   }
 }

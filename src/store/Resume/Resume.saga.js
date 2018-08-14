@@ -10,14 +10,18 @@ import {
 } from './Resume.store';
 import api from '../../service';
 import { getJwtToken } from '../Auth/Auth.store';
+import {
+  activeLoadingContainer,
+  inactiveLoadingContainer,
+} from '../Loader/Loader.store';
 
 function* postCreateNewResume(data) {
   try {
-    const result = yield call(api.newResume, data);
-    console.log('success new resume = ', result);
+    // const result = yield call(api.newResume, data);
+    // console.log('success new resume = ', result);
 
     yield put(responseCreateNewResume(data));
-    yield put(push(`/resume/create/${result.data}`));
+    yield put(push(`/resume/create/${1}`));
   } catch (error) {
     console.log(error);
   }
@@ -25,11 +29,13 @@ function* postCreateNewResume(data) {
 
 function* getResumeList() {
   try {
+    yield put(activeLoadingContainer());
     const result = yield call(api.getResumes);
 
     if (result) {
       yield put(updateResumeList(result.data));
     }
+    yield put(inactiveLoadingContainer());
   } catch (error) {
     console.log(error);
   }

@@ -1,13 +1,20 @@
 import React from 'react';
+import Lottie from 'react-lottie';
+import * as animationData from './loading_liquid.json';
 import { CircularProgress } from '@material-ui/core';
 
 const loadingInjector = fetchingPropKey => ComposedComponent => {
   function WrapperComponent(props) {
-    // console.log(props);
+    const defaultOptions = {
+      loop: true,
+      autoplay: true,
+      animationData: animationData,
+      rendererSettings: {
+        preserveAspectRatio: 'xMidYMid slice',
+      },
+    };
     return props[fetchingPropKey] ? (
-      <div style={{ display: 'block', textAlign: 'center' }}>
-        <CircularProgress />
-      </div>
+      <Lottie options={defaultOptions} height={400} width={400} />
     ) : (
       <ComposedComponent {...props} />
     );
@@ -16,48 +23,3 @@ const loadingInjector = fetchingPropKey => ComposedComponent => {
 };
 
 export default loadingInjector;
-
-// TODO: loader ref
-// ref2 = 'react-loader-advanced'
-// const LoaderHOC = (propName) => (WrappedComponent) => {
-//   return class LoaderHOC extends React.Component {
-//     isEmpty(prop) {
-//       return (
-//         prop === null
-//         || prop === undefined
-//         || (Array.isArray(prop) && prop.lengh === 0)
-//         || (prop.constructor === Object && Object.keys(prop).length === 0)
-//       );
-//     }
-//     render() {
-//       return (
-//         this.isEmpty(this.props[propName])
-//         ? <h1 className='loader'>Loading...</h1>
-//         : <WrappedComponent {...this.props} />)
-//     }
-//   }
-// }
-
-// var AppHeader = function(props) {
-//   return <h1>{props.headerText}</h1>;
-// };
-
-// var LoadingHeader = LoaderHOC('headerText')(AppHeader);
-
-// class App extends React.Component {
-//   state = { headerText: null };
-
-//   componentDidMount() {
-//     setTimeout(() => {
-//       this.setState({headerText: "I am the app header"})
-//     }, 3000)
-//   }
-
-//   render() {
-//     return (
-//       <LoadingHeader headerText={this.state.headerText} />
-//     );
-//   }
-// }
-
-// ReactDOM.render(<App />, document.getElementById('app'));

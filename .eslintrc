@@ -31,6 +31,7 @@
     "curly": ["error", "all"],
     "singleQuote": true,
     "react/no-render-return-value": 0,
+    "react/no-deprecated": 0,
     "no-undef": 0,
     "no-unused-vars": 0,
     "no-useless-constructor": 0

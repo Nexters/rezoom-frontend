@@ -10,58 +10,28 @@ export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
 export const GET_QUESTION_LIST = 'GET_QUESTION_LIST';
 export const UPDATE_QUESTION_LIST = 'UPDATE_QUESTION_LIST';
 export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
+export const SELECT_CREATE_CACHE_QUESTION_ID =
+  'SELECT_CREATE_CACHE_QUESTION_ID';
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
+export const CLEAR_QUESTION = 'CLEAR_QUESTION';
 
 const initialState = {
-  resumes: [
-    {
-      applicationType: 'string',
-      applicationYear: 2018,
-      companyName: 'ssd',
-      finishFlag: 0,
-      halfType: 'string',
-      passFlag: 0,
-      resumeId: 1,
-      username: 'string',
-    },
-    {
-      applicationType: 'string',
-      applicationYear: 2018,
-      companyName: 'stqqring',
-      finishFlag: 0,
-      halfType: 'string',
-      passFlag: 0,
-      resumeId: 2,
-      username: 'string',
-    },
-  ],
-  questions: [
-    {
-      content: '',
-      hashTags: [
-        {
-          hashtagId: 'string',
-          hashtagKeyword: 'string',
-        },
-      ],
-      questionId: 1,
-      title: '',
-    },
-  ],
+  resumes: [],
+  questions: [],
+  selectedQuestion: 1,
   createResumeCache: {
     info: {},
     detail: [],
-    selectedQuestion: 1,
-    prevQuestionId: 1,
+    thisId: 1,
+    prevId: 1,
+    mode: 'select',
   },
-  selectedResumeId: 0,
 };
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
     case UPDATE_RESUME_LIST:
-      console.log(action.payload.resume);
       return {
         ...state,
         resumes: action.payload.resume,
@@ -72,7 +42,6 @@ export default function reducer(state = initialState, action = {}) {
         questions: action.payload.questions,
       };
     case RESPONSE_CREATE_NEW_RESUME:
-      // console.log(action.payload.data);
       const {
         applicationYear,
         halfType,
@@ -86,32 +55,30 @@ export default function reducer(state = initialState, action = {}) {
 
       infoData.id = action.payload.data['id'];
       infoData.companyName = action.payload.data['companyName'];
-      infoData.year = FilterUtils.getItem(
+      infoData.applicationYear = FilterUtils.getItem(
         applicationYear,
         action.payload.data['applicationYear'],
       );
-      infoData.sub = FilterUtils.getItem(
+      infoData.halfType = FilterUtils.getItem(
         halfType,
         action.payload.data['halfType'],
       );
-      infoData.jobType = FilterUtils.getItem(
+      infoData.halfType = FilterUtils.getItem(
         jobType,
-        action.payload.data['jobType'],
+        action.payload.data['halfType'],
       );
-      infoData.q1 = FilterUtils.getItem(
+      infoData.applicationType = FilterUtils.getItem(
         applicationType,
         action.payload.data['applicationType'],
       );
-      infoData.q2 = FilterUtils.getItem(
+      infoData.finishFlag = FilterUtils.getItem(
         finishFlag,
         action.payload.data['finishFlag'],
       );
-      infoData.q3 = FilterUtils.getItem(
+      infoData.passFlag = FilterUtils.getItem(
         passFlag,
         action.payload.data['passFlag'],
       );
-
-      // console.log(infoData);
 
       return {
         ...state,
@@ -121,45 +88,48 @@ export default function reducer(state = initialState, action = {}) {
         },
       };
     case UPDATE_RESUME_DETAIL_CACHE:
-      console.log('UPDATE_RESUME_DETAIL_CACHE = ', action.payload.data);
-      const idx = state.createResumeCache.selectedQuestion;
-      const prevIdx = state.createResumeCache.prevQuestionId;
+      if (action.payload.data.value === undefined) {
+        return;
+      }
+      const thisId = state.createResumeCache.thisId;
+      const prevId = state.createResumeCache.prevId;
       let detail = Object.assign([], state.createResumeCache.detail);
-
-      if (detail.length === 0 && prevIdx === 1) {
-        detail.push(action.payload.data);
-      } else {
-        // TODO: detail에서 loop돌리면서 id가 있으면 update없으면 push
-        const findItem = {};
-        detail.forEach((item, itemIdx) => {
-          if (item.id === idx) {
-            findItem.item = item;
-            findItem.itemIdx = itemIdx;
-          }
-        });
-        if (findItem.item) {
-          detail[findItem.itemIdx] = action.payload.data;
-        } else {
-          detail.push(action.payload.data);
+      let itemCheck = false;
+      detail.forEach((item, itemIdx) => {
+        if (item.questionId === prevId) {
+          itemCheck = true;
+          item.content = action.payload.data.value.content;
+          item.title = action.payload.data.value.title;
+          item.hashTags = action.payload.data.value.hashTags || [];
         }
+      });
+      if (itemCheck) {
+        return {
+          ...state,
+          createResumeCache: {
+            ...state.createResumeCache,
+            detail: detail,
+            mode: 'select',
+          },
+        };
+      } else {
+        return;
       }
 
-      return {
-        ...state,
-        createResumeCache: {
-          ...state.createResumeCache,
-          detail: detail,
-        },
-      };
     case SELECT_QUESTION_ID:
-      const prevQuestionId = state.createResumeCache.selectedQuestion;
-
+      return {
+        ...state,
+        selectedQuestion: action.payload.id,
+      };
+    case SELECT_CREATE_CACHE_QUESTION_ID:
+      console.log(action.payload);
       return {
         ...state,
         createResumeCache: {
           ...state.createResumeCache,
-          selectedQuestion: action.payload.id,
-          prevQuestionId: prevQuestionId,
+          prevId: action.payload.prevId,
+          thisId: action.payload.id,
+          mode: action.payload.selMode,
         },
       };
     case CREATE_QUESTION:
@@ -169,17 +139,26 @@ export default function reducer(state = initialState, action = {}) {
         questionId:
           state.createResumeCache.detail.length === 0
             ? 1
-            : state.createResumeCache.detail.length,
+            : state.createResumeCache.detail.length + 1,
         title: '',
       };
+      const mergeDetail = Object.assign([], state.createResumeCache.detail);
+      mergeDetail.push(newDetail);
       return {
         ...state,
         createResumeCache: {
           ...state.createResumeCache,
-          detail: state.createResumeCache.detail.push(newDetail),
-          prevQuestionId: state.createResumeCache.selectedQuestion,
-          selectedQuestion: state.createResumeCache.detail.length,
+          detail: mergeDetail,
+          prevId: state.createResumeCache.thisId,
+          thisId: state.createResumeCache.detail.length + 1,
+          mode: 'add',
         },
+      };
+    case CLEAR_QUESTION:
+      return {
+        ...state,
+        questions: [],
+        selectedQuestion: 1,
       };
     default:
       return state;
@@ -231,10 +210,10 @@ export const getQuestions = resumeId => ({
   },
 });
 
-export const updateQuestionList = resume => ({
+export const updateQuestionList = questions => ({
   type: UPDATE_QUESTION_LIST,
   payload: {
-    resume,
+    questions,
   },
 });
 
@@ -245,10 +224,23 @@ export const selectedQuestion = id => ({
   },
 });
 
+export const selectedCreateCacheQuestion = (prevId, id, selMode) => ({
+  type: SELECT_CREATE_CACHE_QUESTION_ID,
+  payload: {
+    prevId,
+    id,
+    selMode,
+  },
+});
+
 export const createQuestion = () => ({
   type: CREATE_QUESTION,
 });
 
 export const deleteQuestion = () => ({
   type: DELETE_QUESTION,
+});
+
+export const clearQuestion = () => ({
+  type: CLEAR_QUESTION,
 });

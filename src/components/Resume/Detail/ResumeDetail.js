@@ -21,7 +21,6 @@ export class ResumeDetail extends Component {
   render() {
     // console.log(this.props);
     const { match, createCache, resumes } = this.props;
-    const selectedQuestion = createCache['selectedQuestion'];
     const resumeId = Number(match['params'].id);
     let resumeData, resumeTitle;
 
@@ -56,9 +55,9 @@ export class ResumeDetail extends Component {
                   [{resumeData ? resumeData['applicationType'] : ''}]
                 </small>
               </p>
-              <Button variant="contained" color="primary">
+              {/* <Button variant="contained" color="primary">
                 {resumeData ? resumeData['passFlag'] : ''}
-              </Button>
+              </Button> */}
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <p>
@@ -67,11 +66,7 @@ export class ResumeDetail extends Component {
               </p>
             </div>
           </div>
-          <ResumeDetailForm
-            selectedQuestion={selectedQuestion}
-            resumeId={resumeId}
-            mode={match['params']['mode']}
-          />
+          <ResumeDetailForm mode={match['params']['mode']} />
         </div>
       </div>
     );

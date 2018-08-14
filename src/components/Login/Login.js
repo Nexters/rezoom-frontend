@@ -10,11 +10,14 @@ import {
   CardActions,
   Button,
   withStyles,
+  Paper,
+  Avatar,
 } from '@material-ui/core';
 import { login } from '../../store/Auth/Auth.store';
 import scss from './Login.scss';
 import { TextInput } from '../Forms';
 import autobind from 'autobind-decorator';
+import LockIcon from '@material-ui/icons/LockOutlined';
 
 const styles = {
   card: {
@@ -66,31 +69,51 @@ class Login extends Component {
     return isLogin ? (
       <Redirect push to="/resume" />
     ) : (
-      <div className={scss.login}>
+      <main className={scss.login}>
         <Card className={classes.card}>
           <CardContent>
+            <Avatar>
+              <LockIcon />
+            </Avatar>
             <Typography className={classes.title} color="textSecondary">
               login test
             </Typography>
             {/* <Typography variant="headline" component="h2">
-              로그인 테스트!
-            </Typography> */}
+                로그인 테스트!
+              </Typography> */}
             <form>
               <div>
-                <TextInput name={'username'} label={'아이디'} />
+                <TextInput
+                  name={'username'}
+                  label={'아이디'}
+                  type={'text'}
+                  fullWidth={true}
+                />
               </div>
               <div>
-                <TextInput name={'password'} label={'비밀번호'} />
+                <TextInput
+                  name={'password'}
+                  label={'비밀번호'}
+                  type={'password'}
+                  fullWidth={true}
+                />
               </div>
             </form>
           </CardContent>
           <CardActions>
-            <Button onClick={this.onClickLogin} size="small">
+            <Button
+              onClick={this.onClickLogin}
+              size="small"
+              type="submit"
+              fullWidth
+              variant="raised"
+              color="primary"
+            >
               로그인
             </Button>
           </CardActions>
         </Card>
-      </div>
+      </main>
     );
   }
 }

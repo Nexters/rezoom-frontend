@@ -6,47 +6,154 @@ import autobind from 'autobind-decorator';
 import {
   selectedQuestion,
   getQuestions,
+  createQuestion,
+  clearQuestion,
+  selectedCreateCacheQuestion,
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
+import { QuestionList } from './QuestionList/QuestionList';
 
 @connect(
-  state => ({}),
-  { selectedQuestion, getQuestions },
+  state => ({
+    originQuestions: state.resume.questions,
+    createCacheQuestions: state.resume.createResumeCache.detail,
+    createCacheThisId: state.resume.createResumeCache.thisId,
+    createCacheMode: state.resume.createResumeCache.mode,
+  }),
+  {
+    selectedQuestion,
+    getQuestions,
+    createQuestion,
+    clearQuestion,
+    selectedCreateCacheQuestion,
+  },
 )
 export class DetailMenu extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: [1, 2, 3],
-      selectedQuestion: 1,
+      list: [],
+      selectedQuestion: {
+        key: 1,
+        org: 1,
+      },
+      init: true,
     };
-    console.log('디테일 메뉴');
   }
 
   componentDidMount() {
-    const { resumeId, mode, getQuestions } = this.props;
+    const { resumeId, mode, getQuestions, createQuestion } = this.props;
 
     if (mode === 'create') {
+      createQuestion();
     } else if (mode === 'detail') {
       getQuestions(resumeId);
     }
   }
 
+  componentWillUnmount() {
+    this.props.clearQuestion();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      mode,
+      originQuestions,
+      createCacheQuestions,
+      createCacheThisId,
+      createCacheMode,
+    } = this.props;
+    let orgData, nextData;
+
+    console.log('### createCacheThisId = ', createCacheThisId);
+    console.log(
+      '### nextProps.createCacheThisId = ',
+      nextProps.createCacheThisId,
+    );
+    console.log('### mode = ', createCacheMode);
+
+    if (mode === 'create') {
+      orgData = createCacheQuestions;
+      nextData = nextProps.createCacheQuestions;
+      if (nextProps.createCacheMode === 'add') {
+        if (createCacheThisId !== nextProps.createCacheThisId) {
+          this.setState({
+            selectedQuestion: {
+              key: nextProps.createCacheThisId,
+              org: nextProps.createCacheThisId,
+            },
+          });
+        }
+      }
+    } else if (mode === 'detail') {
+      orgData = originQuestions;
+      nextData = nextProps.originQuestions;
+    }
+
+    if (orgData.length !== nextData.length) {
+      let list = [];
+      nextData.forEach(item => {
+        list.push({ questionId: item.questionId });
+      });
+      this.setState({
+        list: list,
+      });
+    }
+
+    if (this.state.init) {
+      if (nextData[0].questionId !== this.state.selectedQuestion.org) {
+        this.setState({
+          selectedQuestion: {
+            key: 1,
+            org: nextData[0].questionId,
+          },
+        });
+
+        mode === 'create'
+          ? this.props.selectedCreateCacheQuestion(
+              nextData[0].questionId,
+              'add',
+            )
+          : this.props.selectedQuestion(
+              nextProps.originQuestions[0].questionId,
+            );
+      }
+      this.setState({
+        init: false,
+      });
+    }
+  }
+
   @autobind
-  onClickQuestion(e, id) {
-    e.stopPropagation();
-    const { selectedQuestion } = this.props;
-    // console.log('onClickQuestion ! ', id);
+  onClickQuestion(id, questionId) {
+    const { selectedQuestion, mode, selectedCreateCacheQuestion } = this.props;
+
+    if (mode === 'create') {
+      selectedCreateCacheQuestion(
+        this.state.selectedQuestion.org,
+        questionId,
+        'select',
+      );
+    } else if (mode === 'detail') {
+      selectedQuestion(questionId);
+    }
+
     this.setState({
-      selectedQuestion: id,
+      selectedQuestion: { key: id, org: questionId },
     });
-    selectedQuestion(id);
   }
 
   @autobind
   onClickAddQuestion() {
+    console.log('onClickAddQuestion = ', this.state.selectedQuestion);
+
     this.props.createQuestion();
+    this.props.selectedCreateCacheQuestion(
+      this.state.selectedQuestion.org,
+      this.state.list.length + 1,
+      'add',
+    );
   }
 
   @autobind
@@ -54,40 +161,35 @@ export class DetailMenu extends Component {
 
   render() {
     const { list, selectedQuestion } = this.state;
+    const { mode } = this.props;
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
           <p>문항</p>
+          {mode === 'create' ? (
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={this.onClickDeleteQuestion}
+            >
+              삭제
+            </Button>
+          ) : null}
+        </div>
+        <QuestionList
+          list={list}
+          selectedQuestion={selectedQuestion}
+          onClickQuestion={this.onClickQuestion}
+        />
+        {mode === 'create' ? (
           <Button
             variant="outlined"
             color="primary"
-            onClick={this.onClickDeleteQuestion}
+            onClick={this.onClickAddQuestion}
           >
-            삭제
+            + 문항추가
           </Button>
-        </div>
-        <ul>
-          {list.map(item => {
-            // console.log(item);
-            return (
-              <li
-                key={item}
-                style={{ color: selectedQuestion === item ? 'red' : 'black' }}
-                // className={item.active ? scss['sidebar__active'] : ''}
-                onClick={e => this.onClickQuestion(e, item)}
-              >
-                {item}
-              </li>
-            );
-          })}
-        </ul>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={this.onClickAddQuestion}
-        >
-          + 문항추가
-        </Button>
+        ) : null}
       </div>
     );
   }
@@ -95,10 +197,16 @@ export class DetailMenu extends Component {
 
 DetailMenu.propTypes = {
   selectedQuestion: PropTypes.func,
-  resumeId: PropTypes.number,
+  resumeId: PropTypes.string,
   mode: PropTypes.string,
   getQuestions: PropTypes.func,
   createQuestion: PropTypes.func,
+  originQuestions: PropTypes.array,
+  createCacheQuestions: PropTypes.array,
+  clearQuestion: PropTypes.func,
+  selectedCreateCacheQuestion: PropTypes.func,
+  createCacheThisId: PropTypes.number,
+  createCacheMode: PropTypes.string,
 };
 
 export default DetailMenu;
