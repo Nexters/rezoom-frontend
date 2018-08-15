@@ -1,5 +1,10 @@
 .resumes__contents--search {
-  margin-bottom: 24px;
+  height: 180px;
+  padding: 12px 24px;
+  box-shadow: 0 0 1px 0 #dde5fc;
+  background-color: #ffffff;
+  border: solid 1px #f5f4f5;
+
   .detail {
     display: flex;
     justify-content: space-between;

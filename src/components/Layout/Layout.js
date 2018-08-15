@@ -26,9 +26,9 @@ export class Layout extends Component {
   render() {
     const { isLogin, match } = this.props;
     return (
-      <div className={scss['rezoom-container']}>
+      <div className={scss['rezoom__container']}>
         <Header />
-        <div className={scss['rezoom-contents']}>
+        <div className={scss['rezoom__contents']}>
           <LoaderContainer />
           {match.params.mode === undefined ? <SearchForm /> : null}
           <Switch>

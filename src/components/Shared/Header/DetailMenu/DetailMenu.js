@@ -12,6 +12,7 @@ import {
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
 import { QuestionList } from './QuestionList/QuestionList';
+import { MainButton } from '../../Button/MainButton';
 
 @connect(
   state => ({
@@ -165,7 +166,7 @@ export class DetailMenu extends Component {
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
-          <p>문항</p>
+          <p className={scss['title']}>문항</p>
           {mode === 'create' ? (
             <Button
               variant="outlined"
@@ -181,15 +182,12 @@ export class DetailMenu extends Component {
           selectedQuestion={selectedQuestion}
           onClickQuestion={this.onClickQuestion}
         />
-        {mode === 'create' ? (
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={this.onClickAddQuestion}
-          >
-            + 문항추가
-          </Button>
-        ) : null}
+        <div className={scss['detail__sidebar--button']}>
+          <MainButton
+            onClickButton={this.onClickAddQuestion}
+            text={'문항추가'}
+          />
+        </div>
       </div>
     );
   }

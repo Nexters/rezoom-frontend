@@ -31,15 +31,6 @@ export class Resumes extends Component {
     return (
       <div className={scss.resumes}>
         <div className={scss['resumes__contents']}>
-          <div className={scss['resumes__contents--header']}>
-            <div className={scss['title']}>
-              <p>합격한 자소서</p>
-            </div>
-            <div className={scss['action']}>
-              <p>카드형식</p>
-              <p>리스트형식</p>
-            </div>
-          </div>
           <List resumeList={resumeList} />
         </div>
       </div>

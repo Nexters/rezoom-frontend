@@ -7,3 +7,25 @@
     }
   }
 }
+
+.card {
+  height: 172px;
+  padding: 32px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02) !important;
+  
+  &:hover {
+    box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1) !important;
+  }
+}
+
+.list__header {
+  font-size: 24px;
+  font-weight: normal;
+  margin-bottom: 29px;
+
+  p {
+    margin: 0px;
+  }
+}
+

@@ -1,7 +1,24 @@
 .detail__sidebar {
   flex: 1;
-  //   height: 100%;
-  width: 200px;
-  min-width: 200px;
-  padding: 16px;
+  width: 100%;
+
+  .detail__sidebar--header {
+    .title {
+      margin: 0px;
+      margin-top: 2px;
+      padding-left: 30px;
+      font-size: 24px;
+      font-weight: normal;
+      color: #002f54;
+    }
+  }
+
+  .detail__sidebar--button {
+    width: 100%;
+    padding: 0px 30px;
+
+    button {
+      width: 100%;
+    }
+  }
 }

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
-import scss from './List.scss';
-import autobind from 'autobind-decorator';
+import { Button, Card, CardContent, Typography, Grid } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
+import scss from './List.scss';
+import { ListItemInfo } from './ListItemInfo';
 
 export class List extends Component {
   static propTypes = {
@@ -13,7 +13,6 @@ export class List extends Component {
 
   render() {
     const { resumeList } = this.props;
-    // console.log(resumeList);
 
     return (
       <Scrollbars
@@ -32,26 +31,27 @@ export class List extends Component {
             <h1> 데이터 없음 </h1>
           </div>
         ) : (
-          resumeList.map((item, idx) => {
-            return (
-              <Link
-                key={idx}
-                className=""
-                to={`/resume/detail/${item.resumeId}`}
-              >
-                <Card>
-                  <CardContent>
-                    <Typography variant="headline" component="h2">
-                      {item.companyName}
-                    </Typography>
-                    <Typography component="p">
-                      {item.applicationType} - {item.createDate}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Link>
-            );
-          })
+          <Grid container spacing={24}>
+            {resumeList.map((item, idx) => {
+              return (
+                <Grid item lg={6} sm={12} xs={12} key={idx}>
+                  <Link to={`/resume/detail/${item.resumeId}`}>
+                    <Card className={scss['card']}>
+                      <div className={scss['list__header']}>
+                        <p>{item.companyName}</p>
+                      </div>
+                      <ListItemInfo
+                        applicationType={item.applicationType}
+                        applicationYear={item.applicationYear}
+                        halfType={item.halfType}
+                        finishFlag={item.finishFlag}
+                      />
+                    </Card>
+                  </Link>
+                </Grid>
+              );
+            })}
+          </Grid>
         )}
       </Scrollbars>
     );

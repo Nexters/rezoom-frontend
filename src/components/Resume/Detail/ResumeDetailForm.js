@@ -127,23 +127,23 @@ export class ResumeDetailForm extends Component {
     */
     return (
       <form>
-        <div className={scss['detail__contents--hashtag']}>
-          <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.onClickAddHashTag}
-          >
-            # 해시태그 추가
-          </Button>
-        </div>
         <div className={scss['detail__contents--question']}>
           <p className={scss['question__title']}>질문</p>
-          <TextArea name={'title'} label={'질문'} rows={4} />
+          <TextArea name={'title'} rows={4} />
+          <div className={scss['hashtag']}>
+            <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.onClickAddHashTag}
+            >
+              + 해시태그 편집
+            </Button>
+          </div>
         </div>
         <div className={scss['detail__contents--answer']}>
           <div className={scss['answer__header']}>
-            <p>답변</p>
+            <p className={scss['answer__header--title']}>답변</p>
             <div className={scss['answer__header--action']}>
               <p>1 / 1000자</p>
               <Button
@@ -207,7 +207,6 @@ export class ResumeDetailForm extends Component {
           </div>
           <TextArea
             name={'content'}
-            label={'질문'}
             rows={4}
             className={scss['answer__contents']}
           />

@@ -2,30 +2,22 @@ import React, { Component } from 'react';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import { Button } from '@material-ui/core';
 import { logout } from '../../../store/Auth/Auth.store';
 import { dialogOpen } from '../../../store/Dialog/Dialog.store';
 import scss from './Header.scss';
 import autobind from 'autobind-decorator';
 import { DetailMenu } from './DetailMenu/DetailMenu';
+import { MainButton } from '../Button/MainButton';
+import logo from '../../../static/images/logo/ic-logo-width.svg';
+import backIcon from '../../../static/images/item/back.svg';
+import resumeIcon from '../../../static/images/menu/ic-nav-resumelist.svg';
+import fileIcon from '../../../static/images/menu/ic-nav-manage-document.svg';
+import dashboardIcon from '../../../static/images/menu/ic-nav-dashboard.svg';
+import mypageIcon from '../../../static/images/menu/ic-nav-mypage.svg';
 
-const styles = {
-  root: {
-    maxWidth: 200,
-    width: 200,
-    flexGrow: 1,
-  },
-  flex: {
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-  },
-};
-@withStyles(styles)
 @withRouter
 @connect(
   state => ({}),
@@ -59,13 +51,7 @@ class Header extends Component {
     if (!isDetail) {
       buttonComponent = (
         <div className={scss['header__button']}>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={this.onClickButtonAction}
-          >
-            {text}
-          </Button>
+          <MainButton onClickButton={this.onClickButtonAction} text={text} />
         </div>
       );
     }
@@ -83,28 +69,39 @@ class Header extends Component {
     console.log('header match = ', this.props);
 
     return (
-      <AppBar
-        className={(scss.header, classes.root)}
-        position="static"
-        color="default"
-      >
-        <Toolbar className={classes.flex}>
+      <AppBar className={scss.header} position="static" color="inherit">
+        <Toolbar className={scss['header__toolbar']}>
           <div className={scss['header__logo']}>
-            <div className={scss['header__logo--box']}>
-              {isDetail ? <Link to="/resume">{'[< ]'}</Link> : null}
-              <Link to="/resume">Logo</Link>
-            </div>
+            {isDetail ? (
+              <Link to="/resume">
+                <img src={backIcon} alt="rezoom-logo" />
+              </Link>
+            ) : (
+              <Link to="/resume">
+                <img src={logo} alt="rezoom-logo" />
+              </Link>
+            )}
           </div>
           {actionButton}
           {isDetail ? (
             <DetailMenu resumeId={match.params.id} mode={match.params.mode} />
           ) : (
             <div className={scss['header__menu']}>
-              <NavLink className="" to="/resume">
-                자소서 리스트
+              <NavLink activeClassName={scss['active']} to="/dashboard">
+                <img src={dashboardIcon} alt="menu-icons" />
+                <p>대시보드</p>
               </NavLink>
-              <NavLink className="" to="/files">
-                증빙자료 관리
+              <NavLink activeClassName={scss['active']} to="/resume">
+                <img src={resumeIcon} alt="menu-icons" />
+                <p>자소서 리스트</p>
+              </NavLink>
+              <NavLink activeClassName={scss['active']} to="/files">
+                <img src={fileIcon} alt="menu-icons" />
+                <p>증빙자료 관리</p>
+              </NavLink>
+              <NavLink activeClassName={scss['active']} to="/mypage">
+                <img src={mypageIcon} alt="menu-icons" />
+                <p>마이페이지</p>
               </NavLink>
             </div>
           )}

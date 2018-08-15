@@ -5,29 +5,48 @@
 
   .detail__contents {
     flex: 1;
+    display: flex;
+    flex-direction: column;
     height: 100%;
-    border: 1px solid blue;
-    padding: 16px;
-
-    .detail__contents--mode {
-      display: flex;
-      flex-direction: row-reverse;
-      width: 100%;
-      margin-bottom: 8px;
-    }
 
     .detail__contents--header {
+      flex: 0;
+      height: 250px;
+      box-shadow: 0 0 1px 0 #dde5fc;
+      background-color: #ffffff;
+      border-bottom: solid 1px #f5f4f5; 
+
       .detail__contents--title {
         display: flex;
         justify-content: space-between;
         width: 100%;
         margin-bottom: 16px;
+        padding: 0px 58px;
+
+        p {
+          margin: 0px;
+          font-size: 24px;
+          font-weight: normal;
+        }
       }
 
       .detail__contents--subtitle {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         width: 100%;
         margin-bottom: 16px;
+        padding: 0px 58px; 
+        
+        > div {
+          min-width: 450px;
+        }
       }
+    }
+
+    .detail__contents--form {
+      flex: 1;
+      padding: 50px;
     }
   }
 }

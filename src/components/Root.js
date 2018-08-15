@@ -7,7 +7,15 @@ import Login from './Login/Login';
 import PageNotFound from './Shared/Error/PageNotFound';
 
 import { ConnectedRouter } from 'connected-react-router';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#364eda',
+    },
+  },
+});
 export class Root extends Component {
   constructor(props) {
     super(props);
@@ -17,17 +25,19 @@ export class Root extends Component {
     const { store, history } = this.props;
     return (
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route exact path="/" component={Layout} />
-            <Route exact path="/login" component={Login} />
-            <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
-            <Route path="/files" component={Layout} />
-            <Route path="/info" component={Layout} />
-            <Route path="/search" component={Layout} />
-            <Route component={PageNotFound} />
-          </Switch>
-        </ConnectedRouter>
+        <MuiThemeProvider theme={theme}>
+          <ConnectedRouter history={history}>
+            <Switch>
+              <Route exact path="/" component={Layout} />
+              <Route exact path="/login" component={Login} />
+              <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
+              <Route path="/files" component={Layout} />
+              <Route path="/info" component={Layout} />
+              <Route path="/search" component={Layout} />
+              <Route component={PageNotFound} />
+            </Switch>
+          </ConnectedRouter>
+        </MuiThemeProvider>
       </Provider>
     );
   }

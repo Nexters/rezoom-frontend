@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>C97AA3A2-4595-40AC-B52E-5004915F0B81</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_nav_resumelist">
+            <g>
+                <rect id="Rectangle-5" fill-rule="nonzero" x="0" y="0" width="24" height="24"></rect>
+                <g id="Group-4" transform="translate(4.000000, 4.500000)" fill="#001322">
+                    <polygon id="Fill-1" points="4 9 12 9 12 7 4 7"></polygon>
+                    <polygon id="Fill-2" points="4 12 12 12 12 10 4 10"></polygon>
+                    <path d="M0,15 L16,15 L16,0 L0,0 L0,15 Z M1.6,3.94736842 L4.0008,3.94736842 L4.0008,1.57894737 L1.6,1.57894737 L1.6,3.94736842 Z M1.6,13.4210526 L14.4,13.4210526 L14.4,5.52631579 L1.6,5.52631579 L1.6,13.4210526 Z" id="Fill-3"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

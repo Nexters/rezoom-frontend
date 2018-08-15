@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store/configure';
 import sagas from './store/sagas';
 import Root from './components/Root';
-import './styles/main.scss';
+import './static/styles/main.scss';
 
 const initialState = window.__INITIAL_STATE__;
 const history = createBrowserHistory();

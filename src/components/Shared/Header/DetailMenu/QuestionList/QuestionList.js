@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import autobind from 'autobind-decorator';
+import scss from './QuestionList.scss';
 
 export class QuestionList extends Component {
   constructor(props) {
@@ -17,19 +18,20 @@ export class QuestionList extends Component {
     const { list, selectedQuestion } = this.props;
 
     return (
-      <ul>
+      <ul className={scss['question__list']}>
         {list.map((item, idx) => {
           const index = idx + 1;
           return (
             <li
               key={idx}
-              style={{
-                color: selectedQuestion.key === index ? 'red' : 'black',
-              }}
-              // className={item.active ? scss['sidebar__active'] : ''}
+              className={
+                selectedQuestion.key === index
+                  ? scss['question__list--item--active']
+                  : scss['question__list--item']
+              }
               onClick={e => this.onClickQuestion(e, index, item.questionId)}
             >
-              {index}
+              <p>문항 {index}</p>
             </li>
           );
         })}

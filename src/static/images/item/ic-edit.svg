@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>0DAE25C1-F6C4-4D97-89BC-377206D83655</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <polygon id="path-1" points="0 0 16 0 16 16 0 16"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_edit">
+            <g>
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M6.20387643,11.9779418 L4.02205824,9.79612357 L11.8181818,2 L14,4.18181818 L6.20387643,11.9779418 Z M5.43248721,12.749331 L4.18181818,14 L2,14 L2,11.8181818 L3.25066903,10.5675128 L5.43248721,12.749331 Z" id="Combined-Shape" fill="#001322" fill-rule="nonzero" mask="url(#mask-2)"></path>
+                <rect id="Rectangle-8" fill="#001322" fill-rule="nonzero" mask="url(#mask-2)" x="6" y="13" width="9" height="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

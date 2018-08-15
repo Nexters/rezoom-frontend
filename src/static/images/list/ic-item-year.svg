@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>E2329EE2-3B02-415A-BB25-AED6AFB71926</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_item_year">
+            <g>
+                <rect id="Rectangle-5" fill-rule="nonzero" x="0" y="0" width="16" height="16"></rect>
+                <g id="Group-5" transform="translate(2.000000, 2.000000)" fill="#8A8A8A">
+                    <path d="M6,0 C2.6862,0 0,2.6862 0,6 C0,9.3138 2.6862,12 6,12 C9.3138,12 12,9.3138 12,6 C12,2.6862 9.3138,0 6,0 M6,1.2 C8.6466,1.2 10.8,3.3534 10.8,6 C10.8,8.6466 8.6466,10.8 6,10.8 C3.3534,10.8 1.2,8.6466 1.2,6 C1.2,3.3534 3.3534,1.2 6,1.2" id="Fill-1"></path>
+                    <polygon id="Fill-3" points="8.40448491 8 5 6.17178646 5 3 6.01163379 3 6.01163379 5.79302118 9 7.39755443"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

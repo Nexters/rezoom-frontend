@@ -5,6 +5,8 @@ import scss from './ResumeDetail.scss';
 import { Button } from '@material-ui/core';
 import autobind from 'autobind-decorator';
 import { ResumeDetailForm } from './ResumeDetailForm';
+import { ListItemInfo } from '../List/ListItemInfo';
+import { MainButton } from '../../Shared/Button/MainButton';
 
 @connect(
   state => ({
@@ -18,6 +20,9 @@ export class ResumeDetail extends Component {
     super(props);
   }
 
+  @autobind
+  onClickChangeInfo() {}
+
   render() {
     // console.log(this.props);
     const { match, createCache, resumes } = this.props;
@@ -27,46 +32,40 @@ export class ResumeDetail extends Component {
     if (match['params']['mode']) {
       if (match['params']['mode'] === 'detail') {
         resumeData = resumes.filter(item => item.resumeId === resumeId)[0];
+        resumeTitle = resumeData['companyName'];
       } else if (match['params']['mode'] === 'create') {
         resumeData = createCache.info;
+        resumeTitle = resumeData.companyName;
       }
-      resumeTitle = `${resumeData['companyName']} ${
-        resumeData['jobType']
-      } [??]`;
     }
 
     // console.log(resumeData);
     return (
       <div className={scss.detail}>
         <div className={scss['detail__contents']}>
-          <div className={scss['detail__contents--mode']}>
-            {/* <Button variant="contained" color="primary">
-              수정
-            </Button>
-            <Button variant="contained" color="primary">
-              삭제
-            </Button> */}
-          </div>
           <div className={scss['detail__contents--header']}>
             <div className={scss['detail__contents--title']}>
-              <p>
-                {resumeTitle}
-                <small>
-                  [{resumeData ? resumeData['applicationType'] : ''}]
-                </small>
-              </p>
+              <p>{resumeTitle}</p>
               {/* <Button variant="contained" color="primary">
                 {resumeData ? resumeData['passFlag'] : ''}
               </Button> */}
             </div>
             <div className={scss['detail__contents--subtitle']}>
-              <p>
-                {resumeData ? resumeData['applicationYear'] : ''}년{' '}
-                {resumeData ? resumeData['halfType'] : ''}
-              </p>
+              <ListItemInfo
+                applicationType={resumeData['applicationType']}
+                applicationYear={resumeData['applicationYear']}
+                halfType={resumeData['halfType']}
+                finishFlag={resumeData['finishFlag']}
+              />
+              <MainButton
+                onClickButton={this.onClickChangeInfo}
+                text={'정보수정'}
+              />
             </div>
           </div>
-          <ResumeDetailForm mode={match['params']['mode']} />
+          <div className={scss['detail__contents--form']}>
+            <ResumeDetailForm mode={match['params']['mode']} />
+          </div>
         </div>
       </div>
     );

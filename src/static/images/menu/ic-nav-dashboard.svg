@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>AD3D1063-63EA-41E1-9E10-B5EA56A051DC</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <polygon id="path-1" points="0.000154545455 0 17 0 17 11.25 0.000154545455 11.25"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_nav_dashboard">
+            <g>
+                <rect id="Rectangle-5" fill-rule="nonzero" x="0" y="0" width="24" height="24"></rect>
+                <g id="Group-11" transform="translate(3.500000, 4.000000)">
+                    <polygon id="Fill-1" fill="#001322" points="12 9 14 9 14 3 12 3"></polygon>
+                    <polygon id="Fill-2" fill="#001322" points="9 9 11 9 11 4 9 4"></polygon>
+                    <polygon id="Fill-3" fill="#001322" points="6 8 8 8 8 5 6 5"></polygon>
+                    <polygon id="Fill-4" fill="#001322" points="3 9 5 9 5 7 3 7"></polygon>
+                    <g id="Group-10">
+                        <g id="Group-7">
+                            <mask id="mask-2" fill="white">
+                                <use xlink:href="#path-1"></use>
+                            </mask>
+                            <g id="Clip-6"></g>
+                            <path d="M16.1895636,0 L0.810745455,0 C0.362563636,0 0.000154545455,0.3525 0.000154545455,0.78675 L0.000154545455,10.46325 C0.000154545455,10.8975 0.362563636,11.25 0.810745455,11.25 L16.1895636,11.25 C16.6369727,11.25 17.0001545,10.8975 17.0001545,10.46325 L17.0001545,0.78675 C17.0001545,0.3525 16.6369727,0 16.1895636,0 Z M1.54560909,9.75 L15.4547,9.75 L15.4547,1.5 L1.54560909,1.5 L1.54560909,9.75 Z" id="Fill-5" fill="#001322" mask="url(#mask-2)"></path>
+                        </g>
+                        <polygon id="Fill-8" fill="#001322" points="10.8181818 13.875 10.0454545 12.375 6.95454545 12.375 6.18181818 13.875 3.86363636 13.875 3.86363636 15 13.1363636 15 13.1363636 13.875"></polygon>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

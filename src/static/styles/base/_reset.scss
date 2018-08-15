@@ -1,8 +1,7 @@
 body {
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Nanum Square';
-  background: #e1e5e9;
+  background: #fcfdff;
 }
 
 *,
@@ -19,4 +18,8 @@ a {
 ol,
 ul {
   list-style: none;
+}
+
+p {
+  margin: 0px;
 }
