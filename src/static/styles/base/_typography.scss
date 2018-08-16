@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 100;
+    src: local('Noto Sans Thin'), local('NotoSansThin');
+    src: url(/static/font/notoSans/NotoSans-Thin.eot);
+    src: url(/static/font/notoSans/NotoSans-Thin.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Thin.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Thin.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 200;
+    src: local('Noto Sans Light'), local('NotoSansLight');
+    src: url(/static/font/notoSans/NotoSans-Light.eot);
+    src: url(/static/font/notoSans/NotoSans-Light.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Light.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Light.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 300;
+    src: local('Noto Sans DemiLight'), local('NotoSansDemiLight');
+    src: url(/static/font/notoSans/NotoSans-DemiLight.eot);
+    src: url(/static/font/notoSans/NotoSans-DemiLight.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-DemiLight.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-DemiLight.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Noto Sans Regular'), local('NotoSansRegular');
+    src: url(/static/font/notoSans/NotoSans-Regular.eot);
+    src: url(/static/font/notoSans/NotoSans-Regular.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Regular.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Regular.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Noto Sans Medium'), local('NotoSansMedium');
+    src: url(/static/font/notoSans/NotoSans-Medium.eot);
+    src: url(/static/font/notoSans/NotoSans-Medium.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Medium.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Medium.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Noto Sans Bold'), local('NotoSansBold');
+    src: url(/static/font/notoSans/NotoSans-Bold.eot);
+    src: url(/static/font/notoSans/NotoSans-Bold.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Bold.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Bold.otf) format('truetype');
+}
+@font-face {
+    font-family: 'Noto Sans';
+    font-style: normal;
+    font-weight: 900;
+    src: local('Noto Sans Black'), local('NotoSansBlack');
+    src: url(/static/font/notoSans/NotoSans-Black.eot);
+    src: url(/static/font/notoSans/NotoSans-Black.eot?#iefix) format('embedded-opentype'),
+    url(/static/font/notoSans/NotoSans-Black.woff) format('woff'),
+    url(/static/font/notoSans/NotoSans-Black.otf) format('truetype');
+}

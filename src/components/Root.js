@@ -15,6 +15,12 @@ const theme = createMuiTheme({
       main: '#364eda',
     },
   },
+  typography: {
+    fontFamily: 'Noto Sans, Roboto, Helvetica, Arial, sans-serif',
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+  },
 });
 export class Root extends Component {
   constructor(props) {
