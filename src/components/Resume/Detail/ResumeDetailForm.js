@@ -19,6 +19,7 @@ import { TextArea } from '../../Forms';
 import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
+import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
 
 @reduxForm({
   form: 'resumeDetail',
@@ -41,6 +42,8 @@ export class ResumeDetailForm extends Component {
 
     this.state = {
       tags: [],
+      hashTagOpen: false,
+      hashTagAnchor: null,
       open: false,
       anchorEl: null,
     };
@@ -108,7 +111,13 @@ export class ResumeDetailForm extends Component {
   }
 
   @autobind
-  onClickAddHashTag() {}
+  onClickAddHashTag(e) {
+    const { currentTarget } = e;
+    this.setState(state => ({
+      hashTagAnchor: currentTarget,
+      hashTagOpen: !state.hashTagOpen,
+    }));
+  }
 
   @autobind
   onClickContentSetting(e) {
@@ -119,9 +128,14 @@ export class ResumeDetailForm extends Component {
     }));
   }
 
+  @autobind
+  handleChange(a) {
+    console.log(a);
+  }
+
   render() {
     const { formValues } = this.props;
-    const { tags, open, anchorEl } = this.state;
+    const { tags, open, anchorEl, hashTagAnchor, hashTagOpen } = this.state;
     /* 
       TODO:  해시태그 추가 기능 만들기
     */
@@ -135,10 +149,11 @@ export class ResumeDetailForm extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={this.onClickAddHashTag}
+              onClick={e => this.onClickAddHashTag(e)}
             >
               + 해시태그 편집
             </Button>
+            {/* <HashTagsDialog dialogOpen={hashTagOpen} tags={tags} /> */}
           </div>
         </div>
         <div className={scss['detail__contents--answer']}>
