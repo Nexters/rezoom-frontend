@@ -43,7 +43,6 @@ export class ResumeDetailForm extends Component {
     this.state = {
       tags: [],
       hashTagOpen: false,
-      hashTagAnchor: null,
       open: false,
       anchorEl: null,
     };
@@ -124,7 +123,10 @@ export class ResumeDetailForm extends Component {
             tags: item.hashTags,
           });
         } else {
-          change('hashTags', '');
+          change('hashTags', []);
+          this.setState({
+            tags: [],
+          });
         }
       }
     });
@@ -134,7 +136,6 @@ export class ResumeDetailForm extends Component {
   onClickAddHashTag(e) {
     const { currentTarget } = e;
     this.setState(state => ({
-      hashTagAnchor: currentTarget,
       hashTagOpen: !state.hashTagOpen,
     }));
   }
@@ -173,7 +174,7 @@ export class ResumeDetailForm extends Component {
   }
 
   render() {
-    const { tags, open, anchorEl, hashTagAnchor, hashTagOpen } = this.state;
+    const { tags, open, anchorEl, hashTagOpen } = this.state;
     /* 
       TODO:  해시태그 추가 기능 만들기
     */
