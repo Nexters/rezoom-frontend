@@ -19,6 +19,7 @@ import { TextArea } from '../../Forms';
 import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
+import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
 
 @reduxForm({
   form: 'resumeDetail',
@@ -41,6 +42,7 @@ export class ResumeDetailForm extends Component {
 
     this.state = {
       tags: [],
+      hashTagOpen: false,
       open: false,
       anchorEl: null,
     };
@@ -88,6 +90,27 @@ export class ResumeDetailForm extends Component {
     }
   }
 
+  updateResumeDetailForm() {
+    const {
+      formValues,
+      updateResumeDetailCache,
+      createCacheQuestions,
+    } = this.props;
+    let value = {
+      content: '',
+      title: '',
+      hashTags: [],
+    };
+    if (formValues) {
+      value = formValues;
+    }
+
+    updateResumeDetailCache({
+      id: createCacheQuestions.thisId,
+      value: value,
+    });
+  }
+
   changeFormValues(data, id) {
     const { change } = this.props;
     data.forEach(item => {
@@ -95,20 +118,27 @@ export class ResumeDetailForm extends Component {
         change('content', item.content);
         change('title', item.title);
         if (item.hashTags.length > 0) {
-          const tags = item.hashTags.join();
-          change('hashTags', tags);
+          change('hashTags', item.hashTags);
           this.setState({
             tags: item.hashTags,
           });
         } else {
-          change('hashTags', '');
+          change('hashTags', []);
+          this.setState({
+            tags: [],
+          });
         }
       }
     });
   }
 
   @autobind
-  onClickAddHashTag() {}
+  onClickAddHashTag(e) {
+    const { currentTarget } = e;
+    this.setState(state => ({
+      hashTagOpen: !state.hashTagOpen,
+    }));
+  }
 
   @autobind
   onClickContentSetting(e) {
@@ -119,9 +149,32 @@ export class ResumeDetailForm extends Component {
     }));
   }
 
+  @autobind
+  handleChange(a) {
+    console.log(a);
+  }
+
+  @autobind
+  hashTagDialogClose() {
+    this.setState({
+      hashTagOpen: false,
+    });
+  }
+
+  @autobind
+  updateTags(tags) {
+    console.log('updateTags = ', tags);
+    const { change } = this.props;
+    this.setState({
+      tags: tags,
+    });
+    change('hashTags', tags);
+
+    this.updateResumeDetailForm();
+  }
+
   render() {
-    const { formValues } = this.props;
-    const { tags, open, anchorEl } = this.state;
+    const { tags, open, anchorEl, hashTagOpen } = this.state;
     /* 
       TODO:  해시태그 추가 기능 만들기
     */
@@ -135,10 +188,18 @@ export class ResumeDetailForm extends Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={this.onClickAddHashTag}
+              onClick={e => this.onClickAddHashTag(e)}
             >
               + 해시태그 편집
             </Button>
+            {
+              <HashTagsDialog
+                tags={tags}
+                dialogOpen={hashTagOpen}
+                dialogClose={this.hashTagDialogClose}
+                updateTags={this.updateTags}
+              />
+            }
           </div>
         </div>
         <div className={scss['detail__contents--answer']}>

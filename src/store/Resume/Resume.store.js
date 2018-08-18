@@ -15,6 +15,8 @@ export const SELECT_CREATE_CACHE_QUESTION_ID =
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
 export const CLEAR_QUESTION = 'CLEAR_QUESTION';
+export const REQUEST_CREATE_QUESTION = 'REQUEST_CREATE_QUESTION';
+export const RESPONSE_CREATE_QUESTION = 'RESPONSE_CREATE_QUESTION';
 
 const initialState = {
   resumes: [],
@@ -28,6 +30,10 @@ const initialState = {
     mode: 'select',
   },
 };
+
+export const getCreateQuestions = state =>
+  state.resume.createResumeCache.detail;
+export const getSelectedQuestionId = state => state.resume.selectedQuestion;
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
@@ -243,4 +249,15 @@ export const deleteQuestion = () => ({
 
 export const clearQuestion = () => ({
   type: CLEAR_QUESTION,
+});
+
+export const requestCreateQuestion = resumeId => ({
+  type: REQUEST_CREATE_QUESTION,
+  payload: {
+    resumeId,
+  },
+});
+
+export const responseCreateQuestion = () => ({
+  type: RESPONSE_CREATE_QUESTION,
 });

@@ -126,7 +126,13 @@ export class Create extends Component {
           <DialogContent>
             <form>
               <div>
-                <TextInput name={'companyName'} label={'회사명'} />
+                <Field
+                  name="companyName"
+                  component="input"
+                  type="text"
+                  placeholder="회사명"
+                />
+                {/* <TextInput name={'companyName'} label={'회사명'} /> */}
               </div>
               <div>
                 <SelectForm
