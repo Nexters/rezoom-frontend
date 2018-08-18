@@ -14,15 +14,9 @@ const theme = createMuiTheme({
         padding: '14px 0px 18px 16px',
         color: '#002f54',
         border: 'solid 1px #ced8ea',
-        '&:after': {
-          borderBottom: 0,
-        },
       },
     },
     MuiInput: {
-      input: {
-        disableUnderline: true,
-      },
       underline: {
         '&:after': {
           borderBottom: 0,
