@@ -1,8 +1,31 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { fieldInputPropTypes, Field } from 'redux-form';
-import { Select, InputLabel } from '@material-ui/core';
+import { Select, InputLabel, withStyles } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  overrides: {
+    MuiSelect: {
+      root: {
+        width: 166,
+        height: 56,
+        padding: '14px 0px 18px 16px',
+        color: '#002f54',
+        border: 'solid 1px #ced8ea',
+        '&:after': {
+          borderBottom: 0,
+        },
+      },
+    },
+    MuiInput: {
+      input: {
+        disableUnderline: true,
+      },
+    },
+  },
+});
 
 const renderSelect = ({
   name,
@@ -14,16 +37,21 @@ const renderSelect = ({
 }) => {
   return (
     <div>
-      <InputLabel htmlFor="age-auto-width">{name}</InputLabel>
-      <Select
-        id={name}
-        label={label}
-        onChange={(e, idx, value) => input.onChange(value)}
-        {...input}
-        {...custom}
-      >
-        {children}
-      </Select>
+      <MuiThemeProvider theme={theme}>
+        <InputLabel htmlFor="age-auto-width">{name}</InputLabel>
+        <Select
+          InputProps={{
+            disableUnderline: true,
+          }}
+          id={name}
+          label={label}
+          onChange={(e, idx, value) => input.onChange(value)}
+          {...input}
+          {...custom}
+        >
+          {children}
+        </Select>
+      </MuiThemeProvider>
     </div>
   );
 };
