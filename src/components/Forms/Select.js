@@ -23,6 +23,14 @@ const theme = createMuiTheme({
       input: {
         disableUnderline: true,
       },
+      underline: {
+        '&:after': {
+          borderBottom: 0,
+        },
+        '&:hover:not($disabled):not($focused):not($error):before': {
+          borderBottom: 0,
+        },
+      },
     },
   },
 });
