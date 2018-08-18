@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { fieldInputPropTypes, Field } from 'redux-form';
-import { Select, InputLabel, withStyles } from '@material-ui/core';
+import { Select, InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
