@@ -11,19 +11,60 @@ const theme = createMuiTheme({
       root: {
         width: 166,
         height: 56,
-        padding: '14px 0px 18px 16px',
-        color: '#002f54',
+        color: '#668298',
         border: 'solid 1px #ced8ea',
+      },
+      selectMenu: {
+        padding: '17px 20px',
+        marginLeft: '-1px',
       },
     },
     MuiInput: {
       underline: {
+        '&:before': {
+          borderBottom: 0,
+        },
         '&:after': {
           borderBottom: 0,
         },
         '&:hover:not($disabled):not($focused):not($error):before': {
           borderBottom: 0,
         },
+      },
+    },
+    MuiList: {
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
+    },
+    MuiListItem: {
+      default: {
+        border: '1px solid #ced8ea',
+      },
+      button: {
+        fontWeight: '500 !important',
+        '&:hover': {
+          backgroundColor: '#f7fafe',
+          fontWeight: 'bold !important',
+        },
+      },
+    },
+    MuiPaper: {
+      elevation8: {
+        boxShadow: 'none',
+      },
+    },
+    MuiPopover: {
+      paper: {
+        top: '116px !important',
+        minWidth: '166px !important',
+      },
+    },
+    MuiMenuItem: {
+      selected: {
+        backgroundColor: '#dde5fc !important',
+        fontWeight: 'bold !important',
       },
     },
   },
