@@ -98,8 +98,7 @@ export class ResumeDetailForm extends Component {
         change('content', item.content);
         change('title', item.title);
         if (item.hashTags.length > 0) {
-          const tags = item.hashTags.join();
-          change('hashTags', tags);
+          change('hashTags', item.hashTags);
           this.setState({
             tags: item.hashTags,
           });
@@ -133,8 +132,24 @@ export class ResumeDetailForm extends Component {
     console.log(a);
   }
 
+  @autobind
+  hashTagDialogClose() {
+    this.setState({
+      hashTagOpen: false,
+    });
+  }
+
+  @autobind
+  updateTags(tags) {
+    console.log('updateTags = ', tags);
+    const { change } = this.props;
+    this.setState({
+      tags: tags,
+    });
+    change('hashTags', tags);
+  }
+
   render() {
-    const { formValues } = this.props;
     const { tags, open, anchorEl, hashTagAnchor, hashTagOpen } = this.state;
     /* 
       TODO:  해시태그 추가 기능 만들기
@@ -153,7 +168,14 @@ export class ResumeDetailForm extends Component {
             >
               + 해시태그 편집
             </Button>
-            {/* <HashTagsDialog dialogOpen={hashTagOpen} tags={tags} /> */}
+            {
+              <HashTagsDialog
+                tags={tags}
+                dialogOpen={hashTagOpen}
+                dialogClose={this.hashTagDialogClose}
+                updateTags={this.updateTags}
+              />
+            }
           </div>
         </div>
         <div className={scss['detail__contents--answer']}>

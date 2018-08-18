@@ -19,6 +19,7 @@ const renderInput = ({
       label={label} //   errorText={touched && error}
       {...input}
       {...custom}
+      style={{ display: 'none' }}
     />
   );
 };
