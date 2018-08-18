@@ -91,6 +91,27 @@ export class ResumeDetailForm extends Component {
     }
   }
 
+  updateResumeDetailForm() {
+    const {
+      formValues,
+      updateResumeDetailCache,
+      createCacheQuestions,
+    } = this.props;
+    let value = {
+      content: '',
+      title: '',
+      hashTags: [],
+    };
+    if (formValues) {
+      value = formValues;
+    }
+
+    updateResumeDetailCache({
+      id: createCacheQuestions.thisId,
+      value: value,
+    });
+  }
+
   changeFormValues(data, id) {
     const { change } = this.props;
     data.forEach(item => {
@@ -147,6 +168,8 @@ export class ResumeDetailForm extends Component {
       tags: tags,
     });
     change('hashTags', tags);
+
+    this.updateResumeDetailForm();
   }
 
   render() {

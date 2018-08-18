@@ -30,5 +30,6 @@ api.newResume = data => Resume.insert(data);
 
 // question
 api.getQuestions = resumeId => Question.findAll(resumeId);
+api.insertQuestions = data => Question.insert(data);
 
 export default api;

@@ -7,13 +7,15 @@ import autobind from 'autobind-decorator';
 import { ResumeDetailForm } from './ResumeDetailForm';
 import { ListItemInfo } from '../List/ListItemInfo';
 import { MainButton } from '../../Shared/Button/MainButton';
-
+import { requestCreateQuestion } from '../../../store/Resume/Resume.store';
 @connect(
   state => ({
     resumes: state.resume.resumes,
     createCache: state.resume.createResumeCache,
   }),
-  {},
+  {
+    requestCreateQuestion,
+  },
 )
 export class ResumeDetail extends Component {
   constructor(props) {
@@ -22,6 +24,13 @@ export class ResumeDetail extends Component {
 
   @autobind
   onClickChangeInfo() {}
+
+  @autobind
+  saveQuestions() {
+    const { requestCreateQuestion, match } = this.props;
+
+    requestCreateQuestion(match.params.id);
+  }
 
   render() {
     // console.log(this.props);
@@ -61,6 +70,7 @@ export class ResumeDetail extends Component {
                 onClickButton={this.onClickChangeInfo}
                 text={'정보수정'}
               />
+              <MainButton onClickButton={this.saveQuestions} text={'test'} />
             </div>
           </div>
           <div className={scss['detail__contents--form']}>
@@ -76,6 +86,7 @@ ResumeDetail.propTypes = {
   match: PropTypes.object,
   resumes: PropTypes.array,
   createCache: PropTypes.any,
+  requestCreateQuestion: PropTypes.func,
 };
 
 export default ResumeDetail;
