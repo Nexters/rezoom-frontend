@@ -63,6 +63,7 @@ function* postCreateQuestions(resumeId) {
 
     originQuestions.forEach(item => {
       delete item.questionId;
+      item.hashTags = item.hashTags.join();
     });
 
     const body = {
