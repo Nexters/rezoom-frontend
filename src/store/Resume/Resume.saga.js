@@ -16,6 +16,8 @@ import {
   activeLoadingContainer,
   inactiveLoadingContainer,
 } from '../Loader/Loader.store';
+import { FilterUtils } from '../../utils/FilterUtils';
+import { resumeCreateFormData } from '../../utils/Constans';
 
 function* postCreateNewResume(data) {
   try {
@@ -36,6 +38,26 @@ function* getResumeList() {
     const result = yield call(api.getResumes);
 
     if (result) {
+      result.data.forEach(item => {
+        if (item.applicationType.length === 1) {
+          item.applicationType = FilterUtils.filterItem(
+            resumeCreateFormData.applicationType,
+            String(item.applicationType),
+          );
+        }
+
+        if (item.halfType.length === 1) {
+          item.halfType = FilterUtils.filterItem(
+            resumeCreateFormData.halfType,
+            Number(item.halfType),
+          );
+        }
+
+        item.finishFlag = FilterUtils.filterItem(
+          resumeCreateFormData.finishFlag,
+          item.finishFlag,
+        );
+      });
       yield put(updateResumeList(result.data));
     }
     yield put(inactiveLoadingContainer());

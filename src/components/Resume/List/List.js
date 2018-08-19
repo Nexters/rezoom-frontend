@@ -14,6 +14,8 @@ export class List extends Component {
   render() {
     const { resumeList } = this.props;
 
+    console.log('list = ', resumeList);
+
     return (
       <Scrollbars
         autoHide
@@ -31,7 +33,11 @@ export class List extends Component {
             <h1> 데이터 없음 </h1>
           </div>
         ) : (
-          <Grid container spacing={24}>
+          <Grid
+            container
+            spacing={24}
+            className={scss['resumes__contents--box']}
+          >
             {resumeList.map((item, idx) => {
               return (
                 <Grid item lg={6} sm={12} xs={12} key={idx}>

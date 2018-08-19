@@ -39,7 +39,8 @@ export class Layout extends Component {
               component={ResumeDetail}
             />
             <Route path="/files" component={Files} />
-            <Route path="/search" component={Search} />
+            <Route exact path="/search/resumes" component={Search} />
+            <Route exact path="/search/questions" component={Search} />
             <Route path="/mypage/:type?" component={MyPage} />
           </Switch>
         </div>

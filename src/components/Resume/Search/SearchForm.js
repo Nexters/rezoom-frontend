@@ -1,34 +1,38 @@
 import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
-import { Input, Button, FormControl, InputLabel } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import scss from './Search.scss';
 import autobind from 'autobind-decorator';
-import { TextInput, SelectForm } from '../../Forms';
+import { SelectForm } from '../../Forms';
 import {
   resumeCreateFormData,
   questionSearchOption,
 } from '../../../utils/Constans';
-import { Field, reduxForm, fieldInputPropTypes, submit } from 'redux-form';
+import { Field, reduxForm, submit } from 'redux-form';
 import { KeyboardArrowDown, SearchIcon } from '@material-ui/icons';
 import AppSearch from './AppSearch';
+import { searchResumes } from '../../../store/Search/Search.store';
 
 @reduxForm({
   form: 'searchForm',
-  enableReinitialize: true,
   initialValues: {
+    companyName: '',
     applicationYear: 2018,
     halfType: 1,
-    jobType: 1,
-    applicationType: 1,
-    finishFlag: 1,
-    passFlag: 1,
+    applicationType: '1',
+    finishFlag: '1',
+    passFlag: '1',
+  },
+  onSubmit: (values, dispatch) => {
+    dispatch(searchResumes(values));
   },
 })
 @connect(
   state => ({}),
-  {},
+  {
+    submit: () => submit('searchForm'),
+  },
 )
 @withRouter
 export class SearchForm extends Component {
@@ -38,7 +42,6 @@ export class SearchForm extends Component {
     const {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
@@ -47,7 +50,6 @@ export class SearchForm extends Component {
     this.state = {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
@@ -57,17 +59,19 @@ export class SearchForm extends Component {
   }
 
   @autobind
-  onClickSearch() {
-    // const { getResumeList } = this.props;
-    // this.props.getResumeList();
-    // props.history.push('/resume/search');
+  onKeyPress(e) {
+    e.stopPropagation();
+    if (e.hasOwnProperty('key')) {
+      if (e.key === 'Enter') {
+        this.props.submit();
+      }
+    }
   }
 
   render() {
     const {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
@@ -76,7 +80,7 @@ export class SearchForm extends Component {
     } = this.state;
 
     return (
-      <form className={scss['resumes__contents--search']}>
+      <div className={scss['resumes__contents--search']}>
         <div className={scss['search__input']}>
           <div className={scss['search__change']}>
             <p>자소서 리스트</p>
@@ -90,42 +94,54 @@ export class SearchForm extends Component {
             />
           ) : null}
 
-          <AppSearch />
-          {/* <TextInput name={'companyName'} label={'검색하기'} /> */}
-          {/* <Button
-            variant="contained"
-            color="primary"
-            onClick={this.onClickSearch}
-          >
-            검색
-          </Button> */}
+          {/* <Field name={'companyName'} component={AppSearch} label={'label'} /> */}
+          <Field
+            name="companyName"
+            component="input"
+            type="text"
+            placeholder="회사명"
+            onKeyPress={e => this.onKeyPress(e)}
+          />
         </div>
-        <div className={scss['detail']}>
-          <SelectForm name={'passFlag'} label={'합격 여부'} items={passFlag} />
-          <SelectForm
-            name={'applicationYear'}
-            label={'연도'}
-            items={applicationYear}
-          />
-          <SelectForm name={'halfType'} label={'분기'} items={halfType} />
-          <SelectForm name={'jobType'} label={'직무'} items={jobType} />
-          <SelectForm
-            name={'applicationType'}
-            label={'채용 형태'}
-            items={applicationType}
-          />
+        <form className={scss['detail']}>
           <SelectForm
             name={'finishFlag'}
             label={'제출 여부'}
             items={finishFlag}
+            placeholder={'제출 여부'}
           />
-        </div>
-      </form>
+          <SelectForm
+            name={'applicationYear'}
+            label={'연도'}
+            items={applicationYear}
+            placeholder={'연도'}
+          />
+          <SelectForm
+            name={'halfType'}
+            label={'분기'}
+            items={halfType}
+            placeholder={'분기'}
+          />
+          <SelectForm
+            name={'applicationType'}
+            label={'채용 형태'}
+            items={applicationType}
+            placeholder={'채용 형태'}
+          />
+          <SelectForm
+            name={'passFlag'}
+            label={'합격 여부'}
+            items={passFlag}
+            placeholder={'합격 여부'}
+          />
+        </form>
+      </div>
     );
   }
 }
 
 SearchForm.propTypes = {
+  submit: PropTypes.func,
   // history: PropTypes.router,
   // getResumeList: PropTypes.func,
 };

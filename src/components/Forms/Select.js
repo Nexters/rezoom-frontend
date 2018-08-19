@@ -113,9 +113,14 @@ export class SelectForm extends Component {
   }
 
   render() {
-    const { name, label, items } = this.props;
+    const { name, label, items, placeholder } = this.props;
     return (
       <Field name={name} component={renderSelect} label={label}>
+        {/* placeholder.length > 0 ? (
+          <MenuItem key={0} value={placeholder}>
+            {placeholder}
+          </MenuItem>
+        ) : null */}
         {items.map((item, idx) => {
           return (
             <MenuItem key={idx} value={item.value}>
@@ -132,6 +137,7 @@ SelectForm.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
+  placeholder: PropTypes.string,
 };
 
 export default SelectForm;
