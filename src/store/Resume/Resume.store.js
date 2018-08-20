@@ -18,12 +18,23 @@ export const CLEAR_QUESTION = 'CLEAR_QUESTION';
 export const REQUEST_CREATE_QUESTION = 'REQUEST_CREATE_QUESTION';
 export const RESPONSE_CREATE_QUESTION = 'RESPONSE_CREATE_QUESTION';
 
+export const EDIT_RESUME_INFO_DATA = 'EDIT_RESUME_INFO_DATA';
+
 const initialState = {
   resumes: [],
   questions: [],
   selectedQuestion: 1,
   createResumeCache: {
-    info: {},
+    info: {
+      companyName: '',
+      applicationYear: 2018,
+      halfType: 1,
+      jobType: '',
+      applicationType: 1,
+      finishFlag: 1,
+      passFlag: 1,
+      time: new Date(),
+    },
     detail: [],
     thisId: 1,
     prevId: 1,
@@ -166,6 +177,20 @@ export default function reducer(state = initialState, action = {}) {
         questions: [],
         selectedQuestion: 1,
       };
+    case EDIT_RESUME_INFO_DATA:
+      console.log('resumeId = ', action.payload.resumeId);
+      console.log('resumes = ', state.resumes);
+      const resumeInfo = state.resumes.filter(
+        item => item.resumeId === Number(action.payload.resumeId),
+      );
+      console.log(resumeInfo);
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          info: resumeInfo[0],
+        },
+      };
     default:
       return state;
   }
@@ -260,4 +285,11 @@ export const requestCreateQuestion = resumeId => ({
 
 export const responseCreateQuestion = () => ({
   type: RESPONSE_CREATE_QUESTION,
+});
+
+export const editResumeInfoData = resumeId => ({
+  type: EDIT_RESUME_INFO_DATA,
+  payload: {
+    resumeId,
+  },
 });

@@ -28,6 +28,7 @@ export class Dialog extends Component {
           <Create
             dialogOpen={data.isOpen}
             onDialogClose={this.props.dialogClose}
+            mode={data.mode}
           />
         );
       }

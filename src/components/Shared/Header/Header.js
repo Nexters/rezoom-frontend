@@ -36,7 +36,7 @@ class Header extends Component {
   @autobind
   onClickButtonAction() {
     const { location } = this.props;
-    this.props.dialogOpen(location['pathname']);
+    this.props.dialogOpen(location['pathname'], 'Create');
   }
 
   checkRouter(pathname, isDetail) {
@@ -65,8 +65,6 @@ class Header extends Component {
       isDetail = true;
     }
     let actionButton = this.checkRouter(location['pathname'], isDetail);
-
-    console.log('header match = ', this.props);
 
     return (
       <AppBar className={scss.header} position="static" color="inherit">

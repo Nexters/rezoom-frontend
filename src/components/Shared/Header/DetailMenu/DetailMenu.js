@@ -147,8 +147,6 @@ export class DetailMenu extends Component {
 
   @autobind
   onClickAddQuestion() {
-    console.log('onClickAddQuestion = ', this.state.selectedQuestion);
-
     this.props.createQuestion();
     this.props.selectedCreateCacheQuestion(
       this.state.selectedQuestion.org,

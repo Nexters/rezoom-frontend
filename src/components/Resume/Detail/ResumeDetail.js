@@ -8,6 +8,9 @@ import { ResumeDetailForm } from './ResumeDetailForm';
 import { ListItemInfo } from '../List/ListItemInfo';
 import { MainButton } from '../../Shared/Button/MainButton';
 import { requestCreateQuestion } from '../../../store/Resume/Resume.store';
+import { dialogOpen } from '../../../store/Dialog/Dialog.store';
+import editIcon from '../../../static/images/item/ic-edit-alter.svg';
+
 @connect(
   state => ({
     resumes: state.resume.resumes,
@@ -15,6 +18,7 @@ import { requestCreateQuestion } from '../../../store/Resume/Resume.store';
   }),
   {
     requestCreateQuestion,
+    dialogOpen,
   },
 )
 export class ResumeDetail extends Component {
@@ -23,7 +27,11 @@ export class ResumeDetail extends Component {
   }
 
   @autobind
-  onClickChangeInfo() {}
+  onClickChangeInfo(e) {
+    e.stopPropagation();
+    const { dialogOpen, match } = this.props;
+    dialogOpen('/resume', 'Edit');
+  }
 
   @autobind
   saveQuestions() {
@@ -48,13 +56,20 @@ export class ResumeDetail extends Component {
       }
     }
 
-    // console.log(resumeData);
     return (
       <div className={scss.detail}>
         <div className={scss['detail__contents']}>
           <div className={scss['detail__contents--header']}>
             <div className={scss['detail__contents--title']}>
-              <p>{resumeTitle}</p>
+              <p>
+                {resumeTitle}
+                <Button
+                  aria-haspopup="true"
+                  onClick={e => this.onClickChangeInfo(e)}
+                >
+                  <img src={editIcon} alt="editIcon" />정보수정
+                </Button>
+              </p>
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <ListItemInfo
@@ -63,11 +78,7 @@ export class ResumeDetail extends Component {
                 halfType={resumeData['halfType']}
                 finishFlag={resumeData['finishFlag']}
               />
-              <MainButton
-                onClickButton={this.onClickChangeInfo}
-                text={'정보수정'}
-              />
-              <MainButton onClickButton={this.saveQuestions} text={'test'} />
+              <MainButton onClickButton={this.saveQuestions} text={'저장'} />
             </div>
           </div>
           <div className={scss['detail__contents--form']}>
@@ -84,6 +95,7 @@ ResumeDetail.propTypes = {
   resumes: PropTypes.array,
   createCache: PropTypes.any,
   requestCreateQuestion: PropTypes.func,
+  dialogOpen: PropTypes.func,
 };
 
 export default ResumeDetail;

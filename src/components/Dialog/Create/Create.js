@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Field, reduxForm, submit, change } from 'redux-form';
+import { Field, reduxForm, submit, change, initialize } from 'redux-form';
 import { TextInput, SelectForm } from '../../Forms';
-import { createNewResume } from '../../../store/Resume/Resume.store';
+import {
+  createNewResume,
+  editResumeInfoData,
+} from '../../../store/Resume/Resume.store';
 import autobind from 'autobind-decorator';
 import { withStyles, CircularProgress, IconButton } from '@material-ui/core';
 import green from '@material-ui/core/colors/green';
@@ -50,27 +54,22 @@ const styles = theme => ({
 @reduxForm({
   form: 'newResume',
   enableReinitialize: true,
-  initialValues: {
-    companyName: '',
-    applicationYear: 2018,
-    halfType: 1,
-    jobType: '',
-    applicationType: 1,
-    finishFlag: 1,
-    passFlag: 1,
-    time: new Date(),
-  },
   onSubmit: (values, dispatch) => {
     dispatch(createNewResume(values));
   },
 })
 @connect(
-  state => ({}),
+  state => ({
+    resumeInfo: state.resume.createResumeCache.info,
+    initialValues: state.resume.createResumeCache.info,
+  }),
   {
     submit: () => submit('newResume'),
     change: (key, value) => change('newResume', key, value),
+    editResumeInfoData,
   },
 )
+@withRouter
 export class Create extends Component {
   timer = null;
 
@@ -96,6 +95,38 @@ export class Create extends Component {
       selectedDate: new Date(),
       loading: false,
     };
+  }
+
+  componentDidMount() {
+    const {
+      mode,
+      resumeInfo,
+      change,
+      initialize,
+      match,
+      editResumeInfoData,
+    } = this.props;
+
+    if (mode === 'Edit') {
+      console.log('?');
+      editResumeInfoData(match['params']['id']);
+    } else {
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { change, initialValues, mode } = this.props;
+    console.log('componentWillReceiveProps');
+    console.log(this.props.initialValues.companyName);
+    console.log(nextProps.initialValues.companyName);
+    if (mode === 'Edit') {
+      if (
+        initialValues.companyName.length !==
+        nextProps.initialValues.companyName.length
+      ) {
+        change('companyName', nextProps.initialValues.companyName);
+      }
+    }
   }
 
   @autobind
@@ -281,6 +312,12 @@ Create.propTypes = {
   onDialogClose: PropTypes.func,
   handleSubmit: PropTypes.func,
   change: PropTypes.func,
+  mode: PropTypes.string,
+  resumeInfo: PropTypes.object,
+  initialize: PropTypes.func,
+  match: PropTypes.object,
+  editResumeInfoData: PropTypes.func,
+  initialValues: PropTypes.object,
 };
 
 export default Create;

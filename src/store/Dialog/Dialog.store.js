@@ -5,6 +5,7 @@ const initialState = {
   dialog: {
     name: '',
     isOpen: false,
+    mode: 'Create',
   },
 };
 
@@ -22,6 +23,7 @@ export default function reducer(state = initialState, action = {}) {
         dialog: {
           name: name,
           isOpen: true,
+          mode: action.payload.mode,
         },
       };
     case DIALOG_CLOSE:
@@ -37,10 +39,11 @@ export default function reducer(state = initialState, action = {}) {
   }
 }
 
-export const dialogOpen = type => ({
+export const dialogOpen = (type, mode) => ({
   type: DIALOG_OPEN,
   payload: {
     type,
+    mode,
   },
 });
 
