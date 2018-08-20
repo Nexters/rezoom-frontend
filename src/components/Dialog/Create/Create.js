@@ -122,7 +122,9 @@ export class Create extends Component {
 
   @autobind
   handleDateChange(date) {
-    console.log('date picker = ', date);
+    const convertDate = moment(date).toObject();
+    console.log(convertDate);
+
     this.setState({ selectedDate: date });
     this.props.change('time', date);
   }
