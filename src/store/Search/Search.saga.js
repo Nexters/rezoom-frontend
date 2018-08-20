@@ -28,9 +28,12 @@ export function* getSearchResumes(data) {
           yield put(push(`/search/questions`));
         }
       } else if (data.questionSearchOption === 'hashtag') {
+        // TODO: hashtag 색칠하기
         result = yield call(api.getQuestionsHashTag, data.searchText);
-        yield put(responseSearchQuestionsHashTag(result.data, 'hashtag'));
-        yield put(push(`/search/questions`));
+        if (result.data) {
+          yield put(responseSearchQuestionsHashTag(result.data, 'hashtag'));
+          yield put(push(`/search/questions`));
+        }
       }
 
       // [{"questionId":108,"title":"삼성에 지원한 동기 및 포부는?","content":"돈 많이 벌려고 지원했습니다.","companyName":"네이","hashTags":["지원동기","포부"]},{"questionId":151,"title":"삼성에 지원한 동기 및 포부는?","content":"돈 많이 벌려고 지원했습니다.","companyName":"네이","hashTags":["asdasd","asda","asd","asdasdas"]}]

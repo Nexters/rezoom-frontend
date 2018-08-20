@@ -49,7 +49,7 @@ import { SeacrhMenuPopper } from './SearchMenuPopper';
   state => ({}),
   {
     submit: () => submit('searchForm'),
-    change: (key, value) => change('resumeDetail', key, value),
+    change: (key, value) => change('searchForm', key, value),
   },
 )
 @withRouter
