@@ -30,7 +30,7 @@ export class ResumeDetail extends Component {
   onClickChangeInfo(e) {
     e.stopPropagation();
     const { dialogOpen, match } = this.props;
-    dialogOpen('/resume', 'Edit');
+    dialogOpen('/resume', 'Edit', 0);
   }
 
   @autobind

@@ -7,8 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Field, reduxForm, submit, change, initialize } from 'redux-form';
-import { TextInput, SelectForm } from '../../Forms';
+import { Field, reduxForm, submit, change } from 'redux-form';
 import {
   createNewResume,
   editResumeInfoData,
@@ -54,14 +53,24 @@ const styles = theme => ({
 @reduxForm({
   form: 'newResume',
   enableReinitialize: true,
+  initialValues: {
+    companyName: '',
+    applicationYear: 2018,
+    halfType: '상반기',
+    applicationType: '0',
+    finishFlag: 0,
+    passFlag: 0,
+    selectedDate: new Date(),
+    // TODO: deadline YYYY-MM-DD HH
+  },
   onSubmit: (values, dispatch) => {
     dispatch(createNewResume(values));
   },
 })
 @connect(
   state => ({
-    resumeInfo: state.resume.createResumeCache.info,
     initialValues: state.resume.createResumeCache.info,
+    loading: state.loader.component,
   }),
   {
     submit: () => submit('newResume'),
@@ -79,7 +88,6 @@ export class Create extends Component {
     const {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
@@ -88,67 +96,65 @@ export class Create extends Component {
     this.state = {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
       selectedDate: new Date(),
-      loading: false,
+      init: true,
     };
   }
 
   componentDidMount() {
-    const {
-      mode,
-      resumeInfo,
-      change,
-      initialize,
-      match,
-      editResumeInfoData,
-    } = this.props;
+    const { mode, match, editResumeInfoData, id } = this.props;
 
     if (mode === 'Edit') {
-      console.log('?');
-      editResumeInfoData(match['params']['id']);
-    } else {
+      if (id !== 0) {
+        editResumeInfoData(id);
+      } else {
+        editResumeInfoData(match['params']['id']);
+      }
+      this.setEditForm();
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const { change, initialValues, mode } = this.props;
-    console.log('componentWillReceiveProps');
-    console.log(this.props.initialValues.companyName);
-    console.log(nextProps.initialValues.companyName);
-    if (mode === 'Edit') {
-      if (
-        initialValues.companyName.length !==
-        nextProps.initialValues.companyName.length
-      ) {
+    const { change, mode } = this.props;
+
+    if (this.state.init) {
+      if (mode === 'Edit') {
         change('companyName', nextProps.initialValues.companyName);
+        change('applicationYear', nextProps.initialValues.applicationYear);
+        change('halfType', nextProps.initialValues.halfType);
+        change('jobType', nextProps.initialValues.jobType);
+        change('applicationType', nextProps.initialValues.applicationType);
+        change('finishFlag', nextProps.initialValues.finishFlag);
+        change('passFlag', nextProps.initialValues.passFlag);
+        change('resumeId', nextProps.initialValues.resumeId);
+        change('mode', mode);
+        this.setState({
+          init: false,
+        });
       }
     }
   }
 
+  setEditForm() {
+    const { initialValues, change, mode } = this.props;
+
+    change('companyName', initialValues.companyName);
+    change('applicationYear', initialValues.applicationYear);
+    change('halfType', initialValues.halfType);
+    change('jobType', initialValues.jobType);
+    change('applicationType', initialValues.applicationType);
+    change('finishFlag', initialValues.finishFlag);
+    change('passFlag', initialValues.passFlag);
+    change('resumeId', initialValues.resumeId);
+    change('mode', mode);
+  }
+
   @autobind
   handleSubmit() {
-    if (!this.state.loading) {
-      this.setState(
-        {
-          success: false,
-          loading: true,
-        },
-        () => {
-          this.timer = setTimeout(() => {
-            this.setState({
-              loading: false,
-              success: true,
-            });
-            this.props.submit();
-            this.props.onDialogClose();
-          }, 1000);
-        },
-      );
-    }
+    this.props.submit();
   }
 
   @autobind
@@ -161,15 +167,13 @@ export class Create extends Component {
   }
 
   render() {
-    const { dialogOpen, handleSubmit, classes } = this.props;
+    const { dialogOpen, classes, loading } = this.props;
     const {
       applicationYear,
       halfType,
-      jobType,
       applicationType,
       finishFlag,
       passFlag,
-      loading,
       selectedDate,
     } = this.state;
 
@@ -194,6 +198,18 @@ export class Create extends Component {
           </DialogTitle>
           <DialogContent className={scss['create__contents']}>
             <form>
+              <Field
+                name="resumeId"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
+              <Field
+                name="mode"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
               <div className={scss['create__full']}>
                 <p>회사명</p>
                 <div className={scss['create__full--item']}>
@@ -310,14 +326,14 @@ Create.propTypes = {
   submit: PropTypes.func,
   dialogOpen: PropTypes.bool,
   onDialogClose: PropTypes.func,
-  handleSubmit: PropTypes.func,
   change: PropTypes.func,
   mode: PropTypes.string,
-  resumeInfo: PropTypes.object,
   initialize: PropTypes.func,
   match: PropTypes.object,
   editResumeInfoData: PropTypes.func,
   initialValues: PropTypes.object,
+  loading: PropTypes.bool,
+  id: PropTypes.number,
 };
 
 export default Create;

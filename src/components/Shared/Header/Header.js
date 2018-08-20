@@ -36,7 +36,7 @@ class Header extends Component {
   @autobind
   onClickButtonAction() {
     const { location } = this.props;
-    this.props.dialogOpen(location['pathname'], 'Create');
+    this.props.dialogOpen(location['pathname'], 'Create', 0);
   }
 
   checkRouter(pathname, isDetail) {

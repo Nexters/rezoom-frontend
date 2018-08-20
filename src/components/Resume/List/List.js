@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { Card, Grid } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
 import scss from './List.scss';
 import { ListItemInfo } from './ListItemInfo';
+import { ListMenu } from './ListMenu';
 
 export class List extends Component {
   static propTypes = {
@@ -38,7 +39,15 @@ export class List extends Component {
           >
             {resumeList.map((item, idx) => {
               return (
-                <Grid item lg={6} sm={12} xs={12} key={idx}>
+                <Grid
+                  item
+                  lg={6}
+                  sm={12}
+                  xs={12}
+                  key={idx}
+                  style={{ position: 'relative' }}
+                >
+                  <ListMenu resumeId={item.resumeId} />
                   <Link to={`/resume/detail/${item.resumeId}`}>
                     <Card className={scss['card']}>
                       <div className={scss['list__header']}>

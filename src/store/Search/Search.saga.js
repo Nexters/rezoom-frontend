@@ -49,13 +49,6 @@ export function* getSearchResumes(data) {
             );
           }
 
-          if (item.halfType.length === 1) {
-            item.halfType = FilterUtils.filterItem(
-              resumeCreateFormData.halfType,
-              Number(item.halfType),
-            );
-          }
-
           item.finishFlag = FilterUtils.filterItem(
             resumeCreateFormData.finishFlag,
             item.finishFlag,

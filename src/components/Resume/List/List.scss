@@ -24,12 +24,18 @@
 }
 
 .list__header {
+  display: flex;
+  justify-content: space-between;
   font-size: 24px;
   font-weight: normal;
   margin-bottom: 29px;
 
   p {
     margin: 0px;
+  }
+  button {
+    margin-top: -12px;
+    margin-right: -14px;
   }
 }
 

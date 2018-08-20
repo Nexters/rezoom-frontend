@@ -5,7 +5,7 @@ export const INACTIVE_LOADING_COMPONENT = 'INACTIVE_LOADING_COMPONENT';
 
 const initialState = {
   container: true,
-  component: true,
+  component: false,
 };
 
 export default function reducer(state = initialState, action = {}) {

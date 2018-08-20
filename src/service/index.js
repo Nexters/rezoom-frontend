@@ -7,10 +7,10 @@ const Auth = {
 
 const Resume = {
   findAll: () => Api.get('resumes'),
-  findOne: resumeId => Api.get(`resume/${resumeId}`),
-  delete: resumeId => Api.del(`resume/${resumeId}`),
+  findOne: resumeId => Api.get(`resumes/${resumeId}`),
+  delete: resumeId => Api.del(`resumes/${resumeId}`),
   insert: param => Api.post('resumes', param),
-  update: (resumeId, param) => Api.put(`resume/${resumeId}`, param),
+  update: (resumeId, param) => Api.put(`resumes/${resumeId}`, param),
 };
 
 const Question = {
@@ -36,6 +36,8 @@ api.login = param => Auth.login(param);
 api.getResumes = () => Resume.findAll();
 api.getResume = resumeId => Resume.findOne(resumeId);
 api.newResume = data => Resume.insert(data);
+api.updateResume = (resumeId, resume) => Resume.update(resumeId, resume);
+api.deleteResume = resumeId => Resume.delete(resumeId);
 
 // question
 api.getQuestions = resumeId => Question.findAll(resumeId);

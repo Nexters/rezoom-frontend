@@ -29,6 +29,14 @@
     .search__change {
       display: flex;
       align-items: center;
+
+      > button {
+        > span {
+          font-size: 24px;
+          font-weight: normal;
+          color: #222222;
+        }
+      }
   
       .search__change--menus {
         z-index: 9999;

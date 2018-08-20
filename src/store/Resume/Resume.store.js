@@ -19,6 +19,7 @@ export const REQUEST_CREATE_QUESTION = 'REQUEST_CREATE_QUESTION';
 export const RESPONSE_CREATE_QUESTION = 'RESPONSE_CREATE_QUESTION';
 
 export const EDIT_RESUME_INFO_DATA = 'EDIT_RESUME_INFO_DATA';
+export const DELETE_RESUME = 'DELETE_RESUME';
 
 const initialState = {
   resumes: [],
@@ -28,7 +29,7 @@ const initialState = {
     info: {
       companyName: '',
       applicationYear: 2018,
-      halfType: 1,
+      halfType: '상반기',
       jobType: '',
       applicationType: 1,
       finishFlag: 1,
@@ -289,6 +290,13 @@ export const responseCreateQuestion = () => ({
 
 export const editResumeInfoData = resumeId => ({
   type: EDIT_RESUME_INFO_DATA,
+  payload: {
+    resumeId,
+  },
+});
+
+export const deleteResume = resumeId => ({
+  type: DELETE_RESUME,
   payload: {
     resumeId,
   },

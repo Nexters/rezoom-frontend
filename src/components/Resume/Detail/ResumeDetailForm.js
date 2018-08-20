@@ -176,7 +176,11 @@ export class ResumeDetailForm extends Component {
   render() {
     const { tags, open, anchorEl, hashTagOpen } = this.state;
     /* 
-      TODO:  해시태그 추가 기능 만들기
+      TODO:  
+      1. 해시태그 추가 했을때 등록 및 초기화 기능 수정
+      2. title, content -> onChange시에 updateResumeDetailCache 할것
+      3. detail로 들어왔을때도 cache에 담고 수정 가능하게 
+
     */
     return (
       <form>

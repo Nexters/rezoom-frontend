@@ -34,7 +34,7 @@ import { SeacrhMenuPopper } from './SearchMenuPopper';
   initialValues: {
     companyName: '',
     applicationYear: 2018,
-    halfType: 1,
+    halfType: '상반기',
     applicationType: '1',
     finishFlag: '1',
     passFlag: '1',

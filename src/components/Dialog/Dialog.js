@@ -29,6 +29,7 @@ export class Dialog extends Component {
             dialogOpen={data.isOpen}
             onDialogClose={this.props.dialogClose}
             mode={data.mode}
+            id={data.id}
           />
         );
       }
