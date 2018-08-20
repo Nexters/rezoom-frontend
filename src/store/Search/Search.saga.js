@@ -1,6 +1,11 @@
 import { call, fork, take, put } from 'redux-saga/effects';
 import api from '../../service';
-import { SEARCH_RESUMES, responseSearchResumes } from './Search.store';
+import {
+  SEARCH_RESUMES,
+  responseSearchResumes,
+  responseSearchQuestionsKeyword,
+  responseSearchQuestionsHashTag,
+} from './Search.store';
 import { push } from 'connected-react-router';
 import {
   activeLoadingContainer,
@@ -13,32 +18,51 @@ export function* getSearchResumes(data) {
   try {
     yield put(activeLoadingContainer());
 
-    const result = yield call(api.getSearchResumes, data.companyName);
+    if (data.mode === 'questions') {
+      let result;
 
-    if (result.data) {
-      result.data.forEach(item => {
-        if (item.applicationType.length === 1) {
-          item.applicationType = FilterUtils.filterItem(
-            resumeCreateFormData.applicationType,
-            String(item.applicationType),
-          );
+      if (data.questionSearchOption === 'keyword') {
+        result = yield call(api.getQuestionsKeyword, data.searchText);
+        if (result.data) {
+          yield put(responseSearchQuestionsKeyword(result.data, 'keyword'));
+          yield put(push(`/search/questions`));
         }
+      } else if (data.questionSearchOption === 'hashtag') {
+        result = yield call(api.getQuestionsHashTag, data.searchText);
+        yield put(responseSearchQuestionsHashTag(result.data, 'hashtag'));
+        yield put(push(`/search/questions`));
+      }
 
-        if (item.halfType.length === 1) {
-          item.halfType = FilterUtils.filterItem(
-            resumeCreateFormData.halfType,
-            Number(item.halfType),
+      // [{"questionId":108,"title":"삼성에 지원한 동기 및 포부는?","content":"돈 많이 벌려고 지원했습니다.","companyName":"네이","hashTags":["지원동기","포부"]},{"questionId":151,"title":"삼성에 지원한 동기 및 포부는?","content":"돈 많이 벌려고 지원했습니다.","companyName":"네이","hashTags":["asdasd","asda","asd","asdasdas"]}]
+    } else if (data.mode === 'resumes') {
+      const result = yield call(api.getSearchResumes, data.searchText);
+
+      if (result.data) {
+        result.data.forEach(item => {
+          if (item.applicationType.length === 1) {
+            item.applicationType = FilterUtils.filterItem(
+              resumeCreateFormData.applicationType,
+              String(item.applicationType),
+            );
+          }
+
+          if (item.halfType.length === 1) {
+            item.halfType = FilterUtils.filterItem(
+              resumeCreateFormData.halfType,
+              Number(item.halfType),
+            );
+          }
+
+          item.finishFlag = FilterUtils.filterItem(
+            resumeCreateFormData.finishFlag,
+            item.finishFlag,
           );
-        }
-
-        item.finishFlag = FilterUtils.filterItem(
-          resumeCreateFormData.finishFlag,
-          item.finishFlag,
-        );
-      });
-      yield put(responseSearchResumes(result.data));
+        });
+        yield put(responseSearchResumes(result.data));
+      }
+      yield put(push(`/search/resumes`));
     }
-    yield put(push(`/search/resumes`));
+
     yield put(inactiveLoadingContainer());
   } catch (e) {
     throw e;

@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Button, Card, CardContent, Typography, Grid } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
-import scss from './List.scss';
-import { ListItemInfo } from './ListItemInfo';
+import { Link } from 'react-router-dom';
+import { Grid, Card, Chip } from '@material-ui/core';
+import scss from './QuestionsList.scss';
 
-export class List extends Component {
-  static propTypes = {
-    resumeList: PropTypes.any,
-  };
-
+export class QuestionsList extends Component {
   render() {
-    const { resumeList } = this.props;
-
+    const { searchQuestionsList, searchMode } = this.props;
     return (
       <Scrollbars
         autoHide
@@ -26,7 +20,7 @@ export class List extends Component {
         className={scss['resumes__contents--list']}
         // style={{flex: 1, order : 2}}
       >
-        {resumeList.length === 0 ? (
+        {searchQuestionsList.length === 0 ? (
           <div>
             <h1> 데이터 없음 </h1>
           </div>
@@ -36,20 +30,21 @@ export class List extends Component {
             spacing={24}
             className={scss['resumes__contents--box']}
           >
-            {resumeList.map((item, idx) => {
+            {searchQuestionsList.map((item, idx) => {
               return (
                 <Grid item lg={6} sm={12} xs={12} key={idx}>
                   <Link to={`/resume/detail/${item.resumeId}`}>
                     <Card className={scss['card']}>
                       <div className={scss['list__header']}>
                         <p>{item.companyName}</p>
+                        <p>{/* item.jobType */}</p>
+                        <p>{item.title}</p>
+                        {item.hashTags.map((tag, idx) => {
+                          return (
+                            <Chip key={idx} label={`#${tag}`} color="primary" />
+                          );
+                        })}
                       </div>
-                      <ListItemInfo
-                        applicationType={item.applicationType}
-                        applicationYear={item.applicationYear}
-                        halfType={item.halfType}
-                        finishFlag={item.finishFlag}
-                      />
                     </Card>
                   </Link>
                 </Grid>
@@ -62,4 +57,9 @@ export class List extends Component {
   }
 }
 
-export default List;
+QuestionsList.propTypes = {
+  searchQuestionsList: PropTypes.array,
+  searchMode: PropTypes.string,
+};
+
+export default QuestionsList;

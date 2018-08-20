@@ -18,6 +18,6 @@ export const resumeCreateFormData = {
 };
 
 export const questionSearchOption = [
-  { key: '키워드', value: '1' },
-  { key: '해시태그', value: '2' },
+  { key: '키워드', value: 'keyword' },
+  { key: '해시태그', value: 'hashTag' },
 ];

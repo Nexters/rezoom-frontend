@@ -13,7 +13,6 @@ import { List } from '../List/List';
 export class Search extends Component {
   render() {
     const { searchResumeList } = this.props;
-    console.log(searchResumeList);
     return (
       <div className={scss['resumes__search']}>
         <div className={scss['resumes__contents']}>

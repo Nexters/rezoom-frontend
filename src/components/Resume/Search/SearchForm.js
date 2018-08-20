@@ -9,10 +9,25 @@ import {
   resumeCreateFormData,
   questionSearchOption,
 } from '../../../utils/Constans';
-import { Field, reduxForm, submit } from 'redux-form';
-import { KeyboardArrowDown, SearchIcon } from '@material-ui/icons';
+import { Field, reduxForm, submit, change } from 'redux-form';
+import {
+  KeyboardArrowDown,
+  SearchIcon,
+  KeyboardArrowUp,
+} from '@material-ui/icons';
 import AppSearch from './AppSearch';
 import { searchResumes } from '../../../store/Search/Search.store';
+import {
+  Paper,
+  MenuList,
+  MenuItem,
+  Popper,
+  Grow,
+  ClickAwayListener,
+  Button,
+} from '@material-ui/core';
+import { SearchFormDetail } from './SearchFormDetail';
+import { SeacrhMenuPopper } from './SearchMenuPopper';
 
 @reduxForm({
   form: 'searchForm',
@@ -23,6 +38,8 @@ import { searchResumes } from '../../../store/Search/Search.store';
     applicationType: '1',
     finishFlag: '1',
     passFlag: '1',
+    mode: 'resumes',
+    questionSearchOption: 'keyword',
   },
   onSubmit: (values, dispatch) => {
     dispatch(searchResumes(values));
@@ -32,6 +49,7 @@ import { searchResumes } from '../../../store/Search/Search.store';
   state => ({}),
   {
     submit: () => submit('searchForm'),
+    change: (key, value) => change('resumeDetail', key, value),
   },
 )
 @withRouter
@@ -54,7 +72,12 @@ export class SearchForm extends Component {
       finishFlag,
       passFlag,
       questionSearchOption,
-      serarchMode: 'resume', // resume: 자소서리스트, question: 문항
+      searchMode: [
+        { key: '자소서 리스트', id: 0, active: true },
+        { key: '문항별 리스트', id: 1, active: false },
+      ],
+      menusAnchorEl: null,
+      menusOpen: false,
     };
   }
 
@@ -68,6 +91,49 @@ export class SearchForm extends Component {
     }
   }
 
+  @autobind
+  handleToggle(e) {
+    e.stopPropagation();
+    const { currentTarget } = e;
+    this.setState(state => ({
+      menusOpen: !state.open,
+      menusAnchorEl: currentTarget,
+    }));
+  }
+
+  @autobind
+  closeSearchMenuPopper(e, id) {
+    e.stopPropagation();
+
+    if (this.state.menusAnchorEl.contains(event.target)) {
+      return;
+    }
+
+    if (id === 0 || id === 1) {
+      const searchMode = Object.assign([], this.state.searchMode);
+      searchMode.forEach(item => {
+        if (item.id === id) {
+          item.active = true;
+        } else {
+          item.active = false;
+        }
+      });
+      this.setState({
+        searchMode: searchMode,
+        menusOpen: false,
+      });
+      if (id === 0) {
+        this.props.change('mode', 'resumes');
+      } else if (id === 1) {
+        this.props.change('mode', 'questions');
+      }
+    } else {
+      this.setState({
+        menusOpen: false,
+      });
+    }
+  }
+
   render() {
     const {
       applicationYear,
@@ -76,65 +142,63 @@ export class SearchForm extends Component {
       finishFlag,
       passFlag,
       questionSearchOption,
-      serarchMode,
+      searchMode,
+      menusAnchorEl,
+      menusOpen,
     } = this.state;
+
+    const searchButton = searchMode.filter(item => item.active === true);
 
     return (
       <div className={scss['resumes__contents--search']}>
         <div className={scss['search__input']}>
           <div className={scss['search__change']}>
-            <p>자소서 리스트</p>
-            <KeyboardArrowDown />
-          </div>
-          {serarchMode === 'question' ? (
-            <SelectForm
-              name={'questionSearchOption'}
-              label={'검색 방법'}
-              items={questionSearchOption}
+            <Button
+              aria-owns={menusOpen ? 'menu-list-grow' : null}
+              aria-haspopup="true"
+              onClick={e => this.handleToggle(e)}
+            >
+              {searchButton[0].key}
+              {menusOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            </Button>
+            <SeacrhMenuPopper
+              menusOpen={menusOpen}
+              menusAnchorEl={menusAnchorEl}
+              closeSearchMenuPopper={this.closeSearchMenuPopper}
             />
-          ) : null}
-
-          {/* <Field name={'companyName'} component={AppSearch} label={'label'} /> */}
-          <Field
-            name="companyName"
-            component="input"
-            type="text"
-            placeholder="회사명"
-            onKeyPress={e => this.onKeyPress(e)}
-          />
+          </div>
+          <div className={[scss['search__input--right']]}>
+            {searchMode[1].active ? (
+              <SelectForm
+                name={'questionSearchOption'}
+                label={'검색 방법'}
+                items={questionSearchOption}
+              />
+            ) : null}
+            <Field
+              name="searchText"
+              component="input"
+              type="text"
+              placeholder="검색어를 입력해주세요."
+              onKeyPress={e => this.onKeyPress(e)}
+            />
+            <Field
+              name="mode"
+              component="input"
+              type="text"
+              style={{ display: 'none' }}
+            />
+          </div>
         </div>
-        <form className={scss['detail']}>
-          <SelectForm
-            name={'finishFlag'}
-            label={'제출 여부'}
-            items={finishFlag}
-            placeholder={'제출 여부'}
+        {searchMode[1].active ? null : (
+          <SearchFormDetail
+            finishFlag={finishFlag}
+            applicationYear={applicationYear}
+            halfType={halfType}
+            applicationType={applicationType}
+            passFlag={passFlag}
           />
-          <SelectForm
-            name={'applicationYear'}
-            label={'연도'}
-            items={applicationYear}
-            placeholder={'연도'}
-          />
-          <SelectForm
-            name={'halfType'}
-            label={'분기'}
-            items={halfType}
-            placeholder={'분기'}
-          />
-          <SelectForm
-            name={'applicationType'}
-            label={'채용 형태'}
-            items={applicationType}
-            placeholder={'채용 형태'}
-          />
-          <SelectForm
-            name={'passFlag'}
-            label={'합격 여부'}
-            items={passFlag}
-            placeholder={'합격 여부'}
-          />
-        </form>
+        )}
       </div>
     );
   }
@@ -142,8 +206,7 @@ export class SearchForm extends Component {
 
 SearchForm.propTypes = {
   submit: PropTypes.func,
-  // history: PropTypes.router,
-  // getResumeList: PropTypes.func,
+  change: PropTypes.func,
 };
 
 export default SearchForm;
