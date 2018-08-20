@@ -21,6 +21,8 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "js-cookie": "^2.2.0",
+    "material-ui-pickers": "^1.0.0-rc.13",
+    "moment": "^2.22.2",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",

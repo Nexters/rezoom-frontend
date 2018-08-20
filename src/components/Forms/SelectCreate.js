@@ -7,18 +7,6 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
   overrides: {
-    MuiSelect: {
-      root: {
-        width: 166,
-        height: 56,
-        color: '#668298',
-        border: 'solid 1px #ced8ea',
-      },
-      selectMenu: {
-        padding: '17px 20px',
-        marginLeft: '-1px',
-      },
-    },
     MuiInput: {
       underline: {
         '&:before': {
@@ -31,40 +19,8 @@ const theme = createMuiTheme({
           borderBottom: 0,
         },
       },
-    },
-    MuiList: {
-      padding: {
-        paddingTop: 0,
-        paddingBottom: 0,
-      },
-    },
-    MuiListItem: {
-      default: {
-        border: '1px solid #ced8ea',
-      },
-      button: {
-        fontWeight: '500 !important',
-        '&:hover': {
-          backgroundColor: '#f7fafe',
-          fontWeight: 'bold !important',
-        },
-      },
-    },
-    MuiPaper: {
-      elevation8: {
-        boxShadow: 'none',
-      },
-    },
-    MuiPopover: {
-      paper: {
-        top: '116px !important',
-        minWidth: '166px !important',
-      },
-    },
-    MuiMenuItem: {
-      selected: {
-        backgroundColor: '#dde5fc !important',
-        fontWeight: 'bold !important',
+      input: {
+        padding: 0,
       },
     },
   },
@@ -81,7 +37,7 @@ const renderSelect = ({
   return (
     <div>
       <MuiThemeProvider theme={theme}>
-        <InputLabel htmlFor="age-auto-width">{name}</InputLabel>
+        <p>{label}</p>
         <Select
           InputProps={{
             disableUnderline: true,
@@ -107,20 +63,15 @@ renderSelect.propTypes = {
   children: PropTypes.node,
 };
 
-export class SelectForm extends Component {
+export class SelectCreate extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const { name, label, items, placeholder } = this.props;
+    const { name, label, items } = this.props;
     return (
       <Field name={name} component={renderSelect} label={label}>
-        {/* placeholder.length > 0 ? (
-          <MenuItem key={0} value={placeholder}>
-            {placeholder}
-          </MenuItem>
-        ) : null */}
         {items.map((item, idx) => {
           return (
             <MenuItem key={idx} value={item.value}>
@@ -133,11 +84,10 @@ export class SelectForm extends Component {
   }
 }
 
-SelectForm.propTypes = {
+SelectCreate.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  placeholder: PropTypes.string,
 };
 
-export default SelectForm;
+export default SelectCreate;

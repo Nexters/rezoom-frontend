@@ -14,6 +14,7 @@ import { Dialog } from '../Dialog/Dialog';
 import { SearchForm } from '../Resume/Search/SearchForm';
 import { Search } from '../Resume/Search/Search';
 import { LoaderContainer } from '../Shared';
+import { SearchQuestions } from '../Resume/Search/SearchQuestions/SearchQuestions';
 
 @connect(
   state => ({
@@ -39,7 +40,8 @@ export class Layout extends Component {
               component={ResumeDetail}
             />
             <Route path="/files" component={Files} />
-            <Route path="/search" component={Search} />
+            <Route exact path="/search/resumes" component={Search} />
+            <Route exact path="/search/questions" component={SearchQuestions} />
             <Route path="/mypage/:type?" component={MyPage} />
           </Switch>
         </div>
