@@ -14,6 +14,7 @@ import { Dialog } from '../Dialog/Dialog';
 import { SearchForm } from '../Resume/Search/SearchForm';
 import { Search } from '../Resume/Search/Search';
 import { LoaderContainer } from '../Shared';
+import { Dashboard } from '../Dashboard/Dashboard';
 
 @connect(
   state => ({
@@ -25,6 +26,7 @@ import { LoaderContainer } from '../Shared';
 export class Layout extends Component {
   render() {
     const { isLogin, match } = this.props;
+    console.log(this.props);
     return (
       <div className={scss['rezoom__container']}>
         <Header />
@@ -32,6 +34,7 @@ export class Layout extends Component {
           <LoaderContainer />
           {match.params.mode === undefined ? <SearchForm /> : null}
           <Switch>
+            <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/resume" component={Resumes} />
             <Route
               exact
