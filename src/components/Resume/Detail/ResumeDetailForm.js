@@ -16,7 +16,10 @@ import {
 } from '@material-ui/core';
 import scss from './ResumeDetailForm.scss';
 import { TextArea } from '../../Forms';
-import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
+import {
+  updateResumeDetailCache,
+  updateResumeDetailCacheRealtime,
+} from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
 import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
@@ -33,6 +36,7 @@ import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
   }),
   {
     updateResumeDetailCache,
+    updateResumeDetailCacheRealtime,
     change: (key, value) => change('resumeDetail', key, value),
   },
 )
@@ -90,22 +94,34 @@ export class ResumeDetailForm extends Component {
     }
   }
 
-  updateResumeDetailForm() {
+  updateResumeDetailForm(data) {
     const {
       formValues,
-      updateResumeDetailCache,
+      updateResumeDetailCacheRealtime,
       createCacheQuestions,
     } = this.props;
+
     let value = {
       content: '',
       title: '',
       hashTags: [],
     };
+
     if (formValues) {
       value = formValues;
     }
 
-    updateResumeDetailCache({
+    if (data.hasOwnProperty('tags')) {
+      value.hashTags = tags.join();
+    } else if (data.hasOwnProperty('value')) {
+      if (data.name === 'content') {
+        value.content = data.value;
+      } else if (data.name === 'title') {
+        value.title = data.value;
+      }
+    }
+
+    updateResumeDetailCacheRealtime({
       id: createCacheQuestions.thisId,
       value: value,
     });
@@ -170,7 +186,13 @@ export class ResumeDetailForm extends Component {
     });
     change('hashTags', tags);
 
-    this.updateResumeDetailForm();
+    this.updateResumeDetailForm({ tags: tags });
+  }
+
+  @autobind
+  updateText(value, name) {
+    console.log(`update text = ${value}, form name = ${name}`);
+    this.updateResumeDetailForm({ value: value, name: name });
   }
 
   render() {
@@ -186,7 +208,7 @@ export class ResumeDetailForm extends Component {
       <form>
         <div className={scss['detail__contents--question']}>
           <p className={scss['question__title']}>질문</p>
-          <TextArea name={'title'} rows={4} />
+          <TextArea name={'title'} rows={4} updateText={this.updateText} />
           <div className={scss['hashtag']}>
             <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
             <Button
@@ -274,6 +296,7 @@ export class ResumeDetailForm extends Component {
             name={'content'}
             rows={4}
             className={scss['answer__contents']}
+            updateText={this.updateText}
           />
         </div>
       </form>
@@ -290,4 +313,5 @@ ResumeDetailForm.propTypes = {
   originQuestions: PropTypes.array,
   change: PropTypes.func,
   createCacheQuestions: PropTypes.func,
+  updateResumeDetailCacheRealtime: PropTypes.func,
 };

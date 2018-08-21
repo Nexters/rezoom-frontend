@@ -51,7 +51,12 @@ class Header extends Component {
     if (!isDetail) {
       buttonComponent = (
         <div className={scss['header__button']}>
-          <MainButton onClickButton={this.onClickButtonAction} text={text} />
+          <MainButton
+            onClickButton={this.onClickButtonAction}
+            text={text}
+            type="add"
+            isDisabled={false}
+          />
         </div>
       );
     }

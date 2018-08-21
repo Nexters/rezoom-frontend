@@ -72,7 +72,7 @@ const styles = {
     backgroundColor: '#f7fafe',
     padding: '18px 16px',
     margin: '8px 32px',
-    color: '##222222',
+    color: '#222222',
     fontSize: 14,
     border: 0,
     letterSpacing: -0.7,
@@ -109,7 +109,7 @@ class Login extends Component {
   onClickLogin(e) {
     e.stopPropagation();
     // this.props.submit();
-    this.props.login({ username: 'jaeeonjin', password: 'test' });
+    this.props.login({ username: 'test', password: 'test' });
   }
 
   render() {
@@ -161,7 +161,6 @@ class Login extends Component {
                 size="small"
                 type="submit"
                 variant="raised"
-                color="#222222"
               >
                 로그인
               </Button>

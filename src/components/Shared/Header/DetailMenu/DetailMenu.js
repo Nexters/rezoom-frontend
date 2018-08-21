@@ -184,6 +184,8 @@ export class DetailMenu extends Component {
           <MainButton
             onClickButton={this.onClickAddQuestion}
             text={'문항추가'}
+            type="add"
+            isDisabled={false}
           />
         </div>
       </div>

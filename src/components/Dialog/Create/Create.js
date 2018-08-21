@@ -26,6 +26,7 @@ import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsPr
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 import moment from 'moment';
 import 'moment/locale/ko';
+import { MainButton } from '../../Shared/Button/MainButton';
 
 moment.locale('ko');
 
@@ -60,7 +61,7 @@ const styles = theme => ({
     applicationType: '0',
     finishFlag: 0,
     passFlag: 0,
-    selectedDate: new Date(),
+    deadline: moment().format('YYYY-MM-DD HH'),
     // TODO: deadline YYYY-MM-DD HH
   },
   onSubmit: (values, dispatch) => {
@@ -80,8 +81,6 @@ const styles = theme => ({
 )
 @withRouter
 export class Create extends Component {
-  timer = null;
-
   constructor(props) {
     super(props);
 
@@ -99,7 +98,7 @@ export class Create extends Component {
       applicationType,
       finishFlag,
       passFlag,
-      selectedDate: new Date(),
+      deadline: moment().format('YYYY-MM-DD HH'),
       init: true,
     };
   }
@@ -159,11 +158,11 @@ export class Create extends Component {
 
   @autobind
   handleDateChange(date) {
-    const convertDate = moment(date).toObject();
+    const convertDate = moment(date).format('YYYY-MM-DD HH');
     console.log(convertDate);
 
-    this.setState({ selectedDate: date });
-    this.props.change('time', date);
+    this.setState({ deadline: date });
+    this.props.change('deadline', convertDate);
   }
 
   render() {
@@ -174,7 +173,7 @@ export class Create extends Component {
       applicationType,
       finishFlag,
       passFlag,
-      selectedDate,
+      deadline,
     } = this.state;
 
     return (
@@ -240,7 +239,7 @@ export class Create extends Component {
                 <p>제출마감일</p>
                 <div className={scss['create__full--item']}>
                   <Field
-                    name="time"
+                    name="deadline"
                     component="input"
                     type="text"
                     style={{ display: 'none' }}
@@ -251,7 +250,7 @@ export class Create extends Component {
                     moment={moment}
                   >
                     <DateTimePicker
-                      value={selectedDate}
+                      value={deadline}
                       onChange={this.handleDateChange}
                       InputProps={{
                         disableUnderline: true,
@@ -299,14 +298,12 @@ export class Create extends Component {
           </DialogContent>
           <DialogActions>
             <div className={classes.wrapper}>
-              <Button
-                variant="contained"
-                color="primary"
-                disabled={loading}
-                onClick={this.handleSubmit}
-              >
-                다음
-              </Button>
+              <MainButton
+                onClickButton={this.handleSubmit}
+                text={'다음'}
+                type="next"
+                isDisabled={loading}
+              />
               {loading && (
                 <CircularProgress
                   size={24}

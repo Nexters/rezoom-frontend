@@ -7,9 +7,13 @@ import autobind from 'autobind-decorator';
 import { ResumeDetailForm } from './ResumeDetailForm';
 import { ListItemInfo } from '../List/ListItemInfo';
 import { MainButton } from '../../Shared/Button/MainButton';
-import { requestCreateQuestion } from '../../../store/Resume/Resume.store';
+import {
+  requestCreateQuestion,
+  getResumeList,
+} from '../../../store/Resume/Resume.store';
 import { dialogOpen } from '../../../store/Dialog/Dialog.store';
 import editIcon from '../../../static/images/item/ic-edit-alter.svg';
+import moment from 'moment';
 
 @connect(
   state => ({
@@ -19,11 +23,57 @@ import editIcon from '../../../static/images/item/ic-edit-alter.svg';
   {
     requestCreateQuestion,
     dialogOpen,
+    getResumeList,
   },
 )
 export class ResumeDetail extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      resumeData: {
+        applicationType: '',
+        applicationYear: moment().format('YYYY'),
+        companyName: '',
+        createDate: '',
+        deadline: moment().format('YYYY-MM-DD HH'),
+        finishFlag: '',
+        halfType: '',
+        jobType: '',
+        passFlag: 0,
+        resumeId: 0,
+        username: '',
+      },
+    };
+  }
+
+  componentWillMount() {
+    const { resumes, getResumeList, match, createCache } = this.props;
+    if (resumes.length === 0) {
+      getResumeList();
+    }
+    if (match['params']['mode'] === 'create') {
+      this.setState({
+        resumeData: createCache.info,
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { resumes, match } = this.props;
+    const resumeId = Number(match['params'].id);
+
+    if (match['params']['mode']) {
+      if (match['params']['mode'] === 'detail') {
+        if (resumes.length !== nextProps.resumes.length) {
+          this.setState({
+            resumeData: nextProps.resumes.filter(
+              item => item.resumeId === resumeId,
+            )[0],
+          });
+        }
+      }
+    }
   }
 
   @autobind
@@ -41,20 +91,8 @@ export class ResumeDetail extends Component {
   }
 
   render() {
-    // console.log(this.props);
-    const { match, createCache, resumes } = this.props;
-    const resumeId = Number(match['params'].id);
-    let resumeData, resumeTitle;
-
-    if (match['params']['mode']) {
-      if (match['params']['mode'] === 'detail') {
-        resumeData = resumes.filter(item => item.resumeId === resumeId)[0];
-        resumeTitle = resumeData['companyName'];
-      } else if (match['params']['mode'] === 'create') {
-        resumeData = createCache.info;
-        resumeTitle = resumeData.companyName;
-      }
-    }
+    const { match } = this.props;
+    const { resumeData } = this.state;
 
     return (
       <div className={scss.detail}>
@@ -62,7 +100,7 @@ export class ResumeDetail extends Component {
           <div className={scss['detail__contents--header']}>
             <div className={scss['detail__contents--title']}>
               <p>
-                {resumeTitle}
+                {resumeData['companyName']}
                 <Button
                   aria-haspopup="true"
                   onClick={e => this.onClickChangeInfo(e)}
@@ -70,15 +108,21 @@ export class ResumeDetail extends Component {
                   <img src={editIcon} alt="editIcon" />정보수정
                 </Button>
               </p>
+              <p>{resumeData['companyName']}</p>
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <ListItemInfo
                 applicationType={resumeData['applicationType']}
-                applicationYear={resumeData['applicationYear']}
+                applicationYear={Number(resumeData['applicationYear'])}
                 halfType={resumeData['halfType']}
                 finishFlag={resumeData['finishFlag']}
               />
-              <MainButton onClickButton={this.saveQuestions} text={'저장'} />
+              <MainButton
+                onClickButton={this.saveQuestions}
+                text={'저장하기'}
+                type="save"
+                isDisabled={false}
+              />
             </div>
           </div>
           <div className={scss['detail__contents--form']}>
@@ -96,6 +140,7 @@ ResumeDetail.propTypes = {
   createCache: PropTypes.any,
   requestCreateQuestion: PropTypes.func,
   dialogOpen: PropTypes.func,
+  getResumeList: PropTypes.func,
 };
 
 export default ResumeDetail;

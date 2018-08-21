@@ -28,30 +28,22 @@ function* postCreateNewResume(data) {
   try {
     yield put(activeLoadingComponent());
 
+    const resume = {
+      companyName: data.companyName,
+      applicationYear: data.applicationYear,
+      applicationType: data.applicationType,
+      finishFlag: data.finishFlag,
+      halfType: data.halfType,
+      jobType: data.jobType,
+      passFlag: data.passFlag,
+      deadline: data.deadline,
+    };
     if (data.mode === 'Edit') {
-      const resume = {
-        companyName: data.companyName,
-        applicationYear: data.applicationYear,
-        halfType: data.halfType,
-        jobType: data.jobType,
-        applicationType: data.applicationType,
-        finishFlag: data.finishFlag,
-        passFlag: data.passFlag,
-      };
       yield call(putUpdateResume, data.resumeId, resume);
     } else {
-      const param = {
-        applicationType: data.applicationType,
-        applicationYear: data.applicationYear,
-        companyName: data.companyName,
-        finishFlag: data.finishFlag,
-        halfType: data.halfType,
-        jobType: data.jobType,
-        passFlag: data.passFlag,
-      };
-      console.log('param = ', param);
-      const result = yield call(api.newResume, param);
-      console.log('success new resume = ', result);
+      console.log('new resume = ', data);
+      const result = yield call(api.newResume, resume);
+      // console.log('success new resume = ', result);
 
       if (result) {
         yield put(responseCreateNewResume(data));
@@ -61,6 +53,7 @@ function* postCreateNewResume(data) {
       yield put(push(`/resume/create/${result.data}`));
     }
     yield put(inactiveLoadingComponent());
+    console.log('inactive');
   } catch (error) {
     console.log(error);
   }
@@ -157,6 +150,7 @@ function* deleteOneResume(resumeId) {
     if (result) {
       yield call(getResumeList);
     }
+    yield put(inactiveLoadingComponent());
   } catch (error) {
     console.log(error);
   }
