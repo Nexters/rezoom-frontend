@@ -9,6 +9,9 @@ export const RESPONSE_CREATE_NEW_RESUME = 'RESPONSE_CREATE_NEW_RESUME';
 export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
 export const UPDATE_RESUME_DETAIL_CACHE_REALTIME =
   'UPDATE_RESUME_DETAIL_CACHE_REALTIME';
+export const UPDATE_RESUME_DETAIL_ORIGIN = 'UPDATE_RESUME_DETAIL_ORIGIN';
+export const UPDATE_RESUME_DETAIL_ORIGIN_REALTIME =
+  'UPDATE_RESUME_DETAIL_ORIGIN_REALTIME';
 
 export const GET_QUESTION_LIST = 'GET_QUESTION_LIST';
 export const UPDATE_QUESTION_LIST = 'UPDATE_QUESTION_LIST';
@@ -139,8 +142,6 @@ export default function reducer(state = initialState, action = {}) {
         }
       });
 
-      console.log(detailOrg);
-      console.log('itemCheck = ', orgCheck);
       if (orgCheck) {
         return {
           ...state,
@@ -155,13 +156,61 @@ export default function reducer(state = initialState, action = {}) {
           ...state,
         };
       }
+    case UPDATE_RESUME_DETAIL_ORIGIN:
+      if (action.payload.data.value === undefined) {
+        return;
+      }
+      let questions = Object.assign([], state.questions);
+      let checkQuestion = false;
+      questions.forEach((item, itemIdx) => {
+        if (item.questionId === action.payload.data.id) {
+          checkQuestion = true;
+          item.content = action.payload.data.value.content;
+          item.title = action.payload.data.value.title;
+          item.hashTags = action.payload.data.value.hashTags || [];
+        }
+      });
+      if (checkQuestion) {
+        return {
+          ...state,
+          questions: questions,
+        };
+      } else {
+        return {
+          ...state,
+        };
+      }
+    case UPDATE_RESUME_DETAIL_ORIGIN_REALTIME:
+      if (action.payload.data.value === undefined) {
+        return;
+      }
+
+      let realtimeQuestions = Object.assign([], state.questions);
+      let realtimeCheckQuestion = false;
+      realtimeQuestions.forEach((item, itemIdx) => {
+        if (item.questionId === action.payload.data.id) {
+          realtimeCheckQuestion = true;
+          item.content = action.payload.data.value.content;
+          item.title = action.payload.data.value.title;
+          item.hashTags = action.payload.data.value.hashTags || [];
+        }
+      });
+      if (realtimeCheckQuestion) {
+        return {
+          ...state,
+          questions: realtimeQuestions,
+        };
+      } else {
+        return {
+          ...state,
+        };
+      }
     case SELECT_QUESTION_ID:
       return {
         ...state,
         selectedQuestion: action.payload.id,
       };
     case SELECT_CREATE_CACHE_QUESTION_ID:
-      console.log(action.payload);
       return {
         ...state,
         createResumeCache: {
@@ -255,6 +304,20 @@ export const updateResumeDetailCache = data => ({
 
 export const updateResumeDetailCacheRealtime = data => ({
   type: UPDATE_RESUME_DETAIL_CACHE_REALTIME,
+  payload: {
+    data,
+  },
+});
+
+export const updateResumeDetailOrigin = data => ({
+  type: UPDATE_RESUME_DETAIL_ORIGIN,
+  payload: {
+    data,
+  },
+});
+
+export const updateResumeDetailOriginRealtime = data => ({
+  type: UPDATE_RESUME_DETAIL_ORIGIN_REALTIME,
   payload: {
     data,
   },

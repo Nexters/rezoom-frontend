@@ -67,13 +67,6 @@ export class DetailMenu extends Component {
     } = this.props;
     let orgData, nextData;
 
-    console.log('### createCacheThisId = ', createCacheThisId);
-    console.log(
-      '### nextProps.createCacheThisId = ',
-      nextProps.createCacheThisId,
-    );
-    console.log('### mode = ', createCacheMode);
-
     if (mode === 'create') {
       orgData = createCacheQuestions;
       nextData = nextProps.createCacheQuestions;
@@ -95,7 +88,9 @@ export class DetailMenu extends Component {
     if (orgData.length !== nextData.length) {
       let list = [];
       nextData.forEach(item => {
-        list.push({ questionId: item.questionId });
+        list.push({
+          questionId: item.questionId,
+        });
       });
       this.setState({
         list: list,
@@ -103,7 +98,18 @@ export class DetailMenu extends Component {
     }
 
     if (this.state.init) {
-      if (nextData[0].questionId !== this.state.selectedQuestion.org) {
+      if (nextData.length === 0) {
+        this.setState({
+          selectedQuestion: {
+            key: 1,
+            org: 1,
+          },
+        });
+
+        mode === 'create'
+          ? this.props.selectedCreateCacheQuestion(1, 'add')
+          : this.props.selectedQuestion(1);
+      } else if (nextData[0].questionId !== this.state.selectedQuestion.org) {
         this.setState({
           selectedQuestion: {
             key: 1,
@@ -141,7 +147,10 @@ export class DetailMenu extends Component {
     }
 
     this.setState({
-      selectedQuestion: { key: id, org: questionId },
+      selectedQuestion: {
+        key: id,
+        org: questionId,
+      },
     });
   }
 
@@ -164,30 +173,30 @@ export class DetailMenu extends Component {
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
-          <p className={scss['title']}>문항</p>
+          <p className={scss['title']}> 문항 </p>{' '}
           {mode === 'create' ? (
             <Button
               variant="outlined"
               color="primary"
               onClick={this.onClickDeleteQuestion}
             >
-              삭제
+              삭제{' '}
             </Button>
-          ) : null}
-        </div>
+          ) : null}{' '}
+        </div>{' '}
         <QuestionList
           list={list}
           selectedQuestion={selectedQuestion}
           onClickQuestion={this.onClickQuestion}
-        />
+        />{' '}
         <div className={scss['detail__sidebar--button']}>
           <MainButton
             onClickButton={this.onClickAddQuestion}
             text={'문항추가'}
             type="add"
             isDisabled={false}
-          />
-        </div>
+          />{' '}
+        </div>{' '}
       </div>
     );
   }

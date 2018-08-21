@@ -117,19 +117,31 @@ export class Create extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { change, mode } = this.props;
+    const { change, mode, match, initialValues } = this.props;
 
     if (this.state.init) {
       if (mode === 'Edit') {
-        change('companyName', nextProps.initialValues.companyName);
-        change('applicationYear', nextProps.initialValues.applicationYear);
-        change('halfType', nextProps.initialValues.halfType);
-        change('jobType', nextProps.initialValues.jobType);
-        change('applicationType', nextProps.initialValues.applicationType);
-        change('finishFlag', nextProps.initialValues.finishFlag);
-        change('passFlag', nextProps.initialValues.passFlag);
-        change('resumeId', nextProps.initialValues.resumeId);
-        change('mode', mode);
+        if (nextProps.initialValues === undefined) {
+          change('companyName', initialValues.companyName);
+          change('applicationYear', initialValues.applicationYear);
+          change('halfType', initialValues.halfType);
+          change('jobType', initialValues.jobType);
+          change('applicationType', initialValues.applicationType);
+          change('finishFlag', initialValues.finishFlag);
+          change('passFlag', initialValues.passFlag);
+          change('resumeId', match['params']['id']);
+          change('mode', mode);
+        } else {
+          change('companyName', nextProps.initialValues.companyName);
+          change('applicationYear', nextProps.initialValues.applicationYear);
+          change('halfType', nextProps.initialValues.halfType);
+          change('jobType', nextProps.initialValues.jobType);
+          change('applicationType', nextProps.initialValues.applicationType);
+          change('finishFlag', nextProps.initialValues.finishFlag);
+          change('passFlag', nextProps.initialValues.passFlag);
+          change('resumeId', nextProps.initialValues.resumeId);
+          change('mode', mode);
+        }
         this.setState({
           init: false,
         });

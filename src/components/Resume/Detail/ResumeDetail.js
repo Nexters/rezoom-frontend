@@ -51,6 +51,11 @@ export class ResumeDetail extends Component {
     const { resumes, getResumeList, match, createCache } = this.props;
     if (resumes.length === 0) {
       getResumeList();
+    } else {
+      const resumeId = Number(match['params'].id);
+      this.setState({
+        resumeData: resumes.filter(item => item.resumeId === resumeId)[0],
+      });
     }
     if (match['params']['mode'] === 'create') {
       this.setState({
@@ -65,6 +70,8 @@ export class ResumeDetail extends Component {
 
     if (match['params']['mode']) {
       if (match['params']['mode'] === 'detail') {
+        console.log('resumes.length = ', resumes.length);
+        console.log('nextProps.resumes.length = ', nextProps.resumes.length);
         if (resumes.length !== nextProps.resumes.length) {
           this.setState({
             resumeData: nextProps.resumes.filter(
@@ -108,7 +115,7 @@ export class ResumeDetail extends Component {
                   <img src={editIcon} alt="editIcon" />정보수정
                 </Button>
               </p>
-              <p>{resumeData['companyName']}</p>
+              <p>{resumeData['jobType']}</p>
             </div>
             <div className={scss['detail__contents--subtitle']}>
               <ListItemInfo

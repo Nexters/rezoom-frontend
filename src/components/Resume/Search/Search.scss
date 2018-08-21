@@ -1,5 +1,4 @@
 .resumes__contents--search {
-  height: 180px;
   box-shadow: 0 0 1px 0 #dde5fc;
   background-color: #ffffff;
   border: solid 1px #f5f4f5;
@@ -47,6 +46,31 @@
     .search__input--right {
       display: flex;
       flex-direction: row;
+
+      > input {
+        border: 0px;
+        font-size: 14px;
+        font-weight: normal;
+        letter-spacing: -0.7px;
+        color: #222222;
+      }
+
+      .input__serach--open {
+        width: 365px;
+        transition: width 0.5s;
+      }
+      
+      .input__serach--close {
+        width: 0px;
+        transition: width 0.5s;
+      }
+
+      > div {
+        > div {
+          margin-top: -10px !important;
+          margin-right: 8px !important;
+        }
+      }
     }
   }
 
@@ -63,3 +87,14 @@
     
   }
 }
+
+
+
+.search__button {
+  margin-top: -8px !important;
+}
+
+.clear__button {
+  margin-top: -8px !important;
+}
+

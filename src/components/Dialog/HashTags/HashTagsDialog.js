@@ -10,7 +10,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import autobind from 'autobind-decorator';
 import { HashTag } from '../../Forms/hashTag';
-import { Chip, createMuiTheme, withStyles } from '@material-ui/core';
+import {
+  Chip,
+  createMuiTheme,
+  withStyles,
+  IconButton,
+} from '@material-ui/core';
+import closeIcon from '../../../static/images/item/ic-delete-cancel.svg';
 
 const styles = theme => ({
   bootstrapRoot: {
@@ -119,7 +125,17 @@ export class HashTagsDialog extends Component {
           onClose={this.props.dialogClose}
           aria-labelledby="form-dialog-title"
         >
-          <DialogTitle id="form-dialog-title">해시태그 편집</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            <div className={scss['create__title--contents']}>
+              <p>해시태그 편집</p>
+              <IconButton
+                aria-label="Delete"
+                onClick={this.props.onDialogClose}
+              >
+                <img src={closeIcon} alt="closeIcon" />
+              </IconButton>
+            </div>
+          </DialogTitle>
           <DialogContent>
             <div>
               <div>

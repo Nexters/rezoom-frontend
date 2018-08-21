@@ -39,9 +39,6 @@ const renderSelect = ({
       <MuiThemeProvider theme={theme}>
         <p>{label}</p>
         <Select
-          InputProps={{
-            disableUnderline: true,
-          }}
           id={name}
           label={label}
           onChange={(e, idx, value) => input.onChange(value)}

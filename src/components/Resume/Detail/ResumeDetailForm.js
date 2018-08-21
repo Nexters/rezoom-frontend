@@ -19,6 +19,8 @@ import { TextArea } from '../../Forms';
 import {
   updateResumeDetailCache,
   updateResumeDetailCacheRealtime,
+  updateResumeDetailOrigin,
+  updateResumeDetailOriginRealtime,
 } from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
@@ -37,6 +39,8 @@ import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
   {
     updateResumeDetailCache,
     updateResumeDetailCacheRealtime,
+    updateResumeDetailOrigin,
+    updateResumeDetailOriginRealtime,
     change: (key, value) => change('resumeDetail', key, value),
   },
 )
@@ -60,20 +64,20 @@ export class ResumeDetailForm extends Component {
       createCacheQuestions,
     } = this.props;
 
+    const { formValues } = this.props;
+    let value = {
+      content: '',
+      title: '',
+      hashTags: [],
+    };
+    if (formValues) {
+      value = formValues;
+    }
+
     if (mode === 'create') {
       if (
         createCacheQuestions.thisId !== nextProps.createCacheQuestions.thisId
       ) {
-        const { formValues } = this.props;
-        let value = {
-          content: '',
-          title: '',
-          hashTags: [],
-        };
-        if (formValues) {
-          value = formValues;
-        }
-
         this.props.updateResumeDetailCache({
           id: nextProps.createCacheQuestions.thisId,
           value: value,
@@ -86,6 +90,17 @@ export class ResumeDetailForm extends Component {
       }
     } else if (mode === 'detail') {
       if (originQuestionId !== nextProps.originQuestionId) {
+        if (
+          value.content.length !== 0 &&
+          value.title.length !== 0 &&
+          value.hashTags.length !== 0
+        ) {
+          this.props.updateResumeDetailOrigin({
+            id: nextProps.originQuestionId,
+            value: value,
+          });
+        }
+
         this.changeFormValues(
           nextProps.originQuestions,
           nextProps.originQuestionId,
@@ -99,6 +114,9 @@ export class ResumeDetailForm extends Component {
       formValues,
       updateResumeDetailCacheRealtime,
       createCacheQuestions,
+      updateResumeDetailOriginRealtime,
+      originQuestionId,
+      mode,
     } = this.props;
 
     let value = {
@@ -112,7 +130,7 @@ export class ResumeDetailForm extends Component {
     }
 
     if (data.hasOwnProperty('tags')) {
-      value.hashTags = tags.join();
+      value.hashTags = data.tags.join();
     } else if (data.hasOwnProperty('value')) {
       if (data.name === 'content') {
         value.content = data.value;
@@ -121,10 +139,17 @@ export class ResumeDetailForm extends Component {
       }
     }
 
-    updateResumeDetailCacheRealtime({
-      id: createCacheQuestions.thisId,
-      value: value,
-    });
+    if (mode === 'create') {
+      updateResumeDetailCacheRealtime({
+        id: createCacheQuestions.thisId,
+        value: value,
+      });
+    } else {
+      updateResumeDetailOriginRealtime({
+        id: originQuestionId,
+        value: value,
+      });
+    }
   }
 
   changeFormValues(data, id) {
@@ -179,7 +204,6 @@ export class ResumeDetailForm extends Component {
 
   @autobind
   updateTags(tags) {
-    console.log('updateTags = ', tags);
     const { change } = this.props;
     this.setState({
       tags: tags,
@@ -191,7 +215,6 @@ export class ResumeDetailForm extends Component {
 
   @autobind
   updateText(value, name) {
-    console.log(`update text = ${value}, form name = ${name}`);
     this.updateResumeDetailForm({ value: value, name: name });
   }
 
@@ -233,7 +256,7 @@ export class ResumeDetailForm extends Component {
             <p className={scss['answer__header--title']}>답변</p>
             <div className={scss['answer__header--action']}>
               <p>1 / 1000자</p>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={e => this.onClickContentSetting(e)}
@@ -289,7 +312,7 @@ export class ResumeDetailForm extends Component {
                     </Paper>
                   </Fade>
                 )}
-              </Popper>
+              </Popper> */}
             </div>
           </div>
           <TextArea
@@ -314,4 +337,6 @@ ResumeDetailForm.propTypes = {
   change: PropTypes.func,
   createCacheQuestions: PropTypes.func,
   updateResumeDetailCacheRealtime: PropTypes.func,
+  updateResumeDetailOrigin: PropTypes.func,
+  updateResumeDetailOriginRealtime: PropTypes.func,
 };

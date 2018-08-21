@@ -27,7 +27,7 @@ export function* getSearchResumes(data) {
           yield put(responseSearchQuestionsKeyword(result.data, 'keyword'));
           yield put(push(`/search/questions`));
         }
-      } else if (data.questionSearchOption === 'hashtag') {
+      } else if (data.questionSearchOption === 'hashTag') {
         // TODO: hashtag 색칠하기
         result = yield call(api.getQuestionsHashTag, data.searchText);
         if (result.data) {

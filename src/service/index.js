@@ -46,6 +46,6 @@ api.insertQuestions = data => Question.insert(data);
 // search
 api.getSearchResumes = companyName => Search.findResumes(companyName);
 api.getQuestionsKeyword = keyword => Search.findQuestionsKeyword(keyword);
-api.getQuestionsHashTag = hashTag => Search.findQuestionsKeyword(hashTag);
+api.getQuestionsHashTag = hashTag => Search.findQuestionsHashTag(hashTag);
 
 export default api;
