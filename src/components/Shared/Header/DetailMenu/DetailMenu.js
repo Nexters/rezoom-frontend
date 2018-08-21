@@ -147,8 +147,6 @@ export class DetailMenu extends Component {
 
   @autobind
   onClickAddQuestion() {
-    console.log('onClickAddQuestion = ', this.state.selectedQuestion);
-
     this.props.createQuestion();
     this.props.selectedCreateCacheQuestion(
       this.state.selectedQuestion.org,
@@ -186,6 +184,8 @@ export class DetailMenu extends Component {
           <MainButton
             onClickButton={this.onClickAddQuestion}
             text={'문항추가'}
+            type="add"
+            isDisabled={false}
           />
         </div>
       </div>

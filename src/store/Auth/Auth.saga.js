@@ -11,7 +11,6 @@ export function* login(data) {
     };
 
     const result = yield call(api.login, params);
-    console.log(result);
 
     Cookies.set('jwt', result.data);
 

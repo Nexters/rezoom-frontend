@@ -1,11 +1,14 @@
 import { resumeCreateFormData } from '../../utils/Constans';
 import { FilterUtils } from '../../utils/FilterUtils';
+import moment from 'moment';
 
 export const GET_RESUME_LIST = 'GET_RESUME_LIST';
 export const UPDATE_RESUME_LIST = 'UPDATE_RESUME_LIST';
 export const REQUEST_CREATE_NEW_RESUME = 'REQUEST_CREATE_NEW_RESUME';
 export const RESPONSE_CREATE_NEW_RESUME = 'RESPONSE_CREATE_NEW_RESUME';
 export const UPDATE_RESUME_DETAIL_CACHE = 'UPDATE_RESUME_DETAIL_CACHE';
+export const UPDATE_RESUME_DETAIL_CACHE_REALTIME =
+  'UPDATE_RESUME_DETAIL_CACHE_REALTIME';
 
 export const GET_QUESTION_LIST = 'GET_QUESTION_LIST';
 export const UPDATE_QUESTION_LIST = 'UPDATE_QUESTION_LIST';
@@ -18,12 +21,24 @@ export const CLEAR_QUESTION = 'CLEAR_QUESTION';
 export const REQUEST_CREATE_QUESTION = 'REQUEST_CREATE_QUESTION';
 export const RESPONSE_CREATE_QUESTION = 'RESPONSE_CREATE_QUESTION';
 
+export const EDIT_RESUME_INFO_DATA = 'EDIT_RESUME_INFO_DATA';
+export const DELETE_RESUME = 'DELETE_RESUME';
+
 const initialState = {
   resumes: [],
   questions: [],
   selectedQuestion: 1,
   createResumeCache: {
-    info: {},
+    info: {
+      companyName: '',
+      applicationYear: 2018,
+      halfType: '상반기',
+      jobType: '',
+      applicationType: 1,
+      finishFlag: 1,
+      passFlag: 1,
+      deadline: moment().format('YYYY-MM-DD HH'),
+    },
     detail: [],
     thisId: 1,
     prevId: 1,
@@ -48,31 +63,15 @@ export default function reducer(state = initialState, action = {}) {
         questions: action.payload.questions,
       };
     case RESPONSE_CREATE_NEW_RESUME:
-      const {
-        applicationYear,
-        halfType,
-        jobType,
-        applicationType,
-        finishFlag,
-        passFlag,
-      } = resumeCreateFormData;
+      const { applicationType, finishFlag, passFlag } = resumeCreateFormData;
 
       let infoData = {};
 
       infoData.id = action.payload.data['id'];
       infoData.companyName = action.payload.data['companyName'];
-      infoData.applicationYear = FilterUtils.getItem(
-        applicationYear,
-        action.payload.data['applicationYear'],
-      );
-      infoData.halfType = FilterUtils.getItem(
-        halfType,
-        action.payload.data['halfType'],
-      );
-      infoData.halfType = FilterUtils.getItem(
-        jobType,
-        action.payload.data['halfType'],
-      );
+      infoData.applicationYear = action.payload.data['applicationYear'];
+      infoData.halfType = action.payload.data['halfType'];
+      infoData.jobType = action.payload.data['jobType'];
       infoData.applicationType = FilterUtils.getItem(
         applicationType,
         action.payload.data['applicationType'],
@@ -85,6 +84,7 @@ export default function reducer(state = initialState, action = {}) {
         passFlag,
         action.payload.data['passFlag'],
       );
+      infoData.deadline = action.payload.data['deadline'];
 
       return {
         ...state,
@@ -121,7 +121,33 @@ export default function reducer(state = initialState, action = {}) {
       } else {
         return;
       }
+    case UPDATE_RESUME_DETAIL_CACHE_REALTIME:
+      if (action.payload.data.value === undefined) {
+        return;
+      }
 
+      let detailOrg = Object.assign([], state.createResumeCache.detail);
+      let orgCheck = false;
+      detailOrg.forEach((item, itemIdx) => {
+        if (item.questionId === action.payload.id) {
+          itemCheck = true;
+          item.content = action.payload.data.value.content;
+          item.title = action.payload.data.value.title;
+          item.hashTags = action.payload.data.value.hashTags || [];
+        }
+      });
+      if (itemCheck) {
+        return {
+          ...state,
+          createResumeCache: {
+            ...state.createResumeCache,
+            detail: detailOrg,
+            mode: 'select',
+          },
+        };
+      } else {
+        return;
+      }
     case SELECT_QUESTION_ID:
       return {
         ...state,
@@ -166,6 +192,20 @@ export default function reducer(state = initialState, action = {}) {
         questions: [],
         selectedQuestion: 1,
       };
+    case EDIT_RESUME_INFO_DATA:
+      console.log('resumeId = ', action.payload.resumeId);
+      console.log('resumes = ', state.resumes);
+      const resumeInfo = state.resumes.filter(
+        item => item.resumeId === Number(action.payload.resumeId),
+      );
+      console.log(resumeInfo);
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          info: resumeInfo[0],
+        },
+      };
     default:
       return state;
   }
@@ -201,6 +241,13 @@ export const responseCreateNewResume = data => ({
 
 export const updateResumeDetailCache = data => ({
   type: UPDATE_RESUME_DETAIL_CACHE,
+  payload: {
+    data,
+  },
+});
+
+export const updateResumeDetailCacheRealtime = data => ({
+  type: UPDATE_RESUME_DETAIL_CACHE_REALTIME,
   payload: {
     data,
   },
@@ -260,4 +307,18 @@ export const requestCreateQuestion = resumeId => ({
 
 export const responseCreateQuestion = () => ({
   type: RESPONSE_CREATE_QUESTION,
+});
+
+export const editResumeInfoData = resumeId => ({
+  type: EDIT_RESUME_INFO_DATA,
+  payload: {
+    resumeId,
+  },
+});
+
+export const deleteResume = resumeId => ({
+  type: DELETE_RESUME,
+  payload: {
+    resumeId,
+  },
 });

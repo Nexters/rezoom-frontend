@@ -61,8 +61,8 @@ export class ListItemInfo extends Component {
 }
 
 ListItemInfo.propTypes = {
-  applicationType: PropTypes.string.isRequired,
-  applicationYear: PropTypes.number.isRequired,
-  halfType: PropTypes.string.isRequired,
-  finishFlag: PropTypes.string.isRequired,
+  applicationType: PropTypes.string,
+  applicationYear: PropTypes.number,
+  halfType: PropTypes.string,
+  finishFlag: PropTypes.string,
 };

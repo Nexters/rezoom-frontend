@@ -25,9 +25,9 @@ const theme = createMuiTheme({
     },
     MuiCardActions: {
       root: {
-        margin: '22px 32px 22px 261px',
+        margin: '19px 75px 25px 488px',
         padding: '0px !important',
-        height: '72px',
+        height: '100px',
       },
       action: {
         margin: '0px',
@@ -50,15 +50,16 @@ const theme = createMuiTheme({
 
 const styles = {
   card: {
-    width: 450,
-    height: 392,
+    width: 720,
+    height: 488,
     boxShadow: '0 4px 9px 0 rgba(0, 0, 0, 0.02)',
     borderRadius: 0,
   },
   title: {
-    margin: 32,
+    margin: '32px 559px 32px 72px',
     fontSize: 24,
     color: '#222222',
+    width: 100,
   },
   account: {
     fontSize: 14,
@@ -67,15 +68,31 @@ const styles = {
     fontWeight: 'normal',
   },
   input: {
-    width: 386,
+    width: 446,
     height: 56,
     backgroundColor: '#f7fafe',
-    padding: '18px 16px',
-    margin: '8px 32px',
+    padding: '24px 18px',
+    marginTop: 8,
     color: '#222222',
     fontSize: 14,
     border: 0,
     letterSpacing: -0.7,
+  },
+  label: {
+    width: 124,
+    height: 56,
+    backgroundColor: '#f7fafe',
+    paddingTop: 18,
+    paddingLeft: 24,
+    marginTop: 8,
+    marginLeft: 75,
+    color: '#5e77ff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    border: 0,
+    letterSpacing: -0.7,
+    display: 'inline-block',
+    float: 'left',
   },
 };
 
@@ -109,7 +126,7 @@ class Login extends Component {
   onClickLogin(e) {
     e.stopPropagation();
     // this.props.submit();
-    this.props.login({ username: 'test', password: 'test' });
+    this.props.login({ username: 'jaeeonjin', password: 'test' });
   }
 
   render() {
@@ -118,42 +135,66 @@ class Login extends Component {
     return isLogin ? (
       <Redirect push to="/resume" />
     ) : (
-      <main className={scss.login}>
+      <main className={scss.account}>
         <MuiThemeProvider theme={theme}>
           <Card className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary">
-                로그인
+                회원가입
               </Typography>
               {/* <Typography variant="headline" component="h2">
                     로그인 테스트!
                 </Typography> */}
               <form>
                 <div>
-                  <Field
-                    className={classes.input}
-                    name="username"
-                    component="input"
-                    type="text"
-                    placeholder="아이디를 입력하세요."
-                  />
+                  <span>
+                    <label className={classes.label}>성명</label>
+                    <Field
+                      className={classes.input}
+                      name="username"
+                      component="input"
+                      type="text"
+                      placeholder="아이디를 입력하세요."
+                    />
+                  </span>
                 </div>
                 <div>
-                  <Field
-                    className={classes.input}
-                    name="password"
-                    component="input"
-                    type="password"
-                    placeholder="비밀번호를 입력하세요."
-                  />
+                  <span>
+                    <label className={classes.label}>이메일</label>
+                    <Field
+                      className={classes.input}
+                      name="password"
+                      component="input"
+                      type="text"
+                      placeholder="이메일 주소를 입력하세요."
+                    />
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    <label className={classes.label}>비밀번호</label>
+                    <Field
+                      className={classes.input}
+                      name="password"
+                      component="input"
+                      type="password"
+                      placeholder="6-16자 영문, 숫자, 특수기호를 입력하세요"
+                    />
+                  </span>
+                </div>
+                <div>
+                  <span>
+                    <label className={classes.label}>비밀번호 확인</label>
+                    <Field
+                      className={classes.input}
+                      name="password"
+                      component="input"
+                      type="password"
+                      placeholder="6-16자 영문, 숫자, 특수기호를 입력하세요"
+                    />
+                  </span>
                 </div>
               </form>
-              <Typography className={classes.account} color="textSecondary">
-                계정이 없으신가요?&nbsp;
-                <span style={{ color: '#364eda', fontWeight: 'bold' }}>
-                  회원 가입
-                </span>
-              </Typography>
             </CardContent>
             <CardActions>
               <Button
@@ -161,8 +202,9 @@ class Login extends Component {
                 size="small"
                 type="submit"
                 variant="raised"
+                color="#222222"
               >
-                로그인
+                가입완료
               </Button>
             </CardActions>
           </Card>

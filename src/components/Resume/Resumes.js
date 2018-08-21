@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import autobind from 'autobind-decorator';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import scss from './Resumes.scss';
-import { Button, Card, CardContent, Typography } from '@material-ui/core';
-import loadingInjector from '../../hocs/withLoading';
 import { List } from './List/List';
 import { getResumeList } from '../../store/Resume/Resume.store';
-import { activeLoadingContainer } from '../../store/Loader/Loader.store';
 
 @connect(
   state => ({
