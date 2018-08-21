@@ -119,7 +119,9 @@ export default function reducer(state = initialState, action = {}) {
           },
         };
       } else {
-        return;
+        return {
+          ...state,
+        };
       }
     case UPDATE_RESUME_DETAIL_CACHE_REALTIME:
       if (action.payload.data.value === undefined) {
@@ -129,14 +131,17 @@ export default function reducer(state = initialState, action = {}) {
       let detailOrg = Object.assign([], state.createResumeCache.detail);
       let orgCheck = false;
       detailOrg.forEach((item, itemIdx) => {
-        if (item.questionId === action.payload.id) {
+        if (item.questionId === action.payload.data.id) {
           itemCheck = true;
           item.content = action.payload.data.value.content;
           item.title = action.payload.data.value.title;
           item.hashTags = action.payload.data.value.hashTags || [];
         }
       });
-      if (itemCheck) {
+
+      console.log(detailOrg);
+      console.log('itemCheck = ', orgCheck);
+      if (orgCheck) {
         return {
           ...state,
           createResumeCache: {
@@ -146,7 +151,9 @@ export default function reducer(state = initialState, action = {}) {
           },
         };
       } else {
-        return;
+        return {
+          ...state,
+        };
       }
     case SELECT_QUESTION_ID:
       return {
