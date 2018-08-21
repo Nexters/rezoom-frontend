@@ -147,66 +147,99 @@ export class SearchForm extends Component {
       menusOpen,
     } = this.state;
 
+    const { pathname } = this.props;
+
     const searchButton = searchMode.filter(item => item.active === true);
 
-    return (
-      <div className={scss['resumes__contents--search']}>
-        <div className={scss['search__input']}>
-          <div className={scss['search__change']}>
-            <Button
-              aria-owns={menusOpen ? 'menu-list-grow' : null}
-              aria-haspopup="true"
-              onClick={e => this.handleToggle(e)}
-            >
-              {searchButton[0].key}
-              {menusOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-            </Button>
-            <SeacrhMenuPopper
-              menusOpen={menusOpen}
-              menusAnchorEl={menusAnchorEl}
-              closeSearchMenuPopper={this.closeSearchMenuPopper}
-            />
-          </div>
-          <div className={[scss['search__input--right']]}>
-            {searchMode[1].active ? (
-              <SelectForm
-                name={'questionSearchOption'}
-                label={'검색 방법'}
-                items={questionSearchOption}
+    if (pathname === '/dashboard') {
+      return (
+        <div
+          className={scss['resumes__contents--search']}
+          style={{ height: 100 }}
+        >
+          <div className={scss['search__input']}>
+            <div className={scss['search__change']}>
+              <Button>홈</Button>
+            </div>
+            <div className={[scss['search__input--right']]}>
+              <Field
+                name="searchText"
+                component="input"
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                onKeyPress={e => this.onKeyPress(e)}
               />
-            ) : null}
-            <Field
-              name="searchText"
-              component="input"
-              type="text"
-              placeholder="검색어를 입력해주세요."
-              onKeyPress={e => this.onKeyPress(e)}
-            />
-            <Field
-              name="mode"
-              component="input"
-              type="text"
-              style={{ display: 'none' }}
-            />
+              <Field
+                name="mode"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
+            </div>
           </div>
         </div>
-        {searchMode[1].active ? null : (
-          <SearchFormDetail
-            finishFlag={finishFlag}
-            applicationYear={applicationYear}
-            halfType={halfType}
-            applicationType={applicationType}
-            passFlag={passFlag}
-          />
-        )}
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={scss['resumes__contents--search']}>
+          <div className={scss['search__input']}>
+            <div className={scss['search__change']}>
+              <Button
+                aria-owns={menusOpen ? 'menu-list-grow' : null}
+                aria-haspopup="true"
+                onClick={e => this.handleToggle(e)}
+              >
+                {searchButton[0].key}
+                {menusOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+              </Button>
+              <SeacrhMenuPopper
+                menusOpen={menusOpen}
+                menusAnchorEl={menusAnchorEl}
+                closeSearchMenuPopper={this.closeSearchMenuPopper}
+              />
+            </div>
+            <div className={[scss['search__input--right']]}>
+              {searchMode[1].active ? (
+                <SelectForm
+                  name={'questionSearchOption'}
+                  label={'검색 방법'}
+                  items={questionSearchOption}
+                />
+              ) : null}
+              <Field
+                name="searchText"
+                component="input"
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                onKeyPress={e => this.onKeyPress(e)}
+              />
+              <Field
+                name="mode"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
+            </div>
+          </div>
+          {searchMode[1].active ? null : (
+            <SearchFormDetail
+              finishFlag={finishFlag}
+              applicationYear={applicationYear}
+              halfType={halfType}
+              applicationType={applicationType}
+              passFlag={passFlag}
+            />
+          )}
+        </div>
+      );
+    }
   }
 }
 
 SearchForm.propTypes = {
   submit: PropTypes.func,
   change: PropTypes.func,
+  pathname: PropTypes.object,
 };
 
 export default SearchForm;

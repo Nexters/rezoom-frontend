@@ -26,14 +26,15 @@ import { Dashboard } from '../Dashboard/Dashboard';
 @withAuthGuard()
 export class Layout extends Component {
   render() {
-    const { isLogin, match } = this.props;
-    console.log(this.props);
+    const { isLogin, match, location } = this.props;
     return (
       <div className={scss['rezoom__container']}>
         <Header />
         <div className={scss['rezoom__contents']}>
           <LoaderContainer />
-          {match.params.mode === undefined ? <SearchForm /> : null}
+          {match.params.mode === undefined ? (
+            <SearchForm pathname={location.pathname} />
+          ) : null}
           <Switch>
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/resume" component={Resumes} />
@@ -56,7 +57,8 @@ export class Layout extends Component {
 
 Layout.propTypes = {
   isLogin: PropTypes.bool,
-  match: PropTypes.obejct,
+  match: PropTypes.object,
+  location: PropTypes.object,
 };
 
 export default Layout;
