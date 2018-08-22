@@ -1,0 +1,11 @@
+.resumes__search {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+
+  .resumes__contents {
+    flex: 1;
+    height: 100%;
+        
+  }
+}

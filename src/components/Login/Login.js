@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { reduxForm, submit, Field } from 'redux-form';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import {
   Card,
@@ -10,14 +10,22 @@ import {
   CardActions,
   Button,
   withStyles,
+  AppBar,
+  Toolbar,
 } from '@material-ui/core';
 import { login } from '../../store/Auth/Auth.store';
 import scss from './Login.scss';
 import autobind from 'autobind-decorator';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import logo from '../../static/images/logo/ic-logo-width.svg';
 
 const theme = createMuiTheme({
   overrides: {
+    MuiPaper: {
+      elevation4: {
+        boxShadow: 'none',
+      },
+    },
     MuiCardContent: {
       root: {
         padding: '0px !important',
@@ -72,7 +80,7 @@ const styles = {
     backgroundColor: '#f7fafe',
     padding: '18px 16px',
     margin: '8px 32px',
-    color: '##222222',
+    color: '#222222',
     fontSize: 14,
     border: 0,
     letterSpacing: -0.7,
@@ -109,7 +117,7 @@ class Login extends Component {
   onClickLogin(e) {
     e.stopPropagation();
     // this.props.submit();
-    this.props.login({ username: 'jaeeonjin', password: 'test' });
+    this.props.login({ username: 'test', password: 'test' });
   }
 
   render() {
@@ -120,6 +128,11 @@ class Login extends Component {
     ) : (
       <main className={scss.login}>
         <MuiThemeProvider theme={theme}>
+          <AppBar position="absolute" color="inherit">
+            <Toolbar>
+              <img src={logo} alt="rezoom-logo" />
+            </Toolbar>
+          </AppBar>
           <Card className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary">
@@ -151,7 +164,7 @@ class Login extends Component {
               <Typography className={classes.account} color="textSecondary">
                 계정이 없으신가요?&nbsp;
                 <span style={{ color: '#364eda', fontWeight: 'bold' }}>
-                  회원 가입
+                  <Link to="/account">회원 가입</Link>
                 </span>
               </Typography>
             </CardContent>
@@ -161,7 +174,6 @@ class Login extends Component {
                 size="small"
                 type="submit"
                 variant="raised"
-                color="#222222"
               >
                 로그인
               </Button>

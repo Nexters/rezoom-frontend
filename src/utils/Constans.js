@@ -10,14 +10,21 @@ export const resumeCreateFormData = {
     { key: '2017', value: 2017 },
     { key: '2018', value: 2018 },
   ],
-  halfType: [{ key: '상반기', value: 1 }, { key: '하반기', value: 2 }],
-  jobType: [{ key: '영업', value: '1' }, { key: '회계', value: '2' }],
-  applicationType: [{ key: '신입', value: '1' }, { key: '경력', value: '2' }],
-  finishFlag: [{ key: '제출', value: '1' }, { key: '미제출', value: '2' }],
-  passFlag: [{ key: '합격', value: '1' }, { key: '불합격', value: '2' }],
+  halfType: [
+    { key: '상반기', value: '상반기' },
+    { key: '하반기', value: '하반기' },
+    { key: '수시', value: '수시' },
+  ],
+  applicationType: [
+    { key: '인턴', value: '0' },
+    { key: '신입', value: '1' },
+    { key: '경력', value: '2' },
+  ],
+  finishFlag: [{ key: '미지원', value: 0 }, { key: '지원 완료', value: 1 }],
+  passFlag: [{ key: '불합격', value: 0 }, { key: '합격', value: 1 }],
 };
 
 export const questionSearchOption = [
-  { key: '키워드', value: '1' },
-  { key: '해시태그', value: '2' },
+  { key: '키워드', value: 'keyword' },
+  { key: '해시태그', value: 'hashTag' },
 ];

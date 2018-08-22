@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>C520A76F-71AD-4265-871B-62596E73C858</title>
+    <desc>Created with sketchtool.</desc>
+    <defs>
+        <polygon id="path-1" points="0 0.0005 18.313 0.0005 18.313 18.3135 0 18.3135"></polygon>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_search">
+            <g fill-rule="nonzero" id="Rectangle-9">
+                <rect x="0" y="0" width="24" height="24"></rect>
+            </g>
+            <g id="Group-3" transform="translate(3.000000, 3.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <g id="Clip-2"></g>
+                <path d="M7,12 C4.243,12 2,9.757 2,7 C2,4.243 4.243,2 7,2 C9.757,2 12,4.243 12,7 C12,9.757 9.757,12 7,12 Z M18.313,16.899 L12.601,11.187 C13.476,10.018 14,8.572 14,7 C14,3.134 10.866,0 7,0 C3.134,0 0,3.134 0,7 C0,10.866 3.134,14 7,14 C8.572,14 10.018,13.476 11.186,12.601 L16.899,18.314 L18.313,16.899 Z" id="Fill-1" fill="#000C35" mask="url(#mask-2)"></path>
+            </g>
+        </g>
+    </g>
+</svg>

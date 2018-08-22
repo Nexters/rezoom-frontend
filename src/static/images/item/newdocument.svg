@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="174px" height="188px" viewBox="0 0 174 188" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>F7551265-2FB7-432D-93B1-FA110C799094</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="01-5_메인페이지_empty" transform="translate(-757.000000, -356.000000)">
+            <g id="scrollview/question" transform="translate(250.000000, 100.000000)">
+                <g id="newdocument" transform="translate(508.000000, 257.000000)">
+                    <rect id="Rectangle-6" fill="#F0F0F0" fill-rule="nonzero" x="8" y="171" width="165" height="16" rx="8"></rect>
+                    <polygon id="Fill-1" fill="#FFFFFF" points="149 179 30 179 30 30 101 30 101 78 149 78"></polygon>
+                    <polyline id="Stroke-2" stroke="#668298" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="30 166 30 30 101 30 101 78 149 78 149 179 38.9546433 179"></polyline>
+                    <g id="Group" stroke="#668298" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                        <path d="M28,0 L30,16" id="Stroke-5"></path>
+                        <path d="M6,10 L19,21" id="Stroke-8"></path>
+                        <path d="M0,33 L16,33" id="Stroke-11"></path>
+                    </g>
+                    <polygon id="Fill-13" fill="#E5E5E5" points="101 79 148 98 148 79"></polygon>
+                    <polygon id="Fill-14" fill="#F2F8FF" points="149 78 101 78 101 30"></polygon>
+                    <polygon id="Stroke-15" stroke="#668298" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="149 78 101 78 101 30"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,5 +1,11 @@
 import { call, fork, take, put } from 'redux-saga/effects';
-import { LOGIN, loginSuccess, LOGOUT, logoutSuccess } from './Auth.store';
+import {
+  LOGIN,
+  loginSuccess,
+  LOGOUT,
+  logoutSuccess,
+  USER_SIGN_UP,
+} from './Auth.store';
 import api from '../../service';
 import Cookies from 'js-cookie';
 
@@ -11,7 +17,6 @@ export function* login(data) {
     };
 
     const result = yield call(api.login, params);
-    console.log(result);
 
     Cookies.set('jwt', result.data);
 
@@ -25,6 +30,24 @@ export function* logout() {
   try {
     Cookies.remove('jwt');
     yield put(logoutSuccess());
+  } catch (e) {
+    throw e;
+  }
+}
+
+export function* signUp(data) {
+  try {
+    const params = {
+      name: data.name,
+      username: data.username,
+      password: data.password,
+    };
+
+    const result = yield call(api.signUp, params);
+
+    if (result) {
+      console.log(result);
+    }
   } catch (e) {
     throw e;
   }
@@ -44,7 +67,15 @@ export function* watchLogout() {
   }
 }
 
+export function* watchUserSignUp() {
+  while (true) {
+    const { payload } = yield take(USER_SIGN_UP);
+    yield call(signUp, payload.data);
+  }
+}
+
 export default function*() {
   yield fork(watchLoginRequest);
   yield fork(watchLogout);
+  yield fork(watchUserSignUp);
 }

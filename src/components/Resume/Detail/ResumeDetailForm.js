@@ -16,7 +16,12 @@ import {
 } from '@material-ui/core';
 import scss from './ResumeDetailForm.scss';
 import { TextArea } from '../../Forms';
-import { updateResumeDetailCache } from '../../../store/Resume/Resume.store';
+import {
+  updateResumeDetailCache,
+  updateResumeDetailCacheRealtime,
+  updateResumeDetailOrigin,
+  updateResumeDetailOriginRealtime,
+} from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
 import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
@@ -33,6 +38,9 @@ import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
   }),
   {
     updateResumeDetailCache,
+    updateResumeDetailCacheRealtime,
+    updateResumeDetailOrigin,
+    updateResumeDetailOriginRealtime,
     change: (key, value) => change('resumeDetail', key, value),
   },
 )
@@ -56,20 +64,20 @@ export class ResumeDetailForm extends Component {
       createCacheQuestions,
     } = this.props;
 
+    const { formValues } = this.props;
+    let value = {
+      content: '',
+      title: '',
+      hashTags: [],
+    };
+    if (formValues) {
+      value = formValues;
+    }
+
     if (mode === 'create') {
       if (
         createCacheQuestions.thisId !== nextProps.createCacheQuestions.thisId
       ) {
-        const { formValues } = this.props;
-        let value = {
-          content: '',
-          title: '',
-          hashTags: [],
-        };
-        if (formValues) {
-          value = formValues;
-        }
-
         this.props.updateResumeDetailCache({
           id: nextProps.createCacheQuestions.thisId,
           value: value,
@@ -82,6 +90,17 @@ export class ResumeDetailForm extends Component {
       }
     } else if (mode === 'detail') {
       if (originQuestionId !== nextProps.originQuestionId) {
+        if (
+          value.content.length !== 0 &&
+          value.title.length !== 0 &&
+          value.hashTags.length !== 0
+        ) {
+          this.props.updateResumeDetailOrigin({
+            id: nextProps.originQuestionId,
+            value: value,
+          });
+        }
+
         this.changeFormValues(
           nextProps.originQuestions,
           nextProps.originQuestionId,
@@ -90,25 +109,47 @@ export class ResumeDetailForm extends Component {
     }
   }
 
-  updateResumeDetailForm() {
+  updateResumeDetailForm(data) {
     const {
       formValues,
-      updateResumeDetailCache,
+      updateResumeDetailCacheRealtime,
       createCacheQuestions,
+      updateResumeDetailOriginRealtime,
+      originQuestionId,
+      mode,
     } = this.props;
+
     let value = {
       content: '',
       title: '',
       hashTags: [],
     };
+
     if (formValues) {
       value = formValues;
     }
 
-    updateResumeDetailCache({
-      id: createCacheQuestions.thisId,
-      value: value,
-    });
+    if (data.hasOwnProperty('tags')) {
+      value.hashTags = data.tags.join();
+    } else if (data.hasOwnProperty('value')) {
+      if (data.name === 'content') {
+        value.content = data.value;
+      } else if (data.name === 'title') {
+        value.title = data.value;
+      }
+    }
+
+    if (mode === 'create') {
+      updateResumeDetailCacheRealtime({
+        id: createCacheQuestions.thisId,
+        value: value,
+      });
+    } else {
+      updateResumeDetailOriginRealtime({
+        id: originQuestionId,
+        value: value,
+      });
+    }
   }
 
   changeFormValues(data, id) {
@@ -163,26 +204,34 @@ export class ResumeDetailForm extends Component {
 
   @autobind
   updateTags(tags) {
-    console.log('updateTags = ', tags);
     const { change } = this.props;
     this.setState({
       tags: tags,
     });
     change('hashTags', tags);
 
-    this.updateResumeDetailForm();
+    this.updateResumeDetailForm({ tags: tags });
+  }
+
+  @autobind
+  updateText(value, name) {
+    this.updateResumeDetailForm({ value: value, name: name });
   }
 
   render() {
     const { tags, open, anchorEl, hashTagOpen } = this.state;
     /* 
-      TODO:  해시태그 추가 기능 만들기
+      TODO:  
+      1. 해시태그 추가 했을때 등록 및 초기화 기능 수정
+      2. title, content -> onChange시에 updateResumeDetailCache 할것
+      3. detail로 들어왔을때도 cache에 담고 수정 가능하게 
+
     */
     return (
       <form>
         <div className={scss['detail__contents--question']}>
           <p className={scss['question__title']}>질문</p>
-          <TextArea name={'title'} rows={4} />
+          <TextArea name={'title'} rows={4} updateText={this.updateText} />
           <div className={scss['hashtag']}>
             <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
             <Button
@@ -207,7 +256,7 @@ export class ResumeDetailForm extends Component {
             <p className={scss['answer__header--title']}>답변</p>
             <div className={scss['answer__header--action']}>
               <p>1 / 1000자</p>
-              <Button
+              {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={e => this.onClickContentSetting(e)}
@@ -263,13 +312,14 @@ export class ResumeDetailForm extends Component {
                     </Paper>
                   </Fade>
                 )}
-              </Popper>
+              </Popper> */}
             </div>
           </div>
           <TextArea
             name={'content'}
             rows={4}
             className={scss['answer__contents']}
+            updateText={this.updateText}
           />
         </div>
       </form>
@@ -286,4 +336,7 @@ ResumeDetailForm.propTypes = {
   originQuestions: PropTypes.array,
   change: PropTypes.func,
   createCacheQuestions: PropTypes.func,
+  updateResumeDetailCacheRealtime: PropTypes.func,
+  updateResumeDetailOrigin: PropTypes.func,
+  updateResumeDetailOriginRealtime: PropTypes.func,
 };
