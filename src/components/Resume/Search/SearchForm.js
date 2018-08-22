@@ -157,7 +157,7 @@ export class SearchForm extends Component {
       width = 0;
     }
 
-    if (pathname === '/dashboard') {
+    if (pathname === '/dashboard' || pathname === '/mypage') {
       return (
         <div
           className={scss['resumes__contents--search']}
@@ -165,16 +165,36 @@ export class SearchForm extends Component {
         >
           <div className={scss['search__input']}>
             <div className={scss['search__change']}>
-              <Button>홈</Button>
+              <Button>{pathname === '/dashboard' ? '홈' : '마이페이지'}</Button>
             </div>
             <div className={[scss['search__input--right']]}>
+              <IconButton
+                className={scss['search__button']}
+                aria-label="Delete"
+                onClick={this.onClickSearch}
+              >
+                <img src={searchIcon} alt="searchIcon" />
+              </IconButton>
               <Field
+                className={
+                  searchInputOpen
+                    ? scss['input__search--open']
+                    : scss['input__search--close']
+                }
+                style={{ width: width, transition: 'width 0.5s' }}
                 name="searchText"
                 component="input"
                 type="text"
                 placeholder="검색어를 입력해주세요."
                 onKeyPress={e => this.onKeyPress(e)}
               />
+              <IconButton
+                className={scss['clear__button']}
+                onClick={() => this.props.change('searchText', '')}
+                style={{ display: searchInputOpen ? 'block' : 'none' }}
+              >
+                <img src={clearIcon} alt="searchIcon" />
+              </IconButton>
               <Field
                 name="mode"
                 component="input"
