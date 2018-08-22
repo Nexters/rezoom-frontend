@@ -57,6 +57,7 @@ const theme = createMuiTheme({
       root: {
         width: 720,
         height: 440,
+        marginBottom: 29,
       },
       elevation2: {
         boxShadow: '0 4px 9px 0 rgba(0, 0, 0, 0.02)',
