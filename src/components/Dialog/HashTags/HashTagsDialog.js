@@ -126,7 +126,7 @@ export class HashTagsDialog extends Component {
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">
-            <div className={scss['create__title--contents']}>
+            <div>
               <p>해시태그 편집</p>
               <IconButton
                 aria-label="Delete"

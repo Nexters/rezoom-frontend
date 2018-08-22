@@ -173,30 +173,30 @@ export class DetailMenu extends Component {
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
-          <p className={scss['title']}> 문항 </p>{' '}
+          <p className={scss['title']}> 문항 </p>
           {mode === 'create' ? (
             <Button
               variant="outlined"
               color="primary"
               onClick={this.onClickDeleteQuestion}
             >
-              삭제{' '}
+              삭제
             </Button>
-          ) : null}{' '}
-        </div>{' '}
+          ) : null}
+        </div>
         <QuestionList
           list={list}
           selectedQuestion={selectedQuestion}
           onClickQuestion={this.onClickQuestion}
-        />{' '}
+        />
         <div className={scss['detail__sidebar--button']}>
           <MainButton
             onClickButton={this.onClickAddQuestion}
             text={'문항추가'}
             type="add"
             isDisabled={false}
-          />{' '}
-        </div>{' '}
+          />
+        </div>
       </div>
     );
   }

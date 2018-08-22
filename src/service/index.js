@@ -3,6 +3,7 @@ import Api from './Api';
 // 로그인 관련
 const Auth = {
   login: param => Api.postLogin('login', param),
+  signUp: param => Api.post('users/sign-up', param),
 };
 
 const Resume = {
@@ -31,6 +32,7 @@ const Search = {
 const api = {};
 
 api.login = param => Auth.login(param);
+api.signUp = param => Auth.signUp(param);
 
 // resume api
 api.getResumes = () => Resume.findAll();
