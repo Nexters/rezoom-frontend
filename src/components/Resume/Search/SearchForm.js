@@ -145,6 +145,8 @@ export class SearchForm extends Component {
       searchInputOpen,
     } = this.state;
 
+    const { pathname } = this.props;
+
     const searchButton = searchMode.filter(item => item.active === true);
 
     let width = 0;
@@ -155,85 +157,116 @@ export class SearchForm extends Component {
       width = 0;
     }
 
-    return (
-      <div className={scss['resumes__contents--search']}>
-        <div className={scss['search__input']}>
-          <div className={scss['search__change']}>
-            <Button
-              aria-owns={menusOpen ? 'menu-list-grow' : null}
-              aria-haspopup="true"
-              onClick={e => this.handleToggle(e)}
-            >
-              {searchButton[0].key}
-              {menusOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-            </Button>
-            <SeacrhMenuPopper
-              menusOpen={menusOpen}
-              menusAnchorEl={menusAnchorEl}
-              closeSearchMenuPopper={this.closeSearchMenuPopper}
-            />
-          </div>
-          <div className={[scss['search__input--right']]}>
-            {searchMode[1].active ? (
-              <SelectForm
-                className={scss['search__option']}
-                name={'questionSearchOption'}
-                label={'검색 방법'}
-                items={questionSearchOption}
+    if (pathname === '/dashboard') {
+      return (
+        <div
+          className={scss['resumes__contents--search']}
+          style={{ height: 100 }}
+        >
+          <div className={scss['search__input']}>
+            <div className={scss['search__change']}>
+              <Button>홈</Button>
+            </div>
+            <div className={[scss['search__input--right']]}>
+              <Field
+                name="searchText"
+                component="input"
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                onKeyPress={e => this.onKeyPress(e)}
               />
-            ) : null}
-            <IconButton
-              className={scss['search__button']}
-              aria-label="Delete"
-              onClick={this.onClickSearch}
-            >
-              <img src={searchIcon} alt="searchIcon" />
-            </IconButton>
-            <Field
-              className={
-                searchInputOpen
-                  ? scss['input__search--open']
-                  : scss['input__search--close']
-              }
-              style={{ width: width, transition: 'width 0.5s' }}
-              name="searchText"
-              component="input"
-              type="text"
-              placeholder="검색어를 입력해주세요."
-              onKeyPress={e => this.onKeyPress(e)}
-            />
-            <IconButton
-              className={scss['clear__button']}
-              onClick={() => this.props.change('searchText', '')}
-              style={{ display: searchInputOpen ? 'block' : 'none' }}
-            >
-              <img src={clearIcon} alt="searchIcon" />
-            </IconButton>
-            <Field
-              name="mode"
-              component="input"
-              type="text"
-              style={{ display: 'none' }}
-            />
+              <Field
+                name="mode"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
+            </div>
           </div>
         </div>
-        {searchMode[1].active ? null : (
-          <SearchFormDetail
-            finishFlag={finishFlag}
-            applicationYear={applicationYear}
-            halfType={halfType}
-            applicationType={applicationType}
-            passFlag={passFlag}
-          />
-        )}
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className={scss['resumes__contents--search']}>
+          <div className={scss['search__input']}>
+            <div className={scss['search__change']}>
+              <Button
+                aria-owns={menusOpen ? 'menu-list-grow' : null}
+                aria-haspopup="true"
+                onClick={e => this.handleToggle(e)}
+              >
+                {searchButton[0].key}
+                {menusOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+              </Button>
+              <SeacrhMenuPopper
+                menusOpen={menusOpen}
+                menusAnchorEl={menusAnchorEl}
+                closeSearchMenuPopper={this.closeSearchMenuPopper}
+              />
+            </div>
+            <div className={[scss['search__input--right']]}>
+              {searchMode[1].active ? (
+                <SelectForm
+                  className={scss['search__option']}
+                  name={'questionSearchOption'}
+                  label={'검색 방법'}
+                  items={questionSearchOption}
+                />
+              ) : null}
+              <IconButton
+                className={scss['search__button']}
+                aria-label="Delete"
+                onClick={this.onClickSearch}
+              >
+                <img src={searchIcon} alt="searchIcon" />
+              </IconButton>
+              <Field
+                className={
+                  searchInputOpen
+                    ? scss['input__search--open']
+                    : scss['input__search--close']
+                }
+                style={{ width: width, transition: 'width 0.5s' }}
+                name="searchText"
+                component="input"
+                type="text"
+                placeholder="검색어를 입력해주세요."
+                onKeyPress={e => this.onKeyPress(e)}
+              />
+              <IconButton
+                className={scss['clear__button']}
+                onClick={() => this.props.change('searchText', '')}
+                style={{ display: searchInputOpen ? 'block' : 'none' }}
+              >
+                <img src={clearIcon} alt="searchIcon" />
+              </IconButton>
+              <Field
+                name="mode"
+                component="input"
+                type="text"
+                style={{ display: 'none' }}
+              />
+            </div>
+          </div>
+          {searchMode[1].active ? null : (
+            <SearchFormDetail
+              finishFlag={finishFlag}
+              applicationYear={applicationYear}
+              halfType={halfType}
+              applicationType={applicationType}
+              passFlag={passFlag}
+            />
+          )}
+        </div>
+      );
+    }
   }
 }
 
 SearchForm.propTypes = {
   submit: PropTypes.func,
   change: PropTypes.func,
+  pathname: PropTypes.object,
 };
 
 export default SearchForm;

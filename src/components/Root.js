@@ -41,6 +41,7 @@ export class Root extends Component {
               <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
               <Route path="/files" component={Layout} />
               <Route path="/mypage" component={Layout} />
+              <Route path="/dashboard" component={Layout} />
               <Route path="/search" component={Layout} />
               <Route component={PageNotFound} />
             </Switch>
