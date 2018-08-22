@@ -5,6 +5,8 @@ export const LOGOUT = 'LOGOUT';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
+export const USER_SIGN_UP = 'USER_SIGN_UP';
+
 export const getJwtToken = state => state.auth.jwt;
 
 const initialState = {
@@ -45,4 +47,11 @@ export const loginSuccess = () => ({
 
 export const logoutSuccess = () => ({
   type: LOGOUT_SUCCESS,
+});
+
+export const userSignUp = data => ({
+  type: USER_SIGN_UP,
+  payload: {
+    data,
+  },
 });

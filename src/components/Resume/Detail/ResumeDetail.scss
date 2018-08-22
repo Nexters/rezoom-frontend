@@ -18,6 +18,7 @@
 
       .detail__contents--title {
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
         width: 100%;
         margin-bottom: 16px;
@@ -27,6 +28,25 @@
           margin: 0px;
           font-size: 24px;
           font-weight: normal;
+          button {
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: -0.7px;
+            color: #668298;
+  
+            img {
+              margin-left: 15px;
+              margin-right: 8px;
+            }
+          }
+        }
+
+        p:last-child {
+          font-size: 14px;
+          font-weight: normal;
+          line-height: 2;
+          letter-spacing: normal;
+          color: #333333;
         }
       }
 

@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import Layout from './Layout/Layout';
 import Login from './Login/Login';
 import PageNotFound from './Shared/Error/PageNotFound';
+import Account from './Account/Account';
 
 import { ConnectedRouter } from 'connected-react-router';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -14,6 +15,12 @@ const theme = createMuiTheme({
     primary: {
       main: '#364eda',
     },
+  },
+  typography: {
+    fontFamily: 'Noto Sans, Roboto, Helvetica, Arial, sans-serif',
+    fontWeightLight: 300,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
   },
 });
 export class Root extends Component {
@@ -30,6 +37,7 @@ export class Root extends Component {
             <Switch>
               <Route exact path="/" component={Layout} />
               <Route exact path="/login" component={Login} />
+              <Route exact path="/account" component={Account} />
               <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
               <Route path="/files" component={Layout} />
               <Route path="/info" component={Layout} />

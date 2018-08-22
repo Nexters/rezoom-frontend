@@ -1,4 +1,4 @@
-import { push } from 'connected-react-router';
+import { push, match } from 'connected-react-router';
 import { call, fork, take, put, select } from 'redux-saga/effects';
 import {
   REQUEST_CREATE_NEW_RESUME,
@@ -7,21 +7,53 @@ import {
   updateResumeList,
   updateQuestionList,
   GET_QUESTION_LIST,
+  REQUEST_CREATE_QUESTION,
+  getSelectedQuestionId,
+  getCreateQuestions,
+  UPDATE_RESUME,
+  DELETE_RESUME,
 } from './Resume.store';
 import api from '../../service';
-import { getJwtToken } from '../Auth/Auth.store';
 import {
   activeLoadingContainer,
   inactiveLoadingContainer,
+  activeLoadingComponent,
+  inactiveLoadingComponent,
 } from '../Loader/Loader.store';
+import { FilterUtils } from '../../utils/FilterUtils';
+import { resumeCreateFormData } from '../../utils/Constans';
+import { dialogClose } from '../Dialog/Dialog.store';
 
 function* postCreateNewResume(data) {
   try {
-    // const result = yield call(api.newResume, data);
-    // console.log('success new resume = ', result);
+    yield put(activeLoadingComponent());
 
-    yield put(responseCreateNewResume(data));
-    yield put(push(`/resume/create/${1}`));
+    const resume = {
+      companyName: data.companyName,
+      applicationYear: data.applicationYear,
+      applicationType: data.applicationType,
+      finishFlag: data.finishFlag,
+      halfType: data.halfType,
+      jobType: data.jobType,
+      passFlag: data.passFlag,
+      deadline: data.deadline,
+    };
+    if (data.mode === 'Edit') {
+      yield call(putUpdateResume, data.resumeId, resume);
+    } else {
+      console.log('new resume = ', data);
+      const result = yield call(api.newResume, resume);
+      // console.log('success new resume = ', result);
+
+      if (result) {
+        yield put(responseCreateNewResume(data));
+      }
+
+      yield put(dialogClose());
+      yield put(push(`/resume/create/${result.data}`));
+    }
+    yield put(inactiveLoadingComponent());
+    console.log('inactive');
   } catch (error) {
     console.log(error);
   }
@@ -33,6 +65,19 @@ function* getResumeList() {
     const result = yield call(api.getResumes);
 
     if (result) {
+      result.data.forEach(item => {
+        if (item.applicationType.length === 1) {
+          item.applicationType = FilterUtils.filterItem(
+            resumeCreateFormData.applicationType,
+            String(item.applicationType),
+          );
+        }
+
+        item.finishFlag = FilterUtils.filterItem(
+          resumeCreateFormData.finishFlag,
+          item.finishFlag,
+        );
+      });
       yield put(updateResumeList(result.data));
     }
     yield put(inactiveLoadingContainer());
@@ -49,6 +94,65 @@ function* getQuestionsList(payload) {
     if (result) {
       yield put(updateQuestionList(result.data));
     }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* postCreateQuestions(resumeId) {
+  try {
+    const originQuestions = yield select(getCreateQuestions);
+
+    originQuestions.forEach(item => {
+      delete item.questionId;
+      if (item.hashTags instanceof Array) {
+        item.hashTags = item.hashTags.join();
+      }
+    });
+
+    const body = {
+      questions: originQuestions,
+      resumeId: Number(resumeId),
+    };
+
+    const result = yield call(api.insertQuestions, body);
+
+    if (result) {
+      console.log('success insert questions = ', result);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* putUpdateResume(resumeId, resume) {
+  try {
+    const body = {
+      resume: resume,
+    };
+
+    const result = yield call(api.updateResume, resumeId, body);
+
+    if (result) {
+      console.log('success insert questions = ', result);
+    }
+    yield put(inactiveLoadingComponent());
+    yield put(dialogClose());
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+function* deleteOneResume(resumeId) {
+  try {
+    yield put(activeLoadingComponent());
+
+    const result = yield call(api.deleteResume, resumeId);
+
+    if (result) {
+      yield call(getResumeList);
+    }
+    yield put(inactiveLoadingComponent());
   } catch (error) {
     console.log(error);
   }
@@ -75,8 +179,24 @@ export function* watchCreateNewResume() {
   }
 }
 
+export function* watchCreateQuestions() {
+  while (true) {
+    const { payload } = yield take(REQUEST_CREATE_QUESTION);
+    yield call(postCreateQuestions, payload['resumeId']);
+  }
+}
+
+export function* watchDeleteResume() {
+  while (true) {
+    const { payload } = yield take(DELETE_RESUME);
+    yield call(deleteOneResume, payload.resumeId);
+  }
+}
+
 export default function*() {
   yield fork(watchCreateNewResume);
+  yield fork(watchCreateQuestions);
   yield fork(watchResumeList);
   yield fork(watchQuestionList);
+  yield fork(watchDeleteResume);
 }

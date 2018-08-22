@@ -40,7 +40,12 @@ const theme = createMuiTheme({
     },
     MuiListItem: {
       default: {
-        border: '1px solid #ced8ea',
+        borderLeft: '1px solid #ced8ea',
+        borderRight: '1px solid #ced8ea',
+        borderBottom: '1px solid #ced8ea',
+        '&:first-child': {
+          borderTop: '1px solid #ced8ea',
+        },
       },
       button: {
         fontWeight: '500 !important',
@@ -54,10 +59,13 @@ const theme = createMuiTheme({
       elevation8: {
         boxShadow: 'none',
       },
+      rounded: {
+        borderRadius: 0,
+      },
     },
     MuiPopover: {
       paper: {
-        top: '116px !important',
+        top: '164px !important',
         minWidth: '166px !important',
       },
     },
@@ -83,9 +91,6 @@ const renderSelect = ({
       <MuiThemeProvider theme={theme}>
         <InputLabel htmlFor="age-auto-width">{name}</InputLabel>
         <Select
-          InputProps={{
-            disableUnderline: true,
-          }}
           id={name}
           label={label}
           onChange={(e, idx, value) => input.onChange(value)}
@@ -113,9 +118,14 @@ export class SelectForm extends Component {
   }
 
   render() {
-    const { name, label, items } = this.props;
+    const { name, label, items, placeholder } = this.props;
     return (
       <Field name={name} component={renderSelect} label={label}>
+        {/* placeholder.length > 0 ? (
+          <MenuItem key={0} value={placeholder}>
+            {placeholder}
+          </MenuItem>
+        ) : null */}
         {items.map((item, idx) => {
           return (
             <MenuItem key={idx} value={item.value}>
@@ -132,6 +142,7 @@ SelectForm.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
+  placeholder: PropTypes.string,
 };
 
 export default SelectForm;
