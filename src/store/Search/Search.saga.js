@@ -18,6 +18,10 @@ export function* getSearchResumes(data) {
   try {
     yield put(activeLoadingContainer());
 
+    if (data.searchText === undefined) {
+      data.searchText = '';
+    }
+
     if (data.mode === 'questions') {
       let result;
 
@@ -60,8 +64,8 @@ export function* getSearchResumes(data) {
     }
 
     yield put(inactiveLoadingContainer());
-  } catch (e) {
-    throw e;
+  } catch (error) {
+    throw error;
   }
 }
 

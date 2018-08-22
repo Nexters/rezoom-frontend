@@ -12,6 +12,11 @@ import {
   getCreateQuestions,
   UPDATE_RESUME,
   DELETE_RESUME,
+  REQUEST_UPDATE_QUESTION,
+  getUpdateQuestions,
+  getQuestionsUpdateFlag,
+  clearQuestionUpdateFlag,
+  isUpdateModeChange,
 } from './Resume.store';
 import api from '../../service';
 import {
@@ -56,6 +61,7 @@ function* postCreateNewResume(data) {
     console.log('inactive');
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -83,6 +89,7 @@ function* getResumeList() {
     yield put(inactiveLoadingContainer());
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -96,11 +103,13 @@ function* getQuestionsList(payload) {
     }
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
 function* postCreateQuestions(resumeId) {
   try {
+    yield put(activeLoadingContainer());
     const originQuestions = yield select(getCreateQuestions);
 
     originQuestions.forEach(item => {
@@ -116,12 +125,16 @@ function* postCreateQuestions(resumeId) {
     };
 
     const result = yield call(api.insertQuestions, body);
+    const payload = { resumeId: resumeId };
 
     if (result) {
-      console.log('success insert questions = ', result);
+      yield call(getQuestionsList, payload);
+      yield put(push(`/resume/detail/${resumeId}`));
+      yield put(inactiveLoadingContainer());
     }
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -140,6 +153,7 @@ function* putUpdateResume(resumeId, resume) {
     yield put(dialogClose());
   } catch (error) {
     console.log(error);
+    throw error;
   }
 }
 
@@ -155,6 +169,56 @@ function* deleteOneResume(resumeId) {
     yield put(inactiveLoadingComponent());
   } catch (error) {
     console.log(error);
+    throw error;
+  }
+}
+
+function* putUpdateQuestion(resumeId) {
+  try {
+    yield put(activeLoadingComponent());
+
+    const questionsUpdateFlag = yield select(getQuestionsUpdateFlag);
+    const originQuestions = yield select(getUpdateQuestions);
+    const payload = { resumeId: resumeId };
+
+    originQuestions.forEach(item => {
+      if (questionsUpdateFlag) {
+        delete item.questionId;
+      }
+      if (item.hasOwnProperty('type')) {
+        delete item.type;
+        delete item.questionId;
+      }
+      if (item.hashTags instanceof Array) {
+        item.hashTags = item.hashTags.join();
+      }
+    });
+
+    const body = {
+      questions: originQuestions,
+      resumeId: Number(resumeId),
+    };
+
+    let result;
+
+    if (questionsUpdateFlag) {
+      result = yield call(api.insertQuestions, body);
+    } else {
+      result = yield call(api.updateQuestions, body);
+    }
+
+    if (result) {
+      if (questionsUpdateFlag) {
+        yield put(clearQuestionUpdateFlag());
+        yield put(isUpdateModeChange(false));
+      }
+      yield call(getQuestionsList, payload);
+      yield put(push(`/resume/detail/${resumeId}`));
+      yield put(inactiveLoadingContainer());
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
 
@@ -193,10 +257,18 @@ export function* watchDeleteResume() {
   }
 }
 
+export function* watchUpdateQuestion() {
+  while (true) {
+    const { payload } = yield take(REQUEST_UPDATE_QUESTION);
+    yield call(putUpdateQuestion, payload.resumeId);
+  }
+}
+
 export default function*() {
   yield fork(watchCreateNewResume);
   yield fork(watchCreateQuestions);
   yield fork(watchResumeList);
   yield fork(watchQuestionList);
   yield fork(watchDeleteResume);
+  yield fork(watchUpdateQuestion);
 }

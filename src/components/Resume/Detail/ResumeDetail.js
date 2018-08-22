@@ -10,6 +10,7 @@ import { MainButton } from '../../Shared/Button/MainButton';
 import {
   requestCreateQuestion,
   getResumeList,
+  requestUpdateQuestion,
 } from '../../../store/Resume/Resume.store';
 import { dialogOpen } from '../../../store/Dialog/Dialog.store';
 import editIcon from '../../../static/images/item/ic-edit-alter.svg';
@@ -19,9 +20,11 @@ import moment from 'moment';
   state => ({
     resumes: state.resume.resumes,
     createCache: state.resume.createResumeCache,
+    isUpdateMode: state.resume.isUpdateMode,
   }),
   {
     requestCreateQuestion,
+    requestUpdateQuestion,
     dialogOpen,
     getResumeList,
   },
@@ -44,6 +47,7 @@ export class ResumeDetail extends Component {
         resumeId: 0,
         username: '',
       },
+      questionsUpdateFlag: false,
     };
   }
 
@@ -92,14 +96,24 @@ export class ResumeDetail extends Component {
 
   @autobind
   saveQuestions() {
-    const { requestCreateQuestion, match } = this.props;
+    const { requestCreateQuestion, match, requestUpdateQuestion } = this.props;
 
-    requestCreateQuestion(match.params.id);
+    if (match['params']['mode'] === 'create') {
+      requestCreateQuestion(match.params.id);
+    } else {
+      requestUpdateQuestion(match.params.id);
+    }
   }
 
   render() {
-    const { match } = this.props;
+    const { match, isUpdateMode } = this.props;
     const { resumeData } = this.state;
+
+    let isUpdate = isUpdateMode;
+
+    if (match['params']['mode'] === 'create') {
+      isUpdate = true;
+    }
 
     return (
       <div className={scss.detail}>
@@ -128,7 +142,7 @@ export class ResumeDetail extends Component {
                 onClickButton={this.saveQuestions}
                 text={'저장하기'}
                 type="save"
-                isDisabled={false}
+                isDisabled={!isUpdate}
               />
             </div>
           </div>
@@ -148,6 +162,8 @@ ResumeDetail.propTypes = {
   requestCreateQuestion: PropTypes.func,
   dialogOpen: PropTypes.func,
   getResumeList: PropTypes.func,
+  requestUpdateQuestion: PropTypes.func,
+  isUpdateMode: PropTypes.bool,
 };
 
 export default ResumeDetail;

@@ -19,17 +19,27 @@ export const SELECT_QUESTION_ID = 'SELECT_QUESTION_ID';
 export const SELECT_CREATE_CACHE_QUESTION_ID =
   'SELECT_CREATE_CACHE_QUESTION_ID';
 export const CREATE_QUESTION = 'CREATE_QUESTION';
+export const CREATE_QUESTION_ORIGIN = 'CREATE_QUESTION_ORIGIN';
 export const DELETE_QUESTION = 'DELETE_QUESTION';
+export const DELETE_QUESTION_CACHE = 'DELETE_QUESTION_CACHE';
 export const CLEAR_QUESTION = 'CLEAR_QUESTION';
 export const REQUEST_CREATE_QUESTION = 'REQUEST_CREATE_QUESTION';
 export const RESPONSE_CREATE_QUESTION = 'RESPONSE_CREATE_QUESTION';
+export const REQUEST_UPDATE_QUESTION = 'REQUEST_UPDATE_QUESTION';
 
 export const EDIT_RESUME_INFO_DATA = 'EDIT_RESUME_INFO_DATA';
 export const DELETE_RESUME = 'DELETE_RESUME';
 
+export const CLEAR_QUESTION_UPDATE_FLAG = 'CLEAR_QUESTION_UPDATE_FLAG';
+export const CLEAR_QUESTION_CACHE = 'CLEAR_QUESTION_CACHE';
+
+export const IS_UPDATE_MODE_CHANGE = 'IS_UPDATE_MODE_CHANGE';
+
 const initialState = {
   resumes: [],
   questions: [],
+  questionsUpdateFlag: false,
+  isUpdateMode: false,
   selectedQuestion: 1,
   createResumeCache: {
     info: {
@@ -52,6 +62,8 @@ const initialState = {
 export const getCreateQuestions = state =>
   state.resume.createResumeCache.detail;
 export const getSelectedQuestionId = state => state.resume.selectedQuestion;
+export const getUpdateQuestions = state => state.resume.questions;
+export const getQuestionsUpdateFlag = state => state.resume.questionsUpdateFlag;
 
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
@@ -104,6 +116,7 @@ export default function reducer(state = initialState, action = {}) {
       const prevId = state.createResumeCache.prevId;
       let detail = Object.assign([], state.createResumeCache.detail);
       let itemCheck = false;
+
       detail.forEach((item, itemIdx) => {
         if (item.questionId === prevId) {
           itemCheck = true;
@@ -112,6 +125,7 @@ export default function reducer(state = initialState, action = {}) {
           item.hashTags = action.payload.data.value.hashTags || [];
         }
       });
+
       if (itemCheck) {
         return {
           ...state,
@@ -133,6 +147,7 @@ export default function reducer(state = initialState, action = {}) {
 
       let detailOrg = Object.assign([], state.createResumeCache.detail);
       let orgCheck = false;
+
       detailOrg.forEach((item, itemIdx) => {
         if (item.questionId === action.payload.data.id) {
           itemCheck = true;
@@ -162,6 +177,8 @@ export default function reducer(state = initialState, action = {}) {
       }
       let questions = Object.assign([], state.questions);
       let checkQuestion = false;
+      let updateFlag = false;
+
       questions.forEach((item, itemIdx) => {
         if (item.questionId === action.payload.data.id) {
           checkQuestion = true;
@@ -170,10 +187,23 @@ export default function reducer(state = initialState, action = {}) {
           item.hashTags = action.payload.data.value.hashTags || [];
         }
       });
+
+      if (questions.length === 0) {
+        checkQuestion = true;
+        updateFlag = true;
+        questions.push(action.payload.data.value);
+        quistions[0].questionId = action.payload.data.id;
+      }
+
+      if (state.questionsUpdateFlag) {
+        updateFlag = true;
+      }
+
       if (checkQuestion) {
         return {
           ...state,
           questions: questions,
+          questionsUpdateFlag: updateFlag,
         };
       } else {
         return {
@@ -187,6 +217,8 @@ export default function reducer(state = initialState, action = {}) {
 
       let realtimeQuestions = Object.assign([], state.questions);
       let realtimeCheckQuestion = false;
+      let updateFlagRealtime = false;
+
       realtimeQuestions.forEach((item, itemIdx) => {
         if (item.questionId === action.payload.data.id) {
           realtimeCheckQuestion = true;
@@ -195,16 +227,46 @@ export default function reducer(state = initialState, action = {}) {
           item.hashTags = action.payload.data.value.hashTags || [];
         }
       });
+
+      if (realtimeQuestions.length === 0) {
+        realtimeCheckQuestion = true;
+        updateFlagRealtime = true;
+        realtimeQuestions.push(action.payload.data.value);
+        realtimeQuestions[0].questionId = action.payload.data.id;
+      }
+
+      if (state.questionsUpdateFlag) {
+        updateFlagRealtime = true;
+      }
+
       if (realtimeCheckQuestion) {
         return {
           ...state,
           questions: realtimeQuestions,
+          questionsUpdateFlag: updateFlagRealtime,
         };
       } else {
         return {
           ...state,
         };
       }
+    case DELETE_QUESTION:
+      return {
+        ...state,
+        questions: state.questions.filter(
+          item => item.questionId !== action.payload.questionId,
+        ),
+      };
+    case DELETE_QUESTION_CACHE:
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          detail: state.createResumeCache.detail.filter(
+            item => item.questionId !== action.payload.questionId,
+          ),
+        },
+      };
     case SELECT_QUESTION_ID:
       return {
         ...state,
@@ -242,6 +304,25 @@ export default function reducer(state = initialState, action = {}) {
           mode: 'add',
         },
       };
+    case CREATE_QUESTION_ORIGIN:
+      let newId = state.questions.length + 1;
+      String(newId).padStart(10, '0');
+
+      const newQuestion = {
+        content: '',
+        hashTags: [],
+        questionId: state.questions.length === 0 ? 1 : Number(newId),
+        title: '',
+        type: 'new',
+      };
+
+      const mergeQuestion = Object.assign([], state.questions);
+      mergeQuestion.push(newQuestion);
+      return {
+        ...state,
+        questions: mergeQuestion,
+        selectedQuestion: state.questions.length === 0 ? 1 : Number(newId),
+      };
     case CLEAR_QUESTION:
       return {
         ...state,
@@ -260,6 +341,24 @@ export default function reducer(state = initialState, action = {}) {
         createResumeCache: {
           ...state.createResumeCache,
           info: resumeInfo[0],
+        },
+      };
+    case CLEAR_QUESTION_UPDATE_FLAG:
+      return {
+        ...state,
+        questionsUpdateFlag: false,
+      };
+    case IS_UPDATE_MODE_CHANGE:
+      return {
+        ...state,
+        isUpdateMode: action.payload.isUpdate,
+      };
+    case CLEAR_QUESTION_CACHE:
+      return {
+        ...state,
+        createResumeCache: {
+          ...state.createResumeCache,
+          detail: [],
         },
       };
     default:
@@ -360,8 +459,22 @@ export const createQuestion = () => ({
   type: CREATE_QUESTION,
 });
 
-export const deleteQuestion = () => ({
+export const createQuestionOrigin = () => ({
+  type: CREATE_QUESTION_ORIGIN,
+});
+
+export const deleteQuestion = questionId => ({
   type: DELETE_QUESTION,
+  payload: {
+    questionId,
+  },
+});
+
+export const deleteQuestionCache = questionId => ({
+  type: DELETE_QUESTION_CACHE,
+  payload: {
+    questionId,
+  },
 });
 
 export const clearQuestion = () => ({
@@ -391,4 +504,26 @@ export const deleteResume = resumeId => ({
   payload: {
     resumeId,
   },
+});
+
+export const requestUpdateQuestion = resumeId => ({
+  type: REQUEST_UPDATE_QUESTION,
+  payload: {
+    resumeId,
+  },
+});
+
+export const clearQuestionUpdateFlag = () => ({
+  type: CLEAR_QUESTION_UPDATE_FLAG,
+});
+
+export const isUpdateModeChange = isUpdate => ({
+  type: IS_UPDATE_MODE_CHANGE,
+  payload: {
+    isUpdate,
+  },
+});
+
+export const clearQuestionCache = () => ({
+  type: CLEAR_QUESTION_CACHE,
 });

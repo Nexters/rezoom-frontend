@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Card, Grid } from '@material-ui/core';
+import { Card, Grid, Button } from '@material-ui/core';
 import Scrollbars from 'react-custom-scrollbars';
 import scss from './List.scss';
 import { ListItemInfo } from './ListItemInfo';
 import { ListMenu } from './ListMenu';
+import emptyImage from '../../../static/images/item/newdocument.svg';
 
 export class List extends Component {
   static propTypes = {
@@ -29,7 +30,11 @@ export class List extends Component {
       >
         {resumeList.length === 0 ? (
           <div>
-            <h1> 데이터 없음 </h1>
+            <img src={emptyImage} alt="empty" />
+            <h5> 새 자소서를 작성해 주세요. </h5>
+            <Button variant="contained" color="primary">
+              자소서 작성하기
+            </Button>
           </div>
         ) : (
           <Grid

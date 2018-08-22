@@ -4,9 +4,13 @@ import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import { logout } from '../../../store/Auth/Auth.store';
 import { dialogOpen } from '../../../store/Dialog/Dialog.store';
+import {
+  isUpdateModeChange,
+  clearQuestionCache,
+} from '../../../store/Resume/Resume.store';
 import scss from './Header.scss';
 import autobind from 'autobind-decorator';
 import { DetailMenu } from './DetailMenu/DetailMenu';
@@ -24,6 +28,8 @@ import mypageIcon from '../../../static/images/menu/ic-nav-mypage.svg';
   {
     logout,
     dialogOpen,
+    isUpdateModeChange,
+    clearQuestionCache,
   },
 )
 class Header extends Component {
@@ -63,6 +69,12 @@ class Header extends Component {
     return buttonComponent;
   }
 
+  @autobind
+  backIconClick() {
+    this.props.isUpdateModeChange(false);
+    this.props.clearQuestionCache();
+  }
+
   render() {
     const { classes, match, location } = this.props;
     let isDetail = false;
@@ -76,8 +88,10 @@ class Header extends Component {
         <Toolbar className={scss['header__toolbar']}>
           <div className={scss['header__logo']}>
             {isDetail ? (
-              <Link to="/resume">
-                <img src={backIcon} alt="rezoom-logo" />
+              <Link to="/resume" onClick={this.backIconClick}>
+                <IconButton aria-label="back">
+                  <img src={backIcon} alt="rezoom-logo" />
+                </IconButton>
               </Link>
             ) : (
               <Link to="/resume">
@@ -126,6 +140,8 @@ Header.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object,
   dialogOpen: PropTypes.func,
+  isUpdateModeChange: PropTypes.func,
+  clearQuestionCache: PropTypes.func,
 };
 
 export default Header;

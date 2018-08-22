@@ -10,4 +10,11 @@ export class FilterUtils {
       return result[0].key;
     }
   }
+
+  static getKey(arr, key) {
+    const result = arr.filter(item => item.key === key);
+    if (result[0]) {
+      return result[0].value;
+    }
+  }
 }
