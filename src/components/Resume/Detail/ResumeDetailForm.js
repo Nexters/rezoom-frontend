@@ -21,6 +21,7 @@ import {
   updateResumeDetailCacheRealtime,
   updateResumeDetailOrigin,
   updateResumeDetailOriginRealtime,
+  isUpdateModeChange,
 } from '../../../store/Resume/Resume.store';
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
@@ -41,6 +42,7 @@ import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
     updateResumeDetailCacheRealtime,
     updateResumeDetailOrigin,
     updateResumeDetailOriginRealtime,
+    isUpdateModeChange,
     change: (key, value) => change('resumeDetail', key, value),
   },
 )
@@ -53,6 +55,7 @@ export class ResumeDetailForm extends Component {
       hashTagOpen: false,
       open: false,
       anchorEl: null,
+      isUpdate: false,
     };
   }
 
@@ -93,11 +96,15 @@ export class ResumeDetailForm extends Component {
         if (
           value.content.length !== 0 &&
           value.title.length !== 0 &&
-          value.hashTags.length !== 0
+          value.hashTags.length !== 0 &&
+          this.state.isUpdate
         ) {
           this.props.updateResumeDetailOrigin({
-            id: nextProps.originQuestionId,
+            id: originQuestionId,
             value: value,
+          });
+          this.setState({
+            isUpdate: false,
           });
         }
 
@@ -190,10 +197,10 @@ export class ResumeDetailForm extends Component {
     }));
   }
 
-  @autobind
+  /* @autobind
   handleChange(a) {
     console.log(a);
-  }
+  } */
 
   @autobind
   hashTagDialogClose() {
@@ -207,15 +214,21 @@ export class ResumeDetailForm extends Component {
     const { change } = this.props;
     this.setState({
       tags: tags,
+      isUpdate: true,
     });
     change('hashTags', tags);
 
     this.updateResumeDetailForm({ tags: tags });
+    this.props.isUpdateModeChange(true);
   }
 
   @autobind
   updateText(value, name) {
+    this.setState({
+      isUpdate: true,
+    });
     this.updateResumeDetailForm({ value: value, name: name });
+    this.props.isUpdateModeChange(true);
   }
 
   render() {
@@ -339,4 +352,5 @@ ResumeDetailForm.propTypes = {
   updateResumeDetailCacheRealtime: PropTypes.func,
   updateResumeDetailOrigin: PropTypes.func,
   updateResumeDetailOriginRealtime: PropTypes.func,
+  isUpdateModeChange: PropTypes.func,
 };

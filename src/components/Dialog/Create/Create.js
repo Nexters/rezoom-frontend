@@ -27,6 +27,7 @@ import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 import moment from 'moment';
 import 'moment/locale/ko';
 import { MainButton } from '../../Shared/Button/MainButton';
+import { FilterUtils } from '../../../utils/FilterUtils';
 
 moment.locale('ko');
 
@@ -118,6 +119,7 @@ export class Create extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { change, mode, match, initialValues } = this.props;
+    const { applicationType, finishFlag } = resumeCreateFormData;
 
     if (this.state.init) {
       if (mode === 'Edit') {
@@ -126,8 +128,14 @@ export class Create extends Component {
           change('applicationYear', initialValues.applicationYear);
           change('halfType', initialValues.halfType);
           change('jobType', initialValues.jobType);
-          change('applicationType', initialValues.applicationType);
-          change('finishFlag', initialValues.finishFlag);
+          change(
+            'applicationType',
+            FilterUtils.getKey(applicationType, initialValues.applicationType),
+          );
+          change(
+            'finishFlag',
+            FilterUtils.getKey(finishFlag, initialValues.finishFlag),
+          );
           change('passFlag', initialValues.passFlag);
           change('resumeId', match['params']['id']);
           change('mode', mode);
@@ -136,8 +144,17 @@ export class Create extends Component {
           change('applicationYear', nextProps.initialValues.applicationYear);
           change('halfType', nextProps.initialValues.halfType);
           change('jobType', nextProps.initialValues.jobType);
-          change('applicationType', nextProps.initialValues.applicationType);
-          change('finishFlag', nextProps.initialValues.finishFlag);
+          change(
+            'applicationType',
+            FilterUtils.getKey(
+              applicationType,
+              nextProps.initialValues.applicationType,
+            ),
+          );
+          change(
+            'finishFlag',
+            FilterUtils.getKey(finishFlag, nextProps.initialValues.finishFlag),
+          );
           change('passFlag', nextProps.initialValues.passFlag);
           change('resumeId', nextProps.initialValues.resumeId);
           change('mode', mode);
@@ -151,13 +168,20 @@ export class Create extends Component {
 
   setEditForm() {
     const { initialValues, change, mode } = this.props;
+    const { applicationType, finishFlag } = resumeCreateFormData;
 
     change('companyName', initialValues.companyName);
     change('applicationYear', initialValues.applicationYear);
     change('halfType', initialValues.halfType);
     change('jobType', initialValues.jobType);
-    change('applicationType', initialValues.applicationType);
-    change('finishFlag', initialValues.finishFlag);
+    change(
+      'applicationType',
+      FilterUtils.getKey(applicationType, initialValues.applicationType),
+    );
+    change(
+      'finishFlag',
+      FilterUtils.getKey(finishFlag, initialValues.finishFlag),
+    );
     change('passFlag', initialValues.passFlag);
     change('resumeId', initialValues.resumeId);
     change('mode', mode);

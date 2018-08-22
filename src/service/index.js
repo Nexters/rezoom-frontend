@@ -18,6 +18,7 @@ const Question = {
   findAll: resumeId => Api.get(`questions?resumeId=${resumeId}`),
   findOne: questionId => Api.get(`questions/${questionId}`),
   insert: param => Api.post('questions', param),
+  update: param => Api.put('questions', param),
 };
 
 const Search = {
@@ -44,6 +45,7 @@ api.deleteResume = resumeId => Resume.delete(resumeId);
 // question
 api.getQuestions = resumeId => Question.findAll(resumeId);
 api.insertQuestions = data => Question.insert(data);
+api.updateQuestions = data => Question.update(data);
 
 // search
 api.getSearchResumes = companyName => Search.findResumes(companyName);
