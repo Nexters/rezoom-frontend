@@ -7,11 +7,13 @@ import DeadlineList from './DeadlineList/DeadlineList';
 import ResumeGraph from './ResumeGraph/ResumeGraph';
 import ResumeStatistics from './ResumeStatistics/ResumeStatistics';
 import RecentClickList from './RecentClickList/RecentClickList';
+import HashtagList from './HashtagList/HashtagList';
 
 import {
   getDeadline,
   getResumeStatistics,
   getRecentClick,
+  getHashtag,
 } from '../../store/Dashboard/Dashboard.store';
 
 @connect(
@@ -19,11 +21,13 @@ import {
     deadlineList: state.dashboard.deadline,
     resumeStatisticsList: state.dashboard.resumeStatistics,
     recentClickList: state.dashboard.recentClick,
+    hashtagList: state.dashboard.hashtag,
   }),
   {
     getDeadline,
     getResumeStatistics,
     getRecentClick,
+    getHashtag,
   },
 )
 export class Dashboard extends Component {
@@ -35,10 +39,16 @@ export class Dashboard extends Component {
     this.props.getDeadline();
     this.props.getResumeStatistics();
     this.props.getRecentClick();
+    this.props.getHashtag();
   }
 
   render() {
-    const { deadlineList, resumeStatisticsList, recentClickList } = this.props;
+    const {
+      deadlineList,
+      resumeStatisticsList,
+      recentClickList,
+      hashtagList,
+    } = this.props;
 
     return (
       <div className={scss['dashboard']}>
@@ -67,7 +77,7 @@ export class Dashboard extends Component {
             <div className={scss['recent__hashtag']}>
               <p> 최근에 만든 해시태그 </p>
               <Card className={scss['card__hashtag']}>
-                <div> 차트 </div>
+                <HashtagList hashtagList={hashtagList} />
               </Card>
             </div>
           </div>
@@ -90,9 +100,11 @@ Dashboard.propTypes = {
   getDeadline: PropTypes.func,
   getResumeStatistics: PropTypes.func,
   getRecentClick: PropTypes.func,
+  getHashtag: PropTypes.func,
   deadlineList: PropTypes.any,
   resumeStatisticsList: PropTypes.any,
   recentClickList: PropTypes.any,
+  hashtagList: PropTypes.any,
 };
 
 export default Dashboard;

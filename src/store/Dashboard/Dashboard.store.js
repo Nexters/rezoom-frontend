@@ -1,9 +1,12 @@
 export const GET_DEADLINE = 'GET_DEADLINE';
 export const GET_RESUME_STATISTICS = 'GET_RESUME_STATISTICS';
 export const GET_RECENT_CLICK = 'GET_RECENT_CLICK';
+export const GET_HASHTAG = 'GET_HASHTAG';
+
 export const UPDATE_DEALINE_LIST = 'UPDATE_DEALINE_LIST';
 export const UPDATE_RESUME_STATISTICS_LIST = 'UPDATE_RESUME_STATISTICS_LIST';
 export const UPDATE_RECENT_CLICK_LIST = 'UPDATE_RECENT_CLICK_LIST';
+export const UPDATE_HASHTAG_LIST = 'UPDATE_HASHTAG_LIST';
 
 const initialState = {
   deadline: [],
@@ -30,6 +33,7 @@ const initialState = {
     },
   },
   recentClick: [],
+  hashtag: [],
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -49,6 +53,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         recentClick: action.payload.recentClick,
       };
+    case UPDATE_HASHTAG_LIST:
+      return {
+        ...state,
+        hashtag: action.payload.hashtag,
+      };
     default:
       return state;
   }
@@ -64,6 +73,10 @@ export const getResumeStatistics = () => ({
 
 export const getRecentClick = () => ({
   type: GET_RECENT_CLICK,
+});
+
+export const getHashtag = () => ({
+  type: GET_HASHTAG,
 });
 
 export const updateDeadlineList = deadline => ({
@@ -84,5 +97,12 @@ export const updateRecentClickList = recentClick => ({
   type: UPDATE_RECENT_CLICK_LIST,
   payload: {
     recentClick,
+  },
+});
+
+export const updateHashtagList = hashtag => ({
+  type: UPDATE_HASHTAG_LIST,
+  payload: {
+    hashtag,
   },
 });

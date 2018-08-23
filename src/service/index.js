@@ -33,6 +33,7 @@ const Dashboard = {
   getDeadline: () => Api.get('dashboard/deadline'),
   getResumeStatistics: () => Api.get('dashboard/statistics/resume'),
   getRecentClick: () => Api.get('dashboard/recent'),
+  getHashtag: () => Api.get('hashTags'),
 };
 
 const api = {};
@@ -61,5 +62,6 @@ api.getQuestionsHashTag = hashTag => Search.findQuestionsHashTag(hashTag);
 api.getDeadline = () => Dashboard.getDeadline();
 api.getResumeStatistics = () => Dashboard.getResumeStatistics();
 api.getRecentClick = () => Dashboard.getRecentClick();
+api.getHashtag = () => Dashboard.getHashtag();
 
 export default api;

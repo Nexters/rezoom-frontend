@@ -4,9 +4,11 @@ import {
   GET_DEADLINE,
   GET_RESUME_STATISTICS,
   GET_RECENT_CLICK,
+  GET_HASHTAG,
   updateDeadlineList,
   updateResumeStatisticsList,
   updateRecentClickList,
+  updateHashtagList,
 } from './Dashboard.store';
 import api from '../../service';
 import {
@@ -37,7 +39,6 @@ function* getResumeStatistics() {
     const result = yield call(api.getResumeStatistics);
 
     if (result) {
-      console.log(result);
       yield put(updateResumeStatisticsList(result.data));
     }
     yield put(inactiveLoadingContainer());
@@ -53,8 +54,22 @@ function* getRecentClick() {
     const result = yield call(api.getRecentClick);
 
     if (result) {
-      console.log(result);
       yield put(updateRecentClickList(result.data));
+    }
+    yield put(inactiveLoadingContainer());
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+function* getHashtag() {
+  try {
+    yield put(activeLoadingContainer());
+    const result = yield call(api.getHashtag);
+
+    if (result) {
+      yield put(updateHashtagList(result.data));
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
@@ -84,8 +99,16 @@ export function* watchRecentClick() {
   }
 }
 
+export function* watchHashtag() {
+  while (true) {
+    yield take(GET_HASHTAG);
+    yield call(getHashtag);
+  }
+}
+
 export default function*() {
   yield fork(watchDeadline);
   yield fork(watchResumeStatistics);
   yield fork(watchRecentClick);
+  yield fork(watchHashtag);
 }
