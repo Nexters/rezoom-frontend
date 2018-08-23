@@ -39,7 +39,7 @@ export class ResumeGraph extends Component {
         {resumeStatisticsList.length === 0 ? (
           '등록된 이력서가 없습니다.'
         ) : (
-          <div>
+          <div style={style}>
             <Doughnut
               data={data}
               width={300}

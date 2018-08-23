@@ -8,12 +8,12 @@ import ResumeGraph from './ResumeGraph/ResumeGraph';
 import ResumeStatistics from './ResumeStatistics/ResumeStatistics';
 import RecentClickList from './RecentClickList/RecentClickList';
 import HashtagList from './HashtagList/HashtagList';
-
 import {
   getDeadline,
   getResumeStatistics,
   getRecentClick,
   getHashtag,
+  getName,
 } from '../../store/Dashboard/Dashboard.store';
 
 @connect(
@@ -22,12 +22,14 @@ import {
     resumeStatisticsList: state.dashboard.resumeStatistics,
     recentClickList: state.dashboard.recentClick,
     hashtagList: state.dashboard.hashtag,
+    username: state.dashboard.name,
   }),
   {
     getDeadline,
     getResumeStatistics,
     getRecentClick,
     getHashtag,
+    getName,
   },
 )
 export class Dashboard extends Component {
@@ -40,6 +42,7 @@ export class Dashboard extends Component {
     this.props.getResumeStatistics();
     this.props.getRecentClick();
     this.props.getHashtag();
+    this.props.getName();
   }
 
   render() {
@@ -48,6 +51,7 @@ export class Dashboard extends Component {
       resumeStatisticsList,
       recentClickList,
       hashtagList,
+      username,
     } = this.props;
 
     return (
@@ -62,7 +66,11 @@ export class Dashboard extends Component {
               </div>
               <div className={scss['card__chart--text']}>
                 {/* 이력서 현황 텍스트 */}
-                <ResumeStatistics resumeStatisticsList={resumeStatisticsList} />
+                <ResumeStatistics
+                  resumeStatisticsList={resumeStatisticsList}
+                  username={username}
+                  deadlineList={deadlineList}
+                />
               </div>
             </Card>
           </div>
@@ -77,7 +85,7 @@ export class Dashboard extends Component {
             <div className={scss['recent__hashtag']}>
               <p> 최근에 만든 해시태그 </p>
               <Card className={scss['card__hashtag']}>
-                <HashtagList hashtagList={hashtagList} />
+                <HashtagList hashtagList={hashtagList} username={username} />
               </Card>
             </div>
           </div>
@@ -101,10 +109,12 @@ Dashboard.propTypes = {
   getResumeStatistics: PropTypes.func,
   getRecentClick: PropTypes.func,
   getHashtag: PropTypes.func,
+  getName: PropTypes.func,
   deadlineList: PropTypes.any,
   resumeStatisticsList: PropTypes.any,
   recentClickList: PropTypes.any,
   hashtagList: PropTypes.any,
+  username: PropTypes.string,
 };
 
 export default Dashboard;

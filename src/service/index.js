@@ -34,6 +34,7 @@ const Dashboard = {
   getResumeStatistics: () => Api.get('dashboard/statistics/resume'),
   getRecentClick: () => Api.get('dashboard/recent'),
   getHashtag: () => Api.get('hashTags'),
+  getName: () => Api.get('users/name'),
 };
 
 const api = {};
@@ -41,7 +42,7 @@ const api = {};
 api.login = param => Auth.login(param);
 api.signUp = param => Auth.signUp(param);
 
-// resume api
+// resume
 api.getResumes = () => Resume.findAll();
 api.getResume = resumeId => Resume.findOne(resumeId);
 api.newResume = data => Resume.insert(data);
@@ -63,5 +64,6 @@ api.getDeadline = () => Dashboard.getDeadline();
 api.getResumeStatistics = () => Dashboard.getResumeStatistics();
 api.getRecentClick = () => Dashboard.getRecentClick();
 api.getHashtag = () => Dashboard.getHashtag();
+api.getName = () => Dashboard.getName();
 
 export default api;
