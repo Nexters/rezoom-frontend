@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
-import { Button } from '@material-ui/core';
+import { Button, IconButton } from '@material-ui/core';
 import autobind from 'autobind-decorator';
 import {
   selectedQuestion,
   getQuestions,
   createQuestion,
+  createQuestionOrigin,
   clearQuestion,
   selectedCreateCacheQuestion,
+  deleteQuestion,
+  deleteQuestionCache,
+  isUpdateModeChange,
 } from '../../../../store/Resume/Resume.store';
 import scss from './DetailMenu.scss';
 import { QuestionList } from './QuestionList/QuestionList';
 import { MainButton } from '../../Button/MainButton';
+import deleteIcon from '../../../../static/images/item/ic-delete.svg';
+import cancelIcon from '../../../../static/images/item/ic-cancel.svg';
 
 @connect(
   state => ({
@@ -20,13 +26,18 @@ import { MainButton } from '../../Button/MainButton';
     createCacheQuestions: state.resume.createResumeCache.detail,
     createCacheThisId: state.resume.createResumeCache.thisId,
     createCacheMode: state.resume.createResumeCache.mode,
+    selectedQuestionId: state.resume.selectedQuestion,
   }),
   {
     selectedQuestion,
     getQuestions,
     createQuestion,
+    createQuestionOrigin,
     clearQuestion,
     selectedCreateCacheQuestion,
+    deleteQuestion,
+    deleteQuestionCache,
+    isUpdateModeChange,
   },
 )
 export class DetailMenu extends Component {
@@ -40,6 +51,7 @@ export class DetailMenu extends Component {
         org: 1,
       },
       init: true,
+      isDeleteMode: false,
     };
   }
 
@@ -64,6 +76,7 @@ export class DetailMenu extends Component {
       createCacheQuestions,
       createCacheThisId,
       createCacheMode,
+      selectedQuestionId,
     } = this.props;
     let orgData, nextData;
 
@@ -83,6 +96,14 @@ export class DetailMenu extends Component {
     } else if (mode === 'detail') {
       orgData = originQuestions;
       nextData = nextProps.originQuestions;
+      if (selectedQuestionId !== nextProps.selectedQuestionId) {
+        this.setState({
+          selectedQuestion: {
+            key: nextProps.selectedQuestionId,
+            org: nextProps.selectedQuestionId,
+          },
+        });
+      }
     }
 
     if (orgData.length !== nextData.length) {
@@ -156,38 +177,61 @@ export class DetailMenu extends Component {
 
   @autobind
   onClickAddQuestion() {
-    this.props.createQuestion();
-    this.props.selectedCreateCacheQuestion(
-      this.state.selectedQuestion.org,
-      this.state.list.length + 1,
-      'add',
-    );
+    const { mode } = this.props;
+
+    this.props.isUpdateModeChange(true);
+
+    if (mode === 'create') {
+      this.props.createQuestion();
+      this.props.selectedCreateCacheQuestion(
+        this.state.selectedQuestion.org,
+        this.state.list.length + 1,
+        'add',
+      );
+    } else {
+      this.props.createQuestionOrigin();
+    }
   }
 
   @autobind
-  onClickDeleteQuestion() {}
+  onClickDeleteChangeIcon() {
+    this.setState({
+      isDeleteMode: !this.state.isDeleteMode,
+    });
+  }
+
+  @autobind
+  deleteQuestionId(questionId) {
+    const { mode } = this.props;
+    this.props.isUpdateModeChange(true);
+    if (mode === 'create') {
+      this.props.deleteQuestionCache(questionId);
+    } else {
+      this.props.deleteQuestion(questionId);
+    }
+  }
 
   render() {
-    const { list, selectedQuestion } = this.state;
+    const { list, selectedQuestion, isDeleteMode } = this.state;
     const { mode } = this.props;
     return (
       <div className={scss['detail__sidebar']}>
         <div className={scss['detail__sidebar--header']}>
           <p className={scss['title']}> 문항 </p>
-          {mode === 'create' ? (
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={this.onClickDeleteQuestion}
-            >
-              삭제
-            </Button>
-          ) : null}
+          <IconButton
+            aria-label="Delete"
+            style={{ marginRight: 21 }}
+            onClick={this.onClickDeleteChangeIcon}
+          >
+            <img src={isDeleteMode ? cancelIcon : deleteIcon} alt="closeIcon" />
+          </IconButton>
         </div>
         <QuestionList
           list={list}
           selectedQuestion={selectedQuestion}
           onClickQuestion={this.onClickQuestion}
+          isDeleteMode={isDeleteMode}
+          deleteQuestionId={this.deleteQuestionId}
         />
         <div className={scss['detail__sidebar--button']}>
           <MainButton
@@ -208,12 +252,17 @@ DetailMenu.propTypes = {
   mode: PropTypes.string,
   getQuestions: PropTypes.func,
   createQuestion: PropTypes.func,
+  createQuestionOrigin: PropTypes.func,
   originQuestions: PropTypes.array,
   createCacheQuestions: PropTypes.array,
   clearQuestion: PropTypes.func,
   selectedCreateCacheQuestion: PropTypes.func,
   createCacheThisId: PropTypes.number,
   createCacheMode: PropTypes.string,
+  deleteQuestion: PropTypes.func,
+  deleteQuestionCache: PropTypes.func,
+  isUpdateModeChange: PropTypes.func,
+  selectedQuestionId: PropTypes.number,
 };
 
 export default DetailMenu;

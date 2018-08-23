@@ -40,7 +40,8 @@ export class Root extends Component {
               <Route exact path="/account" component={Account} />
               <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
               <Route path="/files" component={Layout} />
-              <Route path="/info" component={Layout} />
+              <Route path="/mypage" component={Layout} />
+              <Route path="/dashboard" component={Layout} />
               <Route path="/search" component={Layout} />
               <Route component={PageNotFound} />
             </Switch>

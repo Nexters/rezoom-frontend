@@ -7,6 +7,7 @@
 
   .question__list--item {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 52px;
     padding-left: 30px;
@@ -19,16 +20,25 @@
       border-bottom-right-radius: 25px;
       border-bottom-left-radius: 0px;
       background-color: #f8f8f8;
+
+      > button {
+        margin-right: 0px;
+      }
     }
 
     p {
       font-size: 15px;
       font-weight: bold;
     }
+
+    > button {
+      margin-right: 21px;
+    }
   }
   
   .question__list--item--active {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     height: 52px;
     width: 228px;
@@ -43,6 +53,10 @@
     p {
       font-size: 15px;
       font-weight: bold;
+    }
+
+    > button {
+      margin-right: 0px;
     }
   }
 
