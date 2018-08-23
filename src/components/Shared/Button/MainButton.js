@@ -7,6 +7,7 @@ import saveIcon from '../../../static/images/button/ic-save.svg';
 
 const styles = theme => ({
   button: {
+    width: 197,
     height: 56,
     borderRadius: 28,
     backgroundColor: 'white',
