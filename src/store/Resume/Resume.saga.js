@@ -175,7 +175,7 @@ function* deleteOneResume(resumeId) {
 
 function* putUpdateQuestion(resumeId) {
   try {
-    yield put(activeLoadingComponent());
+    yield put(activeLoadingContainer());
 
     const questionsUpdateFlag = yield select(getQuestionsUpdateFlag);
     const originQuestions = yield select(getUpdateQuestions);

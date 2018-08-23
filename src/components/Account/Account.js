@@ -162,7 +162,7 @@ class Account extends Component {
       checkBool = true;
     }
 
-    let checkPassword = '패스워드를 확인하세요.';
+    let checkPassword = '패스워드를 입력하세요.';
     let checkPasswordBool = passwordCheckRequired;
     if (password !== passwordCheck) {
       checkPassword = '비밀번호와 비밀번호확인이 일치하지 않습니다. ';
@@ -220,11 +220,7 @@ class Account extends Component {
   @autobind
   onChangePasswordCheck(e, value) {
     this.setState({
-      passwordCheckRequired: [
-        value.length === 0,
-        '패스워드를 확인하세요.',
-        '비밀번호와 비밀번호확인이 일치하지 않습니다. ',
-      ],
+      passwordCheckRequired: [value.length === 0, '패스워드를 입력하세요.'],
       passwordCheck: value,
     });
   }
@@ -322,7 +318,7 @@ class Account extends Component {
                     component="input"
                     type="password"
                     onChange={this.onChangePassword}
-                    placeholder="6-16자 영문, 숫자, 특수기호를 입력하세요"
+                    placeholder="영문, 숫자, 특수기호를 입력하세요"
                   />
                 </div>
                 {passwordRequired[0] ? (
@@ -343,7 +339,7 @@ class Account extends Component {
                     component="input"
                     type="password"
                     onChange={this.onChangePasswordCheck}
-                    placeholder="6-16자 영문, 숫자, 특수기호를 입력하세요"
+                    placeholder="영문, 숫자, 특수기호를 입력하세요"
                   />
                 </div>
                 {passwordCheckRequired[0] ? (

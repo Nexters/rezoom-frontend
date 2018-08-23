@@ -33,7 +33,7 @@ const theme = createMuiTheme({
     },
     MuiCardActions: {
       root: {
-        margin: '22px 32px 22px 261px',
+        margin: '22px 32px',
         padding: '0px !important',
         height: '72px',
       },
@@ -141,9 +141,21 @@ class Login extends Component {
     }
   }
 
+  @autobind
+  onKeyPress(e) {
+    if (e.hasOwnProperty('key')) {
+      if (e.key === 'Enter') {
+        const check = this.validation();
+
+        if (check) {
+          this.props.submit();
+        }
+      }
+    }
+  }
+
   validation() {
     const { formValues } = this.props;
-    const { password, passwordCheck } = this.state;
 
     let result = true;
     const usernameRequired = formValues.username.length === 0;
@@ -160,6 +172,7 @@ class Login extends Component {
     if (!regex.test(formValues.username)) {
       checkEmail = '올바른 형태의 이메일이 아닙니다.';
       checkBool = true;
+      result = false;
     }
 
     this.setState({
@@ -237,7 +250,7 @@ class Login extends Component {
                   />
                 </div>
                 {usernameRequired[0] ? (
-                  <p className={scss.error__message}>{usernameRequired[1]}</p>
+                  <p className={scss.error__message}> {usernameRequired[1]} </p>
                 ) : null}
                 <div>
                   <Field
@@ -250,23 +263,30 @@ class Login extends Component {
                     type="password"
                     placeholder="비밀번호를 입력하세요."
                     onChange={this.onChangePassword}
+                    onKeyPress={e => this.onKeyPress(e)}
                   />
                 </div>
                 {passwordRequired[0] ? (
-                  <p className={scss.error__message}>{passwordRequired[1]}</p>
+                  <p className={scss.error__message}> {passwordRequired[1]} </p>
                 ) : null}
               </form>
               <Typography className={classes.account} color="textSecondary">
-                계정이 없으신가요?&nbsp;
-                <span style={{ color: '#364eda', fontWeight: 'bold' }}>
-                  <Link to="/account">회원 가입</Link>
+                계정이 없으신가요 ?
+                <span
+                  style={{
+                    color: '#364eda',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  <Link to="/account"> 회원 가입 </Link>
                 </span>
               </Typography>
             </CardContent>
             <CardActions>
-              {loginErrorThrow[0] ? (
-                <p className={scss.error__message}>{loginErrorThrow[1]}</p>
-              ) : null}
+              <p className={scss.error__message}>
+                {loginErrorThrow[0] ? loginErrorThrow[1] : null}
+              </p>
+
               <Button
                 onClick={this.onClickLogin}
                 size="small"

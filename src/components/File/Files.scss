@@ -1,55 +1,71 @@
 .files {
+  // display: flex;
+  // flex-direction: row;
+  // height: 100%;
+
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   height: 100%;
+  align-items: center;
+  justify-content: center;
 
-  .files__contents {
-    flex: 1;
-    height: 100%;
-    border: 1px solid blue;
-    padding: 16px;
-
-    .files__contents--row {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 16px;
-
-      .files__contents--header {
-        flex: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        height: 32px;
-        width: 100%;
-        margin-bottom: 16px;
-
-        .title {
-          font-size: 14px;
-        }
-        .action {
-          display: flex;
-          p {
-            font-size: 10px;
-            &:first-child {
-              margin-right: 8px;
-            }
-          }
-        }
-      }
-
-      .files__contents--list {
-        flex: 1;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        overflow-x: auto;
-
-        .files__contents--item {
-          height: 200px;
-          width: 200px;
-          margin-right: 16px;
-        }
-      }
-    }
+  p {
+    margin-top: 8px;
+    font-size: 32px;
+    font-weight: normal;
+    letter-spacing: -0.7px;
+    text-align: center;
+    color: #364eda;
   }
+
+
+  // .files__contents {
+  //   flex: 1;
+  //   height: 100%;
+  //   border: 1px solid blue;
+  //   padding: 16px;
+
+  //   .files__contents--row {
+  //     display: flex;
+  //     flex-direction: column;
+  //     margin-bottom: 16px;
+
+  //     .files__contents--header {
+  //       flex: 0;
+  //       display: flex;
+  //       flex-direction: row;
+  //       justify-content: space-between;
+  //       height: 32px;
+  //       width: 100%;
+  //       margin-bottom: 16px;
+
+  //       .title {
+  //         font-size: 14px;
+  //       }
+  //       .action {
+  //         display: flex;
+  //         p {
+  //           font-size: 10px;
+  //           &:first-child {
+  //             margin-right: 8px;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     .files__contents--list {
+  //       flex: 1;
+  //       display: flex;
+  //       flex-direction: row;
+  //       width: 100%;
+  //       overflow-x: auto;
+
+  //       .files__contents--item {
+  //         height: 200px;
+  //         width: 200px;
+  //         margin-right: 16px;
+  //       }
+  //     }
+  //   }
+  // }
 }

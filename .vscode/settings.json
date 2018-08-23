@@ -1,6 +1,6 @@
 {
   "git.ignoreLimitWarning": true,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "javascript.format.enable": true,
   "prettier.eslintIntegration": true,
   "eslint.autoFixOnSave": true,

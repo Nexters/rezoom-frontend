@@ -1,7 +1,7 @@
 .resumes__contents--list {
-  > div {
-    > a {
-      > div {
+  >div {
+    >a {
+      >div {
         margin-bottom: 8px;
       }
     }
@@ -17,7 +17,6 @@
   padding: 32px;
   background-color: #ffffff;
   box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02) !important;
-  
   &:hover {
     box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1) !important;
   }
@@ -29,7 +28,6 @@
   font-size: 24px;
   font-weight: normal;
   margin-bottom: 29px;
-
   p {
     margin: 0px;
   }
@@ -39,3 +37,43 @@
   }
 }
 
+.resumes__contents--empty {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+
+  h5 {
+    margin-top: 20px;
+    margin-bottom: 16px;
+    font-size: 32px;
+    font-weight: normal;
+    letter-spacing: -0.7px;
+    color: #033052;
+  }
+
+  button {
+    width: 197px;
+    height: 56px;
+    border-radius: 28px;
+    box-shadow: 0 2px 6px 0 rgba(159, 159, 159, 0.5);
+  }
+}
+
+.label { 
+  position: absolute;
+  top: -1px;
+
+  p {
+    position: absolute;
+    top: 1px;
+    width: 94px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: normal;
+    letter-spacing: -0.7px;
+    text-align: center;
+    color: #ffffff;
+  }
+}

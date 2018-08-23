@@ -4,6 +4,8 @@ import Api from './Api';
 const Auth = {
   login: param => Api.postLogin('login', param),
   signUp: param => Api.post('users/sign-up', param),
+  userInfo: () => Api.get('users'),
+  changePassword: param => Api.put('users', param),
 };
 
 const Resume = {
@@ -32,8 +34,11 @@ const Search = {
 
 const api = {};
 
+// auth
 api.login = param => Auth.login(param);
 api.signUp = param => Auth.signUp(param);
+api.userInfo = () => Auth.userInfo();
+api.changePassword = param => Auth.changePassword(param);
 
 // resume api
 api.getResumes = () => Resume.findAll();

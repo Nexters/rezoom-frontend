@@ -15,6 +15,8 @@ import {
 import { dialogOpen } from '../../../store/Dialog/Dialog.store';
 import editIcon from '../../../static/images/item/ic-edit-alter.svg';
 import moment from 'moment';
+import passLabel from '../../../static/images/label/ic-status-label-pass.svg';
+import failedLabel from '../../../static/images/label/ic-status-label-failed.svg';
 
 @connect(
   state => ({
@@ -115,20 +117,35 @@ export class ResumeDetail extends Component {
       isUpdate = true;
     }
 
+    let label, labelText;
+    if (resumeData['passFlag'] === 0) {
+      label = failedLabel;
+      labelText = '불합격';
+    } else if (resumeData['passFlag'] === 1) {
+      label = passLabel;
+      labelText = '합격';
+    }
+
     return (
       <div className={scss.detail}>
         <div className={scss['detail__contents']}>
           <div className={scss['detail__contents--header']}>
+            <div className={scss['detail__contents--label']}>
+              {resumeData['passFlag'] !== 2 ? (
+                <img src={label} alt="card label" />
+              ) : null}
+              {resumeData['passFlag'] !== 2 ? <p>{labelText}</p> : null}
+            </div>
             <div className={scss['detail__contents--title']}>
-              <p>
-                {resumeData['companyName']}
+              <div>
+                <p>{resumeData['companyName']}</p>
                 <Button
                   aria-haspopup="true"
                   onClick={e => this.onClickChangeInfo(e)}
                 >
                   <img src={editIcon} alt="editIcon" />정보수정
                 </Button>
-              </p>
+              </div>
               <p>{resumeData['jobType']}</p>
             </div>
             <div className={scss['detail__contents--subtitle']}>

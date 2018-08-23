@@ -4,6 +4,7 @@ import { fieldInputPropTypes, Field } from 'redux-form';
 import { Select, InputLabel } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import autobind from 'autobind-decorator';
 
 const theme = createMuiTheme({
   overrides: {
@@ -30,7 +31,6 @@ const renderSelect = ({
   name,
   input,
   label,
-  disabled,
   meta: { touched, error },
   children,
   ...custom
@@ -40,7 +40,6 @@ const renderSelect = ({
       <MuiThemeProvider theme={theme}>
         <p>{label}</p>
         <Select
-          disabled={disabled}
           id={name}
           label={label}
           onChange={(e, idx, value) => input.onChange(value)}
@@ -60,22 +59,26 @@ renderSelect.propTypes = {
   label: PropTypes.string,
   meta: PropTypes.object,
   children: PropTypes.node,
-  disabled: PropTypes.bool,
 };
 
-export class SelectCreate extends Component {
+export class SelectChange extends Component {
   constructor(props) {
     super(props);
   }
 
+  @autobind
+  onChangeItem(e, value) {
+    this.props.onChange(value);
+  }
+
   render() {
-    const { name, label, items, disabled } = this.props;
+    const { name, label, items } = this.props;
     return (
       <Field
         name={name}
         component={renderSelect}
         label={label}
-        disabled={disabled}
+        onChange={this.onChangeItem}
       >
         {items.map((item, idx) => {
           return (
@@ -89,11 +92,11 @@ export class SelectCreate extends Component {
   }
 }
 
-SelectCreate.propTypes = {
+SelectChange.propTypes = {
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   items: PropTypes.array.isRequired,
-  disabled: PropTypes.bool,
+  onChange: PropTypes.func,
 };
 
-export default SelectCreate;
+export default SelectChange;

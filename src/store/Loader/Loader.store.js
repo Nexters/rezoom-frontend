@@ -26,7 +26,6 @@ export default function reducer(state = initialState, action = {}) {
         component: true,
       };
     case INACTIVE_LOADING_COMPONENT:
-      console.log('inactive success');
       return {
         ...state,
         component: false,

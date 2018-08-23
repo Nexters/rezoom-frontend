@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { TextField, Chip, withStyles } from '@material-ui/core';
+import { TextField, Chip, withStyles, Button } from '@material-ui/core';
 import { fieldInputPropTypes, Field } from 'redux-form';
+import autobind from 'autobind-decorator';
 
 const renderInput = ({
   name,
@@ -38,12 +39,18 @@ const styles = {
     backgroundColor: '#ffffff',
     border: 'solid 1px #ced8ea',
     marginRight: 12,
+    marginBottom: 8,
   },
 };
 @withStyles(styles)
 export class HashTag extends Component {
   constructor(props) {
     super(props);
+  }
+
+  @autobind
+  onClickAddHashTag() {
+    this.props.onClickAddHashTag();
   }
 
   render() {
@@ -61,6 +68,13 @@ export class HashTag extends Component {
           );
         })}
         <Field name={name} component={renderInput} label={label} />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={e => this.onClickAddHashTag(e)}
+        >
+          + 해시태그 편집
+        </Button>
       </div>
     );
   }
@@ -71,6 +85,7 @@ HashTag.propTypes = {
   label: PropTypes.string.isRequired,
   tags: PropTypes.array,
   classes: PropTypes.object,
+  onClickAddHashTag: PropTypes.func,
 };
 
 export default HashTag;

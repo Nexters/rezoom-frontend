@@ -10,18 +10,25 @@ import {
   loginError,
   clearDuplicateUsername,
   clearLoginError,
+  GET_USER_INFO,
+  responseUserInfo,
+  passwordChangeError,
+  clearPasswordChangeError,
+  CHANGE_PASSWORD,
 } from './Auth.store';
 import api from '../../service';
 import Cookies from 'js-cookie';
 import {
   activeLoadingContainer,
   inactiveLoadingContainer,
+  inactiveLoadingComponent,
+  activeLoadingComponent,
 } from '../Loader/Loader.store';
 import { openSnackbar } from '../Snackbar/Snackbar.store';
 
 export function* login(data) {
   try {
-    yield put(activeLoadingContainer());
+    yield put(activeLoadingComponent());
 
     const params = {
       username: data.username,
@@ -53,7 +60,7 @@ export function* login(data) {
       );
       yield put(loginSuccess());
     }
-    yield put(inactiveLoadingContainer());
+    yield put(inactiveLoadingComponent());
   } catch (e) {
     throw e;
   }
@@ -69,6 +76,7 @@ export function* logout() {
         message: 'Rezoom을 사용해 주셔서 감사합니다.',
       }),
     );
+    yield put(push(`/login`));
   } catch (e) {
     throw e;
   }
@@ -76,7 +84,7 @@ export function* logout() {
 
 export function* signUp(data) {
   try {
-    yield put(activeLoadingContainer());
+    yield put(activeLoadingComponent());
 
     const params = {
       // name: data.name,
@@ -104,7 +112,58 @@ export function* signUp(data) {
         }),
       );
     }
+    yield put(inactiveLoadingComponent());
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export function* getUserInfo() {
+  try {
+    yield put(activeLoadingContainer());
+
+    const result = yield call(api.userInfo);
+
+    if (result) {
+      yield put(responseUserInfo(result.data));
+    }
     yield put(inactiveLoadingContainer());
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
+
+export function* changePassword(data) {
+  try {
+    yield put(activeLoadingComponent());
+
+    const params = {
+      password: data.password,
+      newPassword: data.newPassword,
+    };
+
+    const result = yield call(api.changePassword, params);
+
+    if (result.status === 400) {
+      yield put(passwordChangeError(result.message));
+      yield put(
+        openSnackbar({
+          variant: 'error',
+          message: '비밀번호 변경을 실패하였습니다.',
+        }),
+      );
+    } else {
+      yield put(clearPasswordChangeError());
+      yield put(
+        openSnackbar({
+          variant: 'success',
+          message: '비밀번호가 성공적으로 변경되었습니다.',
+        }),
+      );
+    }
+    yield put(inactiveLoadingComponent());
   } catch (e) {
     console.log(e);
     throw e;
@@ -132,8 +191,24 @@ export function* watchUserSignUp() {
   }
 }
 
+export function* watchUserInfo() {
+  while (true) {
+    yield take(GET_USER_INFO);
+    yield call(getUserInfo);
+  }
+}
+
+export function* watchChangePassword() {
+  while (true) {
+    const { payload } = yield take(CHANGE_PASSWORD);
+    yield call(changePassword, payload.data);
+  }
+}
+
 export default function*() {
   yield fork(watchLoginRequest);
   yield fork(watchLogout);
   yield fork(watchUserSignUp);
+  yield fork(watchUserInfo);
+  yield fork(watchChangePassword);
 }

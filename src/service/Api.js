@@ -102,7 +102,13 @@ export default class Api {
         return res;
       })
       .catch(e => {
-        return e;
+        if (e.response) {
+          return e.response.data;
+        } else if (e.request) {
+          return e.request;
+        } else {
+          return e.message;
+        }
       });
     return apiPut;
   }

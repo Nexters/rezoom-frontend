@@ -26,6 +26,7 @@ import {
 import { HashTag } from '../../Forms/hashTag';
 import autobind from 'autobind-decorator';
 import { HashTagsDialog } from '../../Dialog/HashTags/HashTagsDialog';
+import Scrollbars from 'react-custom-scrollbars';
 
 @reduxForm({
   form: 'resumeDetail',
@@ -56,6 +57,8 @@ export class ResumeDetailForm extends Component {
       open: false,
       anchorEl: null,
       isUpdate: false,
+      contentLength: 0,
+      contentLengthError: [false, ''],
     };
   }
 
@@ -105,6 +108,7 @@ export class ResumeDetailForm extends Component {
           });
           this.setState({
             isUpdate: false,
+            contentLength: value.content.length,
           });
         }
 
@@ -162,6 +166,11 @@ export class ResumeDetailForm extends Component {
   changeFormValues(data, id) {
     const { change } = this.props;
     data.forEach(item => {
+      if (item.content.length > 0) {
+        this.setState({
+          contentLength: item.content.length,
+        });
+      }
       if (item.questionId === id) {
         change('content', item.content);
         change('title', item.title);
@@ -182,7 +191,6 @@ export class ResumeDetailForm extends Component {
 
   @autobind
   onClickAddHashTag(e) {
-    const { currentTarget } = e;
     this.setState(state => ({
       hashTagOpen: !state.hashTagOpen,
     }));
@@ -224,52 +232,72 @@ export class ResumeDetailForm extends Component {
 
   @autobind
   updateText(value, name) {
-    this.setState({
-      isUpdate: true,
-    });
+    if (value.length > 1000) {
+      this.setState({
+        contentLengthError: [true, '글자 수가 초과되었습니다.'],
+      });
+    } else {
+      this.setState({
+        isUpdate: true,
+        contentLength: value.length,
+        contentLengthError: [false, ''],
+      });
+    }
     this.updateResumeDetailForm({ value: value, name: name });
     this.props.isUpdateModeChange(true);
   }
 
   render() {
-    const { tags, open, anchorEl, hashTagOpen } = this.state;
-    /* 
-      TODO:  
-      1. 해시태그 추가 했을때 등록 및 초기화 기능 수정
-      2. title, content -> onChange시에 updateResumeDetailCache 할것
-      3. detail로 들어왔을때도 cache에 담고 수정 가능하게 
+    const { tags, hashTagOpen, contentLength, contentLengthError } = this.state;
 
-    */
     return (
-      <form>
-        <div className={scss['detail__contents--question']}>
-          <p className={scss['question__title']}>질문</p>
-          <TextArea name={'title'} rows={4} updateText={this.updateText} />
-          <div className={scss['hashtag']}>
-            <HashTag name={'hashTags'} label={'해시태그'} tags={tags} />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={e => this.onClickAddHashTag(e)}
-            >
-              + 해시태그 편집
-            </Button>
-            {
+      <Scrollbars
+        autoHide
+        autoHideTimeout={100}
+        autoHideDuration={100}
+        autoHeightMin={'100%'}
+        autoHeightMax={'100%'}
+        thumbMinSize={30}
+        universal={true}
+        // style={{ flex: 1, order: 2 }}
+      >
+        <form>
+          <div className={scss['detail__contents--question']}>
+            <p className={scss['question__title']}>질문</p>
+            <TextArea
+              name={'title'}
+              rows={4}
+              rowsMax={8}
+              updateText={this.updateText}
+            />
+            <div className={scss['hashtag']}>
+              <HashTag
+                name={'hashTags'}
+                label={'해시태그'}
+                tags={tags}
+                onClickAddHashTag={this.onClickAddHashTag}
+              />
               <HashTagsDialog
                 tags={tags}
                 dialogOpen={hashTagOpen}
                 dialogClose={this.hashTagDialogClose}
                 updateTags={this.updateTags}
               />
-            }
+            </div>
           </div>
-        </div>
-        <div className={scss['detail__contents--answer']}>
-          <div className={scss['answer__header']}>
-            <p className={scss['answer__header--title']}>답변</p>
-            <div className={scss['answer__header--action']}>
-              <p>1 / 1000자</p>
-              {/* <Button
+          <div className={scss['detail__contents--answer']}>
+            <div className={scss['answer__header']}>
+              <p className={scss['answer__header--title']}>답변</p>
+              <div className={scss['answer__header--action']}>
+                <p
+                  style={{
+                    color: contentLengthError[0] ? '#f1552f' : '#668298',
+                  }}
+                >
+                  {contentLengthError[0] ? contentLengthError[1] : null}
+                  {contentLength} / 1000자
+                </p>
+                {/* <Button
                 variant="contained"
                 color="primary"
                 onClick={e => this.onClickContentSetting(e)}
@@ -326,16 +354,18 @@ export class ResumeDetailForm extends Component {
                   </Fade>
                 )}
               </Popper> */}
+              </div>
             </div>
+            <TextArea
+              name={'content'}
+              rows={4}
+              rowsMax={100}
+              className={scss['answer__contents']}
+              updateText={this.updateText}
+            />
           </div>
-          <TextArea
-            name={'content'}
-            rows={4}
-            className={scss['answer__contents']}
-            updateText={this.updateText}
-          />
-        </div>
-      </form>
+        </form>
+      </Scrollbars>
     );
   }
 }

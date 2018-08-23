@@ -210,7 +210,6 @@ export class HashTagsDialog extends Component {
                   />
                 </div>
               </div>
-              {/* <HashTag name={'hashTags'} label={'해시태그'} tags={tags} /> */}
             </DialogContent>
             <DialogActions>
               <MainButton

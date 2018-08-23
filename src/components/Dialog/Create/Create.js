@@ -20,6 +20,7 @@ import inputIcon from '../../../static/images/create/ic-edit.svg';
 import dateIcon from '../../../static/images/create/ic-dropdown-date.svg';
 import scss from './Create.scss';
 import { SelectCreate } from '../../Forms/SelectCreate';
+import { SelectChange } from '../../Forms/SelectChange';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
@@ -94,6 +95,7 @@ export class Create extends Component {
       passFlag,
       deadline: moment().format('YYYY-MM-DD HH'),
       init: true,
+      passFlagActive: true,
     };
   }
 
@@ -194,6 +196,20 @@ export class Create extends Component {
     this.props.change('deadline', convertDate);
   }
 
+  @autobind
+  changeFinishFlag(value) {
+    console.log(value);
+    if (value === 0) {
+      this.setState({
+        passFlagActive: true,
+      });
+    } else {
+      this.setState({
+        passFlagActive: false,
+      });
+    }
+  }
+
   render() {
     const { dialogOpen, classes, loading } = this.props;
     const {
@@ -203,6 +219,7 @@ export class Create extends Component {
       finishFlag,
       passFlag,
       deadline,
+      passFlagActive,
     } = this.state;
 
     return (
@@ -256,11 +273,13 @@ export class Create extends Component {
                   name={'applicationYear'}
                   label={'연도'}
                   items={applicationYear}
+                  disabled={false}
                 />
                 <SelectCreate
                   name={'halfType'}
                   label={'분기'}
                   items={halfType}
+                  disabled={false}
                 />
               </div>
 
@@ -308,19 +327,22 @@ export class Create extends Component {
                   name={'applicationType'}
                   label={'형태'}
                   items={applicationType}
+                  disabled={false}
                 />
               </div>
 
               <div className={scss['create__division']}>
-                <SelectCreate
+                <SelectChange
                   name={'finishFlag'}
                   label={'제출 여부'}
                   items={finishFlag}
+                  onChange={this.changeFinishFlag}
                 />
                 <SelectCreate
                   name={'passFlag'}
                   label={'합격 여부'}
                   items={passFlag}
+                  disabled={passFlagActive}
                 />
               </div>
             </form>

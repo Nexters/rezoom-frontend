@@ -8,6 +8,7 @@ const renderInput = ({
   name,
   input,
   rows,
+  rowsMax,
   classes,
   meta: { touched, error },
   ...custom
@@ -21,8 +22,11 @@ const renderInput = ({
         classes: {
           root: classes.root,
         },
+        maxLength: 1000,
       }}
       rows={rows}
+      rowsMax={rowsMax}
+      maxLength={1000}
       id={name}
       {...input}
       {...custom}
@@ -35,6 +39,7 @@ renderInput.propTypes = {
   input: PropTypes.shape(fieldInputPropTypes).isRequired,
   label: PropTypes.string,
   rows: PropTypes.number,
+  rowsMax: PropTypes.number,
   meta: PropTypes.object,
   classes: PropTypes.object,
 };
@@ -59,12 +64,13 @@ export class TextArea extends Component {
   }
 
   render() {
-    const { name, rows, classes } = this.props;
+    const { name, rows, classes, rowsMax } = this.props;
     return (
       <Field
         name={name}
         component={renderInput}
         rows={rows}
+        rowsMax={rowsMax}
         classes={classes}
         onChange={this.onChangeTextArea}
       />
@@ -75,6 +81,7 @@ export class TextArea extends Component {
 TextArea.propTypes = {
   name: PropTypes.string.isRequired,
   rows: PropTypes.number.isRequired,
+  rowsMax: PropTypes.number.isRequired,
   classes: PropTypes.object,
   updateText: PropTypes.func,
 };

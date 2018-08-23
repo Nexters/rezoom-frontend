@@ -150,6 +150,15 @@ export class SearchForm extends Component {
     const searchButton = searchMode.filter(item => item.active === true);
 
     let width = 0;
+    let titleButton = '';
+
+    if (pathname === '/dashboard') {
+      titleButton = '홈';
+    } else if (pathname === '/mypage') {
+      titleButton = '마이페이지';
+    } else if (pathname === '/files') {
+      titleButton = '증빙자료 관리';
+    }
 
     if (searchInputOpen) {
       width = 365;
@@ -157,7 +166,11 @@ export class SearchForm extends Component {
       width = 0;
     }
 
-    if (pathname === '/dashboard' || pathname === '/mypage') {
+    if (
+      pathname === '/dashboard' ||
+      pathname === '/mypage' ||
+      pathname === '/files'
+    ) {
       return (
         <div
           className={scss['resumes__contents--search']}
@@ -165,7 +178,7 @@ export class SearchForm extends Component {
         >
           <div className={scss['search__input']}>
             <div className={scss['search__change']}>
-              <Button>{pathname === '/dashboard' ? '홈' : '마이페이지'}</Button>
+              <Button>{titleButton}</Button>
             </div>
             <div className={[scss['search__input--right']]}>
               <IconButton
@@ -286,7 +299,7 @@ export class SearchForm extends Component {
 SearchForm.propTypes = {
   submit: PropTypes.func,
   change: PropTypes.func,
-  pathname: PropTypes.object,
+  pathname: PropTypes.string,
 };
 
 export default SearchForm;
