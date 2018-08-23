@@ -18,13 +18,12 @@
   justify-content: space-between;
   height: 100px;
   padding: 32px 32px;
-  
+
   .title {
     font-size: 24px;
     color: #222222;
   }
 }
-
 
 .account {
   font-size: 14px;
@@ -35,7 +34,7 @@
 
 .form {
   display: flex;
-  margin: 8px 75px; 
+  margin: 8px 75px;
   background-color: #f7fafe;
 
   .input {
@@ -48,18 +47,27 @@
     border: 0;
     letter-spacing: -0.7;
   }
-  
+
   .label {
     display: flex;
     align-items: center;
     width: 150px;
     height: 56px;
-    
+
     > label {
       margin-left: 24px;
       color: #5e77ff;
-      font-Size: 14px;
-      font-Weight: bold;
+      font-size: 14px;
+      font-weight: bold;
     }
   }
+}
+
+.error__message {
+  width: 100%;
+  margin: 8px 0px;
+  margin-left: 74px;
+  text-align: left;
+  font-size: 12px;
+  color: #f1552f;
 }

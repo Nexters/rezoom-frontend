@@ -46,7 +46,15 @@ export default class Api {
       .then(res => {
         return res;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        if (e.response) {
+          return e.response.data;
+        } else if (e.request) {
+          return e.request;
+        } else {
+          return e.message;
+        }
+      });
     return apiPost;
   }
 
@@ -61,7 +69,15 @@ export default class Api {
       .then(res => {
         return res;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        if (e.response) {
+          return e.response.data;
+        } else if (e.request) {
+          return e.request;
+        } else {
+          return e.message;
+        }
+      });
     return apiPost;
   }
 
@@ -72,7 +88,9 @@ export default class Api {
       .then(res => {
         return res;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        return e;
+      });
     return apiGet;
   }
 
@@ -83,7 +101,9 @@ export default class Api {
       .then(res => {
         return res;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        return e;
+      });
     return apiPut;
   }
 
@@ -94,7 +114,9 @@ export default class Api {
       .then(res => {
         return res;
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        return e;
+      });
     return apiDel;
   }
 }

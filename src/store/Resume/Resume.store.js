@@ -49,7 +49,7 @@ const initialState = {
       jobType: '',
       applicationType: 1,
       finishFlag: 1,
-      passFlag: 1,
+      passFlag: 2,
       deadline: moment().format('YYYY-MM-DD HH'),
     },
     detail: [],
