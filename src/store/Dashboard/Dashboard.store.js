@@ -1,13 +1,28 @@
-// action 정의
 export const GET_DEADLINE = 'GET_DEADLINE';
 export const GET_RESUME_STATISTICS = 'GET_RESUME_STATISTICS';
 export const UPDATE_DEALINE_LIST = 'UPDATE_DEALINE_LIST';
 export const UPDATE_RESUME_STATISTICS_LIST = 'UPDATE_RESUME_STATISTICS_LIST';
 
-// 초기 스테이트 정의
 const initialState = {
   deadline: [],
-  resumeStatistics: [],
+  resumeStatistics: {
+    pass: { title: '', resumeNum: 0, ratio: 0 },
+    nonPass: {
+      title: '',
+      resumeNum: 0,
+      ratio: 0,
+    },
+    submit: {
+      title: '',
+      resumeNum: 0,
+      ratio: 0,
+    },
+    nonSubmit: {
+      title: '',
+      resumeNum: 0,
+      ratio: 0,
+    },
+  },
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -16,6 +31,11 @@ export default function reducer(state = initialState, action = {}) {
       return {
         ...state,
         deadline: action.payload.deadline,
+      };
+    case UPDATE_RESUME_STATISTICS_LIST:
+      return {
+        ...state,
+        resumeStatistics: action.payload.resumeStatistics,
       };
     default:
       return state;

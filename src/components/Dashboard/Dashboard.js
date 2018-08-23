@@ -4,14 +4,21 @@ import PropTypes from 'prop-types';
 import { Card } from '@material-ui/core';
 import scss from './Dashboard.scss';
 import DeadlineList from './DeadlineList/DeadlineList';
-import { getDeadline } from '../../store/Dashboard/Dashboard.store';
+import ResumeGraph from './ResumeGraph/ResumeGraph';
+import ResumeStatistics from './ResumeStatistics/ResumeStatistics';
+import {
+  getDeadline,
+  getResumeStatistics,
+} from '../../store/Dashboard/Dashboard.store';
 
 @connect(
   state => ({
     deadlineList: state.dashboard.deadline,
+    resumeStatisticsList: state.dashboard.resumeStatistics,
   }),
   {
     getDeadline,
+    getResumeStatistics,
   },
 )
 export class Dashboard extends Component {
@@ -21,11 +28,14 @@ export class Dashboard extends Component {
 
   componentWillMount() {
     this.props.getDeadline();
-    console.log(this.props.deadlineList);
+    this.props.getResumeStatistics();
   }
 
   render() {
     const { deadlineList } = this.props;
+    const { resumeStatisticsList } = this.props;
+
+    console.log(resumeStatisticsList);
 
     return (
       <div className={scss['dashboard']}>
@@ -33,8 +43,14 @@ export class Dashboard extends Component {
           <div className={scss['dashboard__contents--chart']}>
             <p>자소서 현황 그래프</p>
             <Card className={scss['card__chart']}>
-              <div className={scss['card__chart--area']}>차트</div>
-              <div className={scss['card__chart--text']}>글</div>
+              <div className={scss['card__chart--area']}>
+                {/* 이력서 현황 그래프 */}
+                <ResumeGraph resumeStatisticsList={resumeStatisticsList} />
+              </div>
+              <div className={scss['card__chart--text']}>
+                {/* 이력서 현황 텍스트 */}
+                <ResumeStatistics resumeStatisticsList={resumeStatisticsList} />
+              </div>
             </Card>
           </div>
           <div className={scss['dashboard__contents--bottom']}>
@@ -69,7 +85,9 @@ export class Dashboard extends Component {
 
 Dashboard.propTypes = {
   getDeadline: PropTypes.func,
+  getResumeStatistics: PropTypes.func,
   deadlineList: PropTypes.any,
+  resumeStatisticsList: PropTypes.any,
 };
 
 export default Dashboard;
