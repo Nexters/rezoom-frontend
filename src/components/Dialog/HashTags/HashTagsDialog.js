@@ -9,12 +9,16 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import autobind from 'autobind-decorator';
+import scss from './HashTags.scss';
+import { MainButton } from '../../Shared/Button/MainButton';
 import { HashTag } from '../../Forms/hashTag';
 import {
   Chip,
   createMuiTheme,
   withStyles,
   IconButton,
+  MuiThemeProvider,
+  Typography,
 } from '@material-ui/core';
 import closeIcon from '../../../static/images/item/ic-delete-cancel.svg';
 
@@ -26,11 +30,12 @@ const styles = theme => ({
     },
   },
   bootstrapInput: {
-    borderRadius: 4,
+    borderRadius: 20.5,
     backgroundColor: theme.palette.common.white,
     border: '1px solid #ced4da',
-    fontSize: 16,
+    fontSize: 14,
     padding: '10px 12px',
+    marginTop: 12,
     width: 'calc(100% - 24px)',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     fontFamily: [
@@ -55,7 +60,48 @@ const styles = theme => ({
   },
 });
 
-const theme = createMuiTheme({});
+const theme = createMuiTheme({
+  overrides: {
+    MuiDialog: {
+      paperWidthSm: {
+        width: 450,
+        height: 318,
+        borderRadius: 6,
+      },
+    },
+    MuiTypography: {
+      root: {
+        width: '200px !important',
+        fontWeight: 'normal',
+        fontSize: 24,
+      },
+      title: {
+        width: '450px !important',
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        padding: 0,
+        width: 450,
+      },
+    },
+    MuiIconButton: {
+      root: {
+        marginTop: 24,
+        marginRight: 16,
+      },
+    },
+    MuiChip: {
+      root: {
+        height: 41,
+        borderRadius: 20.5,
+        backgroundColor: '#ffffff',
+        border: 'solid 1px #ced8ea',
+        marginRight: 6,
+      },
+    },
+  },
+});
 
 @withStyles(styles)
 @connect(
@@ -120,59 +166,62 @@ export class HashTagsDialog extends Component {
 
     return (
       <div>
-        <Dialog
-          open={dialogOpen}
-          onClose={this.props.dialogClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">
-            <div>
-              <p>해시태그 편집</p>
-              <IconButton
-                aria-label="Delete"
-                onClick={this.props.onDialogClose}
-              >
-                <img src={closeIcon} alt="closeIcon" />
-              </IconButton>
-            </div>
-          </DialogTitle>
-          <DialogContent>
-            <div>
-              <div>
-                {tags.map((item, idx) => {
-                  return (
-                    <Chip
-                      key={idx}
-                      label={`#${item}`}
-                      onDelete={e => this.handleDelete(e, item)}
-                    />
-                  );
-                })}
-                <TextField
-                  InputProps={{
-                    disableUnderline: true,
-                    classes: {
-                      root: classes.bootstrapRoot,
-                      input: classes.bootstrapInput,
-                    },
-                  }}
-                  autoFocus
-                  onKeyPress={e => this.onKeyPress(e)}
-                />
+        <MuiThemeProvider theme={theme}>
+          <Dialog
+            open={dialogOpen}
+            onClose={this.props.dialogClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">
+              <div className={scss.titlebox}>
+                <Typography className={scss.title} color="textSecondary">
+                  해시태그 편집
+                </Typography>
+                <IconButton
+                  aria-label="Delete"
+                  onClick={this.props.dialogClose}
+                >
+                  <img src={closeIcon} alt="closeIcon" />
+                </IconButton>
               </div>
-            </div>
-            {/* <HashTag name={'hashTags'} label={'해시태그'} tags={tags} /> */}
-          </DialogContent>
-          <DialogActions>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.props.dialogClose}
-            >
-              확인
-            </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogTitle>
+            <DialogContent>
+              <div>
+                <div>
+                  {tags.map((item, idx) => {
+                    return (
+                      <Chip
+                        key={idx}
+                        label={`#${item}`}
+                        onDelete={e => this.handleDelete(e, item)}
+                      />
+                    );
+                  })}
+                  <TextField
+                    InputProps={{
+                      disableUnderline: true,
+                      classes: {
+                        root: classes.bootstrapRoot,
+                        input: classes.bootstrapInput,
+                      },
+                    }}
+                    autoFocus
+                    onKeyPress={e => this.onKeyPress(e)}
+                  />
+                </div>
+              </div>
+              {/* <HashTag name={'hashTags'} label={'해시태그'} tags={tags} /> */}
+            </DialogContent>
+            <DialogActions>
+              <MainButton
+                onClickButton={this.props.dialogClose}
+                text={'저장하기'}
+                type="save"
+                isDisabled={false}
+              />
+            </DialogActions>
+          </Dialog>
+        </MuiThemeProvider>
       </div>
     );
   }
