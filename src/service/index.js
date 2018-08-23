@@ -1,6 +1,5 @@
 import Api from './Api';
 
-// 로그인 관련
 const Auth = {
   login: param => Api.postLogin('login', param),
   signUp: param => Api.post('users/sign-up', param),
@@ -30,6 +29,11 @@ const Search = {
     Api.get(`search/questions?type=hashTag&keyword=${hashTag}`),
 };
 
+const Dashboard = {
+  getDeadline: () => Api.get('dashboard/deadline'),
+  getResumeStatistics: () => Api.get('dashboard/statistics/resume'),
+};
+
 const api = {};
 
 api.login = param => Auth.login(param);
@@ -51,5 +55,9 @@ api.updateQuestions = data => Question.update(data);
 api.getSearchResumes = companyName => Search.findResumes(companyName);
 api.getQuestionsKeyword = keyword => Search.findQuestionsKeyword(keyword);
 api.getQuestionsHashTag = hashTag => Search.findQuestionsHashTag(hashTag);
+
+// dashboard
+api.getDeadline = () => Dashboard.getDeadline();
+api.getResumeStatistics = () => Dashboard.getResumeStatistics();
 
 export default api;

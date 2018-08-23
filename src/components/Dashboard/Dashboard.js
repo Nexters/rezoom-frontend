@@ -3,15 +3,30 @@ import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import { Card } from '@material-ui/core';
 import scss from './Dashboard.scss';
+import DeadlineList from './DeadlineList/DeadlineList';
+import { getDeadline } from '../../store/Dashboard/Dashboard.store';
 
 @connect(
-  state => ({}),
-  {},
+  state => ({
+    deadlineList: state.dashboard.deadline,
+  }),
+  {
+    getDeadline,
+  },
 )
 export class Dashboard extends Component {
-  componentDidMount() {}
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    this.props.getDeadline();
+    console.log(this.props.deadlineList);
+  }
 
   render() {
+    const { deadlineList } = this.props;
+
     return (
       <div className={scss['dashboard']}>
         <div className={scss['dashboard__contents']}>
@@ -26,7 +41,7 @@ export class Dashboard extends Component {
             <div className={scss['recent__document']}>
               <p>최근 열람한 문서</p>
               <Card className={scss['card__document']}>
-                <div>글</div>
+                <div> 글 </div>
               </Card>
             </div>
             <div className={scss['recent__hashtag']}>
@@ -43,8 +58,8 @@ export class Dashboard extends Component {
             <div>1</div>
           </div>
           <div>
-            <p>마감임박 미제출 자소서</p>
-            <div>2</div>
+            {/* 지원 마감 이력서 리스트 */}
+            <DeadlineList deadlineList={deadlineList} />
           </div>
         </div>
       </div>
@@ -52,6 +67,9 @@ export class Dashboard extends Component {
   }
 }
 
-Dashboard.propTypes = {};
+Dashboard.propTypes = {
+  getDeadline: PropTypes.func,
+  deadlineList: PropTypes.any,
+};
 
 export default Dashboard;
