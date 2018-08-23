@@ -1,12 +1,18 @@
 export const GET_DEADLINE = 'GET_DEADLINE';
 export const GET_RESUME_STATISTICS = 'GET_RESUME_STATISTICS';
+export const GET_RECENT_CLICK = 'GET_RECENT_CLICK';
 export const UPDATE_DEALINE_LIST = 'UPDATE_DEALINE_LIST';
 export const UPDATE_RESUME_STATISTICS_LIST = 'UPDATE_RESUME_STATISTICS_LIST';
+export const UPDATE_RECENT_CLICK_LIST = 'UPDATE_RECENT_CLICK_LIST';
 
 const initialState = {
   deadline: [],
   resumeStatistics: {
-    pass: { title: '', resumeNum: 0, ratio: 0 },
+    pass: {
+      title: '',
+      resumeNum: 0,
+      ratio: 0,
+    },
     nonPass: {
       title: '',
       resumeNum: 0,
@@ -23,6 +29,7 @@ const initialState = {
       ratio: 0,
     },
   },
+  recentClick: [],
 };
 
 export default function reducer(state = initialState, action = {}) {
@@ -37,6 +44,11 @@ export default function reducer(state = initialState, action = {}) {
         ...state,
         resumeStatistics: action.payload.resumeStatistics,
       };
+    case UPDATE_RECENT_CLICK_LIST:
+      return {
+        ...state,
+        recentClick: action.payload.recentClick,
+      };
     default:
       return state;
   }
@@ -50,6 +62,10 @@ export const getResumeStatistics = () => ({
   type: GET_RESUME_STATISTICS,
 });
 
+export const getRecentClick = () => ({
+  type: GET_RECENT_CLICK,
+});
+
 export const updateDeadlineList = deadline => ({
   type: UPDATE_DEALINE_LIST,
   payload: {
@@ -61,5 +77,12 @@ export const updateResumeStatisticsList = resumeStatistics => ({
   type: UPDATE_RESUME_STATISTICS_LIST,
   payload: {
     resumeStatistics,
+  },
+});
+
+export const updateRecentClickList = recentClick => ({
+  type: UPDATE_RECENT_CLICK_LIST,
+  payload: {
+    recentClick,
   },
 });
