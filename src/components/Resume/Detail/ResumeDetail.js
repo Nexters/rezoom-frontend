@@ -43,7 +43,7 @@ export class ResumeDetail extends Component {
         finishFlag: '',
         halfType: '',
         jobType: '',
-        passFlag: 0,
+        passFlag: 2,
         resumeId: 0,
         username: '',
       },

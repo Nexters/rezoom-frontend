@@ -26,7 +26,7 @@ import clearIcon from '../../../static/images/item/ic-cancel.svg';
     halfType: '상반기',
     applicationType: '1',
     finishFlag: 0,
-    passFlag: 0,
+    passFlag: 2,
     mode: 'resumes',
     questionSearchOption: 'keyword',
   },

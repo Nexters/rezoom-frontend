@@ -14,7 +14,6 @@ import {
 } from '../../../store/Resume/Resume.store';
 import autobind from 'autobind-decorator';
 import { withStyles, CircularProgress, IconButton } from '@material-ui/core';
-import green from '@material-ui/core/colors/green';
 import { resumeCreateFormData } from '../../../utils/Constans';
 import CloseIcon from '../../../static/images/item/ic-delete-cancel.svg';
 import inputIcon from '../../../static/images/create/ic-edit.svg';
@@ -36,14 +35,8 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     position: 'relative',
   },
-  buttonSuccess: {
-    backgroundColor: green[500],
-    '&:hover': {
-      backgroundColor: green[700],
-    },
-  },
   buttonProgress: {
-    color: green[500],
+    color: '#364eda',
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -61,7 +54,7 @@ const styles = theme => ({
     halfType: '상반기',
     applicationType: '0',
     finishFlag: 0,
-    passFlag: 0,
+    passFlag: 2,
     deadline: moment().format('YYYY-MM-DD HH'),
     // TODO: deadline YYYY-MM-DD HH
   },

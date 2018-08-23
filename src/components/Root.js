@@ -9,6 +9,7 @@ import Account from './Account/Account';
 
 import { ConnectedRouter } from 'connected-react-router';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { Snackbars } from './Shared/Snackbar/Snackbar';
 
 const theme = createMuiTheme({
   palette: {
@@ -46,6 +47,7 @@ export class Root extends Component {
               <Route component={PageNotFound} />
             </Switch>
           </ConnectedRouter>
+          <Snackbars />
         </MuiThemeProvider>
       </Provider>
     );

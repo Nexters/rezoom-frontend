@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { reduxForm, submit, Field } from 'redux-form';
+import { reduxForm, submit, Field, getFormValues } from 'redux-form';
 import { Redirect, Link } from 'react-router-dom';
 import connect from 'redux-connect-decorator';
 import {
@@ -59,7 +59,6 @@ const theme = createMuiTheme({
 const styles = {
   card: {
     width: 450,
-    height: 392,
     boxShadow: '0 4px 9px 0 rgba(0, 0, 0, 0.02)',
     borderRadius: 0,
   },
@@ -102,6 +101,8 @@ const styles = {
 @connect(
   state => ({
     isLogin: state.auth.isLogin,
+    loginError: state.auth.loginError,
+    formValues: getFormValues('loginForm')(state),
   }),
   {
     login,
@@ -111,17 +112,100 @@ const styles = {
 class Login extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      usernameRequired: [false, '이메일을 입력하세요.'],
+      passwordRequired: [false, '패스워드를 입력하세요.'],
+      loginErrorThrow: [false, ''],
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { loginError } = this.props;
+
+    if (loginError[0] !== nextProps.loginError[0]) {
+      this.setState({
+        loginErrorThrow: nextProps.loginError,
+      });
+    }
   }
 
   @autobind
   onClickLogin(e) {
     e.stopPropagation();
-    // this.props.submit();
-    this.props.login({ username: 'test', password: 'test' });
+
+    const check = this.validation();
+
+    if (check) {
+      this.props.submit();
+    }
+  }
+
+  validation() {
+    const { formValues } = this.props;
+    const { password, passwordCheck } = this.state;
+
+    let result = true;
+    const usernameRequired = formValues.username.length === 0;
+    const passwordRequired = formValues.password.length === 0;
+
+    if (usernameRequired || passwordRequired) {
+      result = false;
+    }
+
+    let checkEmail = '이메일을 입력하세요.';
+    let checkBool = usernameRequired;
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+    if (!regex.test(formValues.username)) {
+      checkEmail = '올바른 형태의 이메일이 아닙니다.';
+      checkBool = true;
+    }
+
+    this.setState({
+      usernameRequired: [checkBool, checkEmail],
+      passwordRequired: [passwordRequired, '패스워드를 입력하세요.'],
+    });
+
+    return result;
+  }
+
+  @autobind
+  onChangeEmail(e, value) {
+    const { usernameRequired } = this.state;
+    const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+
+    let checkEmail = '이메일을 입력하세요.';
+    let checkBool = usernameRequired;
+
+    if (usernameRequired[0]) {
+      if (!regex.test(value)) {
+        checkEmail = '올바른 형태의 이메일이 아닙니다.';
+        checkBool = true;
+      }
+      this.setState({
+        usernameRequired: [checkBool === 0, checkEmail],
+      });
+    } else {
+      this.setState({
+        usernameRequired: [value.length === 0, '이메일을 입력하세요.'],
+      });
+    }
+  }
+
+  @autobind
+  onChangePassword(e, value) {
+    const { loginErrorThrow } = this.state;
+
+    this.setState({
+      passwordRequired: [value.length === 0, '패스워드를 입력하세요.'],
+      password: value,
+    });
   }
 
   render() {
     const { classes, isLogin } = this.props;
+    const { usernameRequired, passwordRequired, loginErrorThrow } = this.state;
 
     return isLogin ? (
       <Redirect push to="/resume" />
@@ -138,28 +222,39 @@ class Login extends Component {
               <Typography className={classes.title} color="textSecondary">
                 로그인
               </Typography>
-              {/* <Typography variant="headline" component="h2">
-                    로그인 테스트!
-                </Typography> */}
               <form>
                 <div>
                   <Field
+                    style={{
+                      border: usernameRequired[0] ? 'solid 1px #f1552f' : 0,
+                    }}
                     className={classes.input}
                     name="username"
                     component="input"
                     type="text"
-                    placeholder="아이디를 입력하세요."
+                    placeholder="이메일 주소를 입력하세요."
+                    onChange={this.onChangeEmail}
                   />
                 </div>
+                {usernameRequired[0] ? (
+                  <p className={scss.error__message}>{usernameRequired[1]}</p>
+                ) : null}
                 <div>
                   <Field
+                    style={{
+                      border: passwordRequired[0] ? 'solid 1px #f1552f' : 0,
+                    }}
                     className={classes.input}
                     name="password"
                     component="input"
                     type="password"
                     placeholder="비밀번호를 입력하세요."
+                    onChange={this.onChangePassword}
                   />
                 </div>
+                {passwordRequired[0] ? (
+                  <p className={scss.error__message}>{passwordRequired[1]}</p>
+                ) : null}
               </form>
               <Typography className={classes.account} color="textSecondary">
                 계정이 없으신가요?&nbsp;
@@ -169,6 +264,9 @@ class Login extends Component {
               </Typography>
             </CardContent>
             <CardActions>
+              {loginErrorThrow[0] ? (
+                <p className={scss.error__message}>{loginErrorThrow[1]}</p>
+              ) : null}
               <Button
                 onClick={this.onClickLogin}
                 size="small"
@@ -190,6 +288,8 @@ Login.propTypes = {
   login: PropTypes.func,
   isLogin: PropTypes.bool,
   submit: PropTypes.func,
+  formValues: PropTypes.object,
+  loginError: PropTypes.array,
 };
 
 export default Login;

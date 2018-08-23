@@ -21,7 +21,11 @@ export const resumeCreateFormData = {
     { key: '경력', value: '2' },
   ],
   finishFlag: [{ key: '미지원', value: 0 }, { key: '지원 완료', value: 1 }],
-  passFlag: [{ key: '불합격', value: 0 }, { key: '합격', value: 1 }],
+  passFlag: [
+    { key: '불합격', value: 0 },
+    { key: '합격', value: 1 },
+    { key: '대기', value: 2 },
+  ],
 };
 
 export const questionSearchOption = [
