@@ -91,8 +91,8 @@ const styles = {
   form: 'loginForm',
   enableReinitialize: true,
   initialValues: {
-    username: 'test',
-    password: 'test',
+    username: '',
+    password: '',
   },
   onSubmit: (values, dispatch) => {
     dispatch(login(values));
