@@ -1,6 +1,5 @@
 import Api from './Api';
 
-// 로그인 관련
 const Auth = {
   login: param => Api.postLogin('login', param),
   signUp: param => Api.post('users/sign-up', param),
@@ -32,6 +31,14 @@ const Search = {
     Api.get(`search/questions?type=hashTag&keyword=${hashTag}`),
 };
 
+const Dashboard = {
+  getDeadline: () => Api.get('dashboard/deadline'),
+  getResumeStatistics: () => Api.get('dashboard/statistics/resume'),
+  getRecentClick: () => Api.get('dashboard/recent'),
+  getHashtag: () => Api.get('hashTags'),
+  getName: () => Api.get('users/name'),
+};
+
 const api = {};
 
 // auth
@@ -40,7 +47,7 @@ api.signUp = param => Auth.signUp(param);
 api.userInfo = () => Auth.userInfo();
 api.changePassword = param => Auth.changePassword(param);
 
-// resume api
+// resume
 api.getResumes = () => Resume.findAll();
 api.getResume = resumeId => Resume.findOne(resumeId);
 api.newResume = data => Resume.insert(data);
@@ -56,5 +63,12 @@ api.updateQuestions = data => Question.update(data);
 api.getSearchResumes = companyName => Search.findResumes(companyName);
 api.getQuestionsKeyword = keyword => Search.findQuestionsKeyword(keyword);
 api.getQuestionsHashTag = hashTag => Search.findQuestionsHashTag(hashTag);
+
+// dashboard
+api.getDeadline = () => Dashboard.getDeadline();
+api.getResumeStatistics = () => Dashboard.getResumeStatistics();
+api.getRecentClick = () => Dashboard.getRecentClick();
+api.getHashtag = () => Dashboard.getHashtag();
+api.getName = () => Dashboard.getName();
 
 export default api;
