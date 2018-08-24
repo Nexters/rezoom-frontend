@@ -7,7 +7,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { Field, reduxForm, submit, change } from 'redux-form';
+import { Field, reduxForm, submit, change, getFormValues } from 'redux-form';
 import {
   createNewResume,
   editResumeInfoData,
@@ -51,6 +51,7 @@ const styles = theme => ({
   enableReinitialize: true,
   initialValues: {
     companyName: '',
+    jobType: '',
     applicationYear: 2018,
     halfType: '상반기',
     applicationType: '0',
@@ -67,6 +68,7 @@ const styles = theme => ({
   state => ({
     initialValues: state.resume.createResumeCache.info,
     loading: state.loader.component,
+    formValues: getFormValues('newResume')(state),
   }),
   {
     submit: () => submit('newResume'),
@@ -96,6 +98,9 @@ export class Create extends Component {
       deadline: moment().format('YYYY-MM-DD HH'),
       init: true,
       passFlagActive: true,
+      companyNameRequired: false,
+      jobTypeRequired: false,
+      requiredCount: 0,
     };
   }
 
@@ -184,7 +189,30 @@ export class Create extends Component {
 
   @autobind
   handleSubmit() {
-    this.props.submit();
+    const { formValues } = this.props;
+
+    const companyNameRequired = formValues.companyName.length === 0;
+    const jobTypeRequired = formValues.jobType.length === 0;
+
+    let result = true;
+    let requiredCount = 0;
+
+    if (companyNameRequired || jobTypeRequired) {
+      result = false;
+    }
+
+    requiredCount = companyNameRequired ? 1 : 0;
+    requiredCount = jobTypeRequired ? requiredCount + 1 : requiredCount;
+
+    this.setState({
+      companyNameRequired: companyNameRequired,
+      jobTypeRequired: jobTypeRequired,
+      requiredCount: requiredCount,
+    });
+
+    if (result) {
+      this.props.submit();
+    }
   }
 
   @autobind
@@ -210,6 +238,54 @@ export class Create extends Component {
     }
   }
 
+  @autobind
+  onChangeCompanyName(e, value) {
+    let requiredCount = this.state.requiredCount;
+
+    if (value.length === 0) {
+      requiredCount = requiredCount + 1;
+
+      if (requiredCount > 2) {
+        requiredCount = 2;
+      }
+    } else if (value.length > 0) {
+      requiredCount = requiredCount - 1;
+
+      if (requiredCount < 0) {
+        requiredCount = 0;
+      }
+    }
+
+    this.setState({
+      companyNameRequired: value.length === 0,
+      requiredCount: requiredCount,
+    });
+  }
+
+  @autobind
+  onChangeJobType(e, value) {
+    let requiredCount = this.state.requiredCount;
+
+    if (value.length === 0) {
+      requiredCount = requiredCount + 1;
+
+      if (requiredCount > 2) {
+        requiredCount = 2;
+      }
+    } else if (value.length > 0) {
+      requiredCount = requiredCount - 1;
+
+      if (requiredCount < 0) {
+        requiredCount = 0;
+      }
+    }
+
+    this.setState({
+      jobTypeRequired: value.length === 0,
+      requiredCount: requiredCount,
+    });
+  }
+
   render() {
     const { dialogOpen, classes, loading } = this.props;
     const {
@@ -220,6 +296,9 @@ export class Create extends Component {
       passFlag,
       deadline,
       passFlagActive,
+      companyNameRequired,
+      jobTypeRequired,
+      requiredCount,
     } = this.state;
 
     return (
@@ -255,7 +334,13 @@ export class Create extends Component {
                 type="text"
                 style={{ display: 'none' }}
               />
-              <div className={scss['create__full']}>
+              <div
+                className={scss['create__full']}
+                style={{
+                  background: companyNameRequired ? '#fffcdc' : '#ffffff',
+                }}
+              >
+                {companyNameRequired ? <div className={scss.dot} /> : null}
                 <p>회사명</p>
                 <div className={scss['create__full--item']}>
                   <Field
@@ -263,6 +348,8 @@ export class Create extends Component {
                     component="input"
                     type="text"
                     placeholder="회사명"
+                    onChange={this.onChangeCompanyName}
+                    style={{ background: 'transparent' }}
                   />
                   <img src={inputIcon} alt="inputIcon" />
                 </div>
@@ -309,7 +396,13 @@ export class Create extends Component {
                 </div>
               </div>
 
-              <div className={scss['create__full']}>
+              <div
+                className={scss['create__full']}
+                style={{
+                  background: jobTypeRequired ? '#fffcdc' : '#ffffff',
+                }}
+              >
+                {jobTypeRequired ? <div className={scss.dot} /> : null}
                 <p>직무</p>
                 <div className={scss['create__full--item']}>
                   <Field
@@ -317,6 +410,8 @@ export class Create extends Component {
                     component="input"
                     type="text"
                     placeholder="직무"
+                    onChange={this.onChangeJobType}
+                    style={{ background: 'transparent' }}
                   />
                   <img src={inputIcon} alt="inputIcon" />
                 </div>
@@ -348,6 +443,11 @@ export class Create extends Component {
             </form>
           </DialogContent>
           <DialogActions>
+            {requiredCount > 0 ? (
+              <p className={scss.required__count}>
+                {requiredCount}개의 항목을 입력하지 않았습니다.
+              </p>
+            ) : null}
             <div className={classes.wrapper}>
               <MainButton
                 onClickButton={this.handleSubmit}
@@ -382,6 +482,7 @@ Create.propTypes = {
   initialValues: PropTypes.object,
   loading: PropTypes.bool,
   id: PropTypes.number,
+  formValues: PropTypes.object,
 };
 
 export default Create;

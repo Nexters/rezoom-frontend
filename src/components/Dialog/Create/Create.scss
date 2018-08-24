@@ -28,12 +28,13 @@
   }
 
   .create__full {
+    position: relative;
     height: 72px;
     width: 100%;
     padding: 0px 32px;
 
     > p {
-      margin-top: 12px;
+      padding-top: 12px;
       margin-bottom: 10px;
       font-size: 13px;
       font-weight: normal;
@@ -92,4 +93,24 @@
       }
     }
   }
+}
+
+.dot {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 6px;
+  height: 6px;
+  border-radius: 100px;
+  background-color: #f76222;
+}
+
+.required__count {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: -0.7px;
+  color: #f76222;
 }

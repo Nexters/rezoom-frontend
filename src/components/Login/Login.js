@@ -91,8 +91,8 @@ const styles = {
   form: 'loginForm',
   enableReinitialize: true,
   initialValues: {
-    username: '',
-    password: '',
+    username: 'test',
+    password: 'test',
   },
   onSubmit: (values, dispatch) => {
     dispatch(login(values));
@@ -134,11 +134,12 @@ class Login extends Component {
   onClickLogin(e) {
     e.stopPropagation();
 
-    const check = this.validation();
+    this.props.submit();
+    // const check = this.validation();
 
-    if (check) {
-      this.props.submit();
-    }
+    // if (check) {
+    //   this.props.submit();
+    // }
   }
 
   @autobind

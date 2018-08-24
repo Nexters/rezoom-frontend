@@ -87,7 +87,7 @@ export function* signUp(data) {
     yield put(activeLoadingComponent());
 
     const params = {
-      // name: data.name,
+      name: data.name,
       username: data.username,
       password: data.password,
     };

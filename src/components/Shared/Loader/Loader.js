@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import connect from 'redux-connect-decorator';
 import PropTypes from 'prop-types';
 import Lottie from 'react-lottie';
-import * as animationData from './loading_liquid.json';
+import * as animationData from './loading_stack_documents.json';
 import scss from './Loader.scss';
 @connect(
   state => ({
