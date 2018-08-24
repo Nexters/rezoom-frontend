@@ -8,6 +8,7 @@ import ResumeGraph from './ResumeGraph/ResumeGraph';
 import ResumeStatistics from './ResumeStatistics/ResumeStatistics';
 import RecentClickList from './RecentClickList/RecentClickList';
 import HashtagList from './HashtagList/HashtagList';
+import Calendar from './Calendar/Calendar';
 import {
   getDeadline,
   getResumeStatistics,
@@ -92,10 +93,15 @@ export class Dashboard extends Component {
         </div>
         <div className={scss['dashboard__drawer']}>
           <div>
-            <p> 자소서 일정 달력 </p> <div> 1 </div>
+            {/* 지원 마감 이력서 달력 */}
+            <p> 자소서 일정 달력 </p>
+            <div>
+              <Calendar deadlineList={deadlineList} />
+            </div>
           </div>
           <div>
             {/* 지원 마감 이력서 리스트 */}
+            <p> 마감 임박 미제출 자소서 </p>
             <DeadlineList deadlineList={deadlineList} />
           </div>
         </div>
