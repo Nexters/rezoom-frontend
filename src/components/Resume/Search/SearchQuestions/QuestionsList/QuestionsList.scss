@@ -13,9 +13,9 @@
   }
   
   .card {
-    height: 172px;
-    padding: 32px;
+    height: 221px;
     background-color: #ffffff;
+    border-radius: 0px;
     box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02) !important;
     
     &:hover {
@@ -24,10 +24,54 @@
   }
   
   .list__header {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
-    margin-bottom: 29px;
+    margin-bottom: 5px;
+    letter-spacing: -1px;
+    font-stretch: normal;
+    line-height: normal;
+    margin-top: 32px;
+    margin-left: 32px;
   
+    p {
+      margin: 0px;
+    }
+  }
+
+  .list__bottom {
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 1px;
+    font-stretch: normal;
+    line-height: normal;
+    margin-top: 5px;
+    margin-left: 32px;
+    color: #333333;
+  
+    p {
+      margin: 0px;
+    }
+  }
+
+  .list__question {
+    font-size: 16px;
+    font-weight: normal;
+    margin-bottom: 20px;
+    font-stretch: normal;
+    line-height: normal;
+    margin-top: 18px;
+    margin-left: 32px;
+    color: #222222;
+  
+    p {
+      margin: 0px;
+    }
+  }
+
+  .list__hashtag {
+    margin-top: 20px;
+    margin-left: 32px;
+
     p {
       margin: 0px;
     }
