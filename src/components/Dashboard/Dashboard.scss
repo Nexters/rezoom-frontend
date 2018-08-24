@@ -8,8 +8,7 @@
     display: flex;
     flex-direction: column;
     min-width: 864px;
-    padding: 40px 50px;
-
+    
     .dashboard__contents--chart {
       display: flex;
       flex-direction: column;
@@ -26,16 +25,13 @@
         display: flex;
         flex-direction: row;
         height: 326px;
+        min-width: 910px;
+        padding: 50px;
         border-radius: 6px;
         background-color: #ffffff;
         box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02);
 
-        .card__chart--area {
-          flex: 1
-        }
-        .card__chart--text {
-
-        }
+       
       }
     }
     
@@ -43,6 +39,8 @@
       flex: 1;
       display: flex;
       flex-direction: row;
+      min-width: 910px;
+      height: calc(100% - 300px);
 
       .recent__document {
         width: 100%;
@@ -58,7 +56,7 @@
 
         .card__document {
           width: 100%;
-          height: 100%;
+          height: calc(100% - 40px);
           border-radius: 6px;
           background-color: #ffffff;
           box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02);
@@ -78,7 +76,7 @@
 
         .card__hashtag {
           width: 100%;
-          height: 100%;
+          height: calc(100% - 40px);
           border-radius: 6px;
           background-color: #ffffff;
           box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.02);
@@ -94,5 +92,40 @@
     height: 100%;
     width: 326px;
     background-color: #ffffff;
+    padding: 36px;
+
+    .flex-row {
+      .padding {
+        .footer {
+          min-width: 0px !important;
+
+          .day-headers {
+            font-size: 12px !important;
+          }
+          .day {
+            font-size: 12px !important;
+            padding: 4px !important;
+          }
+        }
+      }
+    }
+
+    .dashboard__drawer--title {
+      font-size: 15px;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #1f1f1f;
+      margin-bottom: 32px;
+
+    }
   }
+}
+
+.scroll__content {
+  > div {
+    padding: 40px 50px;
+  } 
 }

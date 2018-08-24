@@ -6,10 +6,13 @@ export class DeadlineListItem extends Component {
   render() {
     const { companyName, jobType, deadline } = this.props;
     return (
-      <div>
-        <div> {deadline} </div>
-        <div>
-          {companyName} {jobType}
+      <div className={scss.deadline}>
+        <div className={scss.square} />
+        <div className={scss.item}>
+          <p className={scss.date}> {deadline} </p>
+          <p className={scss.info}>
+            {companyName} {jobType}
+          </p>
         </div>
       </div>
     );

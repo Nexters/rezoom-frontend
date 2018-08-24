@@ -134,12 +134,11 @@ class Login extends Component {
   onClickLogin(e) {
     e.stopPropagation();
 
-    this.props.submit();
-    // const check = this.validation();
+    const check = this.validation();
 
-    // if (check) {
-    //   this.props.submit();
-    // }
+    if (check) {
+      this.props.submit();
+    }
   }
 
   @autobind

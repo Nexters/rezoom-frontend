@@ -1,0 +1,126 @@
+.resume__statistics {
+  display: flex;
+  flex-direction: column;
+  min-width: 480px;
+  height: 100%;
+  margin-left: 30px;
+
+  .statistics__title {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: -0.6px;
+    color: #f6522b;
+  }
+
+  .statistics__total {
+    margin-top: 2px;
+    margin-bottom: 20px;
+    font-size: 23px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: -1.1px;
+    color: #222222;
+  }
+
+  .statistics__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    height: 100%;
+
+    .statistics__info--item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      height: 36px;
+      width: 100%;
+      min-width: 450px;
+
+      .item__title {
+        display: flex;
+        align-items: center;
+        
+        .squre {
+          width: 8px;
+          height: 9px;
+          border-radius: 2px;
+          margin-right: 8px;
+        }
+  
+        .title { 
+          min-width: 100px;
+          font-size: 15px;
+          font-weight: 500;
+          font-style: normal;
+          font-stretch: normal;
+          line-height: normal;
+          letter-spacing: -0.7px;
+          color: #222222;
+        }
+      }
+
+
+      .resumenum {
+        min-width: 63px;
+        margin-right: 32px;
+        font-size: 15px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.7px;
+        color: #888888;
+        text-align: right;
+
+      }
+
+      .ratio {
+        min-width: 80px;
+        margin-right: 32px;
+        font-size: 15px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.7px;
+        color: #888888;
+        text-align: right;
+
+      }
+
+      .divider {
+        height: 30%;
+        width: 1px;
+        border-right: 1px solid #888888;
+      }
+
+
+      .button {
+        width: 80px;
+        max-height: 26px !important;
+        min-height: 26px !important;
+        height: 26px;
+        padding: 4px 16px;
+        border-radius: 12.5px;
+        font-size: 12px;
+        font-weight: 300;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.6px;
+        text-align: center;
+        color: #342a2a;
+      }
+
+    }
+  }
+}
+
+

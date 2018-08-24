@@ -8,7 +8,7 @@ import ResumeGraph from './ResumeGraph/ResumeGraph';
 import ResumeStatistics from './ResumeStatistics/ResumeStatistics';
 import RecentClickList from './RecentClickList/RecentClickList';
 import HashtagList from './HashtagList/HashtagList';
-import Calendar from './Calendar/Calendar';
+import CalendarItem from './Calendar/CalendarItem';
 import {
   getDeadline,
   getResumeStatistics,
@@ -16,6 +16,8 @@ import {
   getHashtag,
   getName,
 } from '../../store/Dashboard/Dashboard.store';
+import { getResumeList } from '../../store/Resume/Resume.store';
+import Scrollbars from 'react-custom-scrollbars';
 
 @connect(
   state => ({
@@ -24,6 +26,7 @@ import {
     recentClickList: state.dashboard.recentClick,
     hashtagList: state.dashboard.hashtag,
     username: state.dashboard.name,
+    resumes: state.resume.resumes,
   }),
   {
     getDeadline,
@@ -31,6 +34,7 @@ import {
     getRecentClick,
     getHashtag,
     getName,
+    getResumeList,
   },
 )
 export class Dashboard extends Component {
@@ -39,6 +43,7 @@ export class Dashboard extends Component {
   }
 
   componentWillMount() {
+    this.props.getResumeList();
     this.props.getDeadline();
     this.props.getResumeStatistics();
     this.props.getRecentClick();
@@ -53,57 +58,79 @@ export class Dashboard extends Component {
       recentClickList,
       hashtagList,
       username,
+      resumes,
     } = this.props;
 
     return (
       <div className={scss['dashboard']}>
         <div className={scss['dashboard__contents']}>
-          <div className={scss['dashboard__contents--chart']}>
-            <p> 자소서 현황 그래프 </p>
-            <Card className={scss['card__chart']}>
-              <div className={scss['card__chart--area']}>
+          <Scrollbars
+            autoHide
+            autoHideTimeout={100}
+            autoHideDuration={100}
+            autoHeightMin={'100%'}
+            autoHeightMax={'100%'}
+            thumbMinSize={30}
+            universal={true}
+            className={scss.scroll__content}
+          >
+            <div className={scss['dashboard__contents--chart']}>
+              <p> 자소서 현황 그래프 </p>
+              <Card className={scss['card__chart']}>
                 {/* 이력서 현황 그래프 */}
                 <ResumeGraph resumeStatisticsList={resumeStatisticsList} />
-              </div>
-              <div className={scss['card__chart--text']}>
-                {/* 이력서 현황 텍스트 */}
-                <ResumeStatistics
-                  resumeStatisticsList={resumeStatisticsList}
-                  username={username}
-                  deadlineList={deadlineList}
-                />
-              </div>
-            </Card>
-          </div>
-          <div className={scss['dashboard__contents--bottom']}>
-            <div className={scss['recent__document']}>
-              <p> 최근 열람한 문서 </p>
-              <Card className={scss['card__document']}>
-                {/* 최근 열람한 문서 */}
-                <RecentClickList recentClickList={recentClickList} />
+
+                <div className={scss['card__chart--text']}>
+                  {/* 이력서 현황 텍스트 */}
+                  <ResumeStatistics
+                    resumeStatisticsList={resumeStatisticsList}
+                    username={username}
+                    deadlineList={deadlineList}
+                    resumes={resumes}
+                  />
+                </div>
               </Card>
             </div>
-            <div className={scss['recent__hashtag']}>
-              <p> 최근에 만든 해시태그 </p>
-              <Card className={scss['card__hashtag']}>
-                <HashtagList hashtagList={hashtagList} username={username} />
-              </Card>
+            <div className={scss['dashboard__contents--bottom']}>
+              <div className={scss['recent__document']}>
+                <p> 최근 열람한 문서 </p>
+                <Card className={scss['card__document']}>
+                  <Scrollbars
+                    autoHide
+                    autoHideTimeout={100}
+                    autoHideDuration={100}
+                    autoHeightMin={'100%'}
+                    autoHeightMax={'100%'}
+                    thumbMinSize={30}
+                    universal={true}
+                    className={scss.scroll}
+                  >
+                    {/* 최근 열람한 문서 */}
+                    <RecentClickList recentClickList={recentClickList} />
+                  </Scrollbars>
+                </Card>
+              </div>
+              <div className={scss['recent__hashtag']}>
+                <p> 최근에 만든 해시태그 </p>
+                <Card className={scss['card__hashtag']}>
+                  <HashtagList hashtagList={hashtagList} username={username} />
+                </Card>
+              </div>
             </div>
-          </div>
+          </Scrollbars>
         </div>
         <div className={scss['dashboard__drawer']}>
-          <div>
-            {/* 지원 마감 이력서 달력 */}
-            <p> 자소서 일정 달력 </p>
-            <div>
-              <Calendar deadlineList={deadlineList} />
-            </div>
-          </div>
-          <div>
-            {/* 지원 마감 이력서 리스트 */}
-            <p> 마감 임박 미제출 자소서 </p>
-            <DeadlineList deadlineList={deadlineList} />
-          </div>
+          {/* 지원 마감 이력서 달력 */}
+          <p className={scss['dashboard__drawer--title']}>자소서 일정 달력 </p>
+          <CalendarItem deadlineList={deadlineList} />
+          {/* 지원 마감 이력서 리스트 */}
+          <p
+            className={scss['dashboard__drawer--title']}
+            style={{ marginTop: 22 }}
+          >
+            마감 임박 미제출 자소서
+          </p>
+          <DeadlineList deadlineList={deadlineList} />
         </div>
       </div>
     );
@@ -116,11 +143,13 @@ Dashboard.propTypes = {
   getRecentClick: PropTypes.func,
   getHashtag: PropTypes.func,
   getName: PropTypes.func,
+  getResumeList: PropTypes.func,
   deadlineList: PropTypes.any,
   resumeStatisticsList: PropTypes.any,
   recentClickList: PropTypes.any,
   hashtagList: PropTypes.any,
   username: PropTypes.string,
+  resumes: PropTypes.array,
 };
 
 export default Dashboard;

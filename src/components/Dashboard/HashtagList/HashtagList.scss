@@ -1,0 +1,55 @@
+.hashtag {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  .title {
+    display: flex;
+    flex-direction: row;
+    height: 111px;
+    padding: 32px;
+
+    img {
+      height: 53px;
+      margin-top: -8px;
+    }
+
+    .typograph {
+      margin-left: 16px;
+
+      .user {
+        font-size: 15px;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.7px;
+        color: #364eda;
+      }
+      
+      .info {
+        font-size: 15px;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.7px;
+        color: #222222;
+      }
+    }
+
+  }
+}
+
+.divider {
+  width: 80%;
+  height: 1px;
+  border-bottom: 1px solid #eeeeee;
+  margin-left: 10%
+}
+
+.scroll {
+  > div {
+    padding: 32px;
+  }
+}

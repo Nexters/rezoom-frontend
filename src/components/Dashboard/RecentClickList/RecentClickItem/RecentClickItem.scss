@@ -1,0 +1,35 @@
+.recent__click {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 97px;
+  padding: 27px 24px;
+
+
+  .recent__info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 24px;
+
+    .title {
+      font-size: 16px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: -0.7px;
+      color: #222222;
+      
+    }
+
+    .date {
+      font-size: 14px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: -0.7px;
+      color: #c4c4c4;
+    }
+  }
+}

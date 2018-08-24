@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Doughnut } from 'react-chartjs-2';
+import scss from './ResumeGraph.scss';
 
 export class ResumeGraph extends Component {
   static propTypes = {
@@ -31,11 +32,11 @@ export class ResumeGraph extends Component {
       ],
     };
     const style = {
-      width: '300px',
-      height: '300px',
+      width: '100%',
+      height: '100%',
     };
     return (
-      <div>
+      <div className={scss.chart__area}>
         {resumeStatisticsList.length === 0 ? (
           '등록된 이력서가 없습니다.'
         ) : (
@@ -51,7 +52,7 @@ export class ResumeGraph extends Component {
                   display: false,
                 },
                 layout: {
-                  padding: 40,
+                  padding: 0,
                 },
               }}
             />
