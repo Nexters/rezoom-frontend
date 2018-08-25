@@ -218,7 +218,6 @@ export class Create extends Component {
   @autobind
   handleDateChange(date) {
     const convertDate = moment(date).format('YYYY-MM-DD HH');
-    console.log(convertDate);
 
     this.setState({ deadline: date });
     this.props.change('deadline', convertDate);
@@ -226,7 +225,6 @@ export class Create extends Component {
 
   @autobind
   changeFinishFlag(value) {
-    console.log(value);
     if (value === 0) {
       this.setState({
         passFlagActive: true,

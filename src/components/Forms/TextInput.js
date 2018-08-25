@@ -12,17 +12,6 @@ const renderInput = ({
   meta: { touched, error },
   ...custom
 }) => {
-  //   console.log(input);
-  //   console.log(label);
-  //   console.log(custom);
-  // return (
-  //   <TextField
-  //     id={name}
-  //     label={label} //   errorText={touched && error}
-  //     {...input}
-  //     {...custom}
-  //   />
-  // );
   let autoComplete = 'text';
   if (type === 'text') {
     autoComplete = 'text';

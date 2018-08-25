@@ -37,6 +37,7 @@
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-error-overlay": "^1.0.10",
+    "react-fullpage": "^0.1.18",
     "react-hot-loader": "^4.0.0",
     "react-lottie": "^1.2.3",
     "react-redux": "^5.0.7",

@@ -76,8 +76,6 @@ export class ResumeDetail extends Component {
 
     if (match['params']['mode']) {
       if (match['params']['mode'] === 'detail') {
-        console.log('resumes.length = ', resumes.length);
-        console.log('nextProps.resumes.length = ', nextProps.resumes.length);
         if (resumes.length !== nextProps.resumes.length) {
           this.setState({
             resumeData: nextProps.resumes.filter(

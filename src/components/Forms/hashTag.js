@@ -11,9 +11,6 @@ const renderInput = ({
   meta: { touched, error },
   ...custom
 }) => {
-  //   console.log(input);
-  //   console.log(label);
-  //   console.log(custom);
   return (
     <TextField
       id={name}

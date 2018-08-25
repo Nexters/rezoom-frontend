@@ -30,7 +30,6 @@ function* getDeadlineList() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -45,7 +44,6 @@ function* getResumeStatistics() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -60,7 +58,6 @@ function* getRecentClick() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -75,7 +72,6 @@ function* getHashtag() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -90,7 +86,6 @@ function* getName() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

@@ -48,7 +48,6 @@ class Header extends Component {
   checkRouter(pathname, isDetail) {
     let text;
     let buttonComponent = null;
-    // console.log(pathname.split('/')[1]);
     if (pathname.split('/')[1] === 'resume') {
       text = '자소서 작성';
     } else {

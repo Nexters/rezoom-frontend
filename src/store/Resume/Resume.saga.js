@@ -28,6 +28,7 @@ import {
 import { FilterUtils } from '../../utils/FilterUtils';
 import { resumeCreateFormData } from '../../utils/Constans';
 import { dialogClose } from '../Dialog/Dialog.store';
+import { openSnackbar } from '../Snackbar/Snackbar.store';
 
 function* postCreateNewResume(data) {
   try {
@@ -46,21 +47,23 @@ function* postCreateNewResume(data) {
     if (data.mode === 'Edit') {
       yield call(putUpdateResume, data.resumeId, resume);
     } else {
-      console.log('new resume = ', data);
       const result = yield call(api.newResume, resume);
-      // console.log('success new resume = ', result);
 
       if (result) {
         yield put(responseCreateNewResume(data));
+        yield put(
+          openSnackbar({
+            variant: 'success',
+            message: `${data.companyName} 자소서가 정상적으로 등록되었습니다.`,
+          }),
+        );
       }
 
       yield put(dialogClose());
       yield put(push(`/resume/create/${result.data}`));
     }
     yield put(inactiveLoadingComponent());
-    console.log('inactive');
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -88,7 +91,6 @@ function* getResumeList() {
     }
     yield put(inactiveLoadingContainer());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -102,7 +104,6 @@ function* getQuestionsList(payload) {
       yield put(updateQuestionList(result.data));
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -131,9 +132,14 @@ function* postCreateQuestions(resumeId) {
       yield call(getQuestionsList, payload);
       yield put(push(`/resume/detail/${resumeId}`));
       yield put(inactiveLoadingContainer());
+      yield put(
+        openSnackbar({
+          variant: 'success',
+          message: '문항이 정상적으로 등록되었습니다.',
+        }),
+      );
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -147,12 +153,16 @@ function* putUpdateResume(resumeId, resume) {
     const result = yield call(api.updateResume, resumeId, body);
 
     if (result) {
-      console.log('success insert questions = ', result);
+      yield put(
+        openSnackbar({
+          variant: 'success',
+          message: '자소서가 정상적으로 수정되었습니다.',
+        }),
+      );
     }
     yield put(inactiveLoadingComponent());
     yield put(dialogClose());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -165,10 +175,15 @@ function* deleteOneResume(resumeId) {
 
     if (result) {
       yield call(getResumeList);
+      yield put(
+        openSnackbar({
+          variant: 'success',
+          message: '자소서가 정상적으로 삭제되었습니다.',
+        }),
+      );
     }
     yield put(inactiveLoadingComponent());
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -211,13 +226,25 @@ function* putUpdateQuestion(resumeId) {
       if (questionsUpdateFlag) {
         yield put(clearQuestionUpdateFlag());
         yield put(isUpdateModeChange(false));
+        yield put(
+          openSnackbar({
+            variant: 'success',
+            message: '문항이 정상적으로 등록되었습니다.',
+          }),
+        );
+      } else {
+        yield put(
+          openSnackbar({
+            variant: 'success',
+            message: '문항이 정상적으로 수정되었습니다.',
+          }),
+        );
       }
       yield call(getQuestionsList, payload);
       yield put(push(`/resume/detail/${resumeId}`));
       yield put(inactiveLoadingContainer());
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

@@ -114,7 +114,6 @@ export function* signUp(data) {
     }
     yield put(inactiveLoadingComponent());
   } catch (e) {
-    console.log(e);
     throw e;
   }
 }
@@ -130,7 +129,6 @@ export function* getUserInfo() {
     }
     yield put(inactiveLoadingContainer());
   } catch (e) {
-    console.log(e);
     throw e;
   }
 }
@@ -165,7 +163,6 @@ export function* changePassword(data) {
     }
     yield put(inactiveLoadingComponent());
   } catch (e) {
-    console.log(e);
     throw e;
   }
 }

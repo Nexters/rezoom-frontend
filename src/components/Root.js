@@ -10,6 +10,7 @@ import Account from './Account/Account';
 import { ConnectedRouter } from 'connected-react-router';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { Snackbars } from './Shared/Snackbar/Snackbar';
+import { Landing } from './Landing/Landing';
 
 const theme = createMuiTheme({
   palette: {
@@ -39,6 +40,7 @@ export class Root extends Component {
               <Route exact path="/" component={Layout} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/account" component={Account} />
+              <Route exact path="/landing" component={Landing} />
               <Route path="/resume/:mode?/:id(.*)?" component={Layout} />
               <Route path="/files" component={Layout} />
               <Route path="/mypage" component={Layout} />

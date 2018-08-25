@@ -330,12 +330,9 @@ export default function reducer(state = initialState, action = {}) {
         selectedQuestion: 1,
       };
     case EDIT_RESUME_INFO_DATA:
-      console.log('resumeId = ', action.payload.resumeId);
-      console.log('resumes = ', state.resumes);
       const resumeInfo = state.resumes.filter(
         item => item.resumeId === Number(action.payload.resumeId),
       );
-      console.log(resumeInfo);
       return {
         ...state,
         createResumeCache: {

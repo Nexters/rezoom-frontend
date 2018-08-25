@@ -27,7 +27,6 @@ export class Sidebar extends Component {
         </Button>
         <ul>
           {list.map(item => {
-            // console.log(item);
             return (
               <li
                 key={item.id}
